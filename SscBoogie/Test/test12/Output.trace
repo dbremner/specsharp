@@ -1,0 +1,191 @@
+Start 
+ 
+-------------------- VisibilityBasedInvariants -------------------- 
+
+Running abstract interpretation...
+  [0.2184056 s]
+
+Verifying Friend.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.39001 s]  
+Linearising ... finished   [0.0312008 s]  
+  [1.0764276 s]  verified
+
+Verifying Friend..ctor$Thing$notnull ...
+Linearising ... finished   [0.0624016 s]  
+  [0.2652068 s]  verified
+
+Verifying Friend..ctor$Thing$notnull$System.Boolean ...
+Linearising ... finished   [0.0468012 s]  
+  [0.3744096 s]  verified
+
+Verifying Friend..cctor ...
+Linearising ... finished   [0 s]  
+  [0 s]  verified
+
+Verifying Thing.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0624016 s]  verified
+
+Verifying Thing..ctor ...
+Linearising ... finished   [0 s]  
+  [0.0156004 s]  verified
+
+Verifying Thing.P ...
+Linearising ... finished   [0.0156004 s]  
+  [0.1248032 s]  verified
+
+Verifying Thing.Q ...
+Linearising ... finished   [0.0312008 s]  
+  [0.2184056 s]  verified
+
+Verifying Thing.R ...
+Linearising ... finished   [0 s]  
+  [0.1248032 s]  verified
+
+Verifying Thing.S ...
+Linearising ... finished   [0.0156004 s]  
+VisibilityBasedInvariants.ssc(102,5): Error: Object invariant possibly does not hold: x == th.y
+  [0.0624016 s]  error
+
+Verifying Thing.T ...
+Linearising ... finished   [0.0156004 s]  
+VisibilityBasedInvariants.ssc(109,7): Error: Assignment to field Thing.y may violate a visibility-based invariant declared in class Friend
+  [0.0312008 s]  error
+
+Verifying Thing.U ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0312008 s]  verified
+
+Verifying Thing..cctor ...
+Linearising ... finished   [0 s]  
+  [0 s]  verified
+
+Spec# program verifier finished with 11 verified, 2 errors
+ 
+-------------------- Spouse -------------------- 
+
+Running abstract interpretation...
+  [0.234006 s]
+
+Verifying Person.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.3432088 s]  
+Linearising ... finished   [0.0156004 s]  
+  [0.9672248 s]  verified
+
+Verifying Person.Marry$Person$notnull ...
+Linearising ... finished   [0.0312008 s]  
+  [0.2028052 s]  verified
+
+Verifying Person.MarryAssignTheOtherWayAround$Person$notnull ...
+Linearising ... finished   [0.0312008 s]  
+Spouse.ssc(38,9): Error: illegal assignment to peer field, target object and RHS may have different owners or an owner might not be exposed
+  [0.1872048 s]  error
+
+Verifying Person.MarryAssignTheOtherWayAround_GoodnessRestored$Person$notnull$System.Boolean ...
+Linearising ... finished   [0.0468012 s]  
+  [0.4212108 s]  verified
+
+Verifying Person.Marry_CaptureThis$Person$notnull ...
+Linearising ... finished   [0.0312008 s]  
+  [0.2652068 s]  verified
+
+Verifying Person.Marry_CaptureEither$Person$notnull ...
+Linearising ... finished   [0.0312008 s]  
+  [0.1404036 s]  verified
+
+Verifying Person.MM ...
+Linearising ... finished   [0 s]  
+  [0.0312008 s]  verified
+
+Verifying Person.NN ...
+Linearising ... finished   [0 s]  
+  [0.0156004 s]  verified
+
+Verifying Person.PP ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0624016 s]  verified
+
+Verifying Person.A0$Person$notnull ...
+Linearising ... finished   [0 s]  
+Spouse.ssc(118,5): Error: assigning an owner requires the subject to be un-owned
+  [0.0468012 s]  error
+
+Verifying Person.A1$Possession$notnull ...
+Linearising ... finished   [0.0156004 s]  
+Spouse.ssc(122,5): Error: the specified owner frame must be a supertype of the allocated type of the specified owner reference
+  [0.0312008 s]  error
+
+Verifying Person.A2$Possession$notnull ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0468012 s]  verified
+
+Verifying Person.A3$Possession$notnull ...
+Linearising ... finished   [0.0312008 s]  
+  [0.0624016 s]  verified
+
+Verifying Person.B0$Person$notnull ...
+Linearising ... finished   [0 s]  
+Spouse.ssc(138,5): Error: assigning an owner requires the subject to be un-owned
+  [0.0312008 s]  error
+
+Verifying Person.B1 ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0312008 s]  verified
+
+Verifying Person.B2 ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0624016 s]  verified
+
+Verifying Person..ctor ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0312008 s]  verified
+
+Verifying Person..cctor ...
+Linearising ... finished   [0 s]  
+  [0 s]  verified
+
+Verifying Possession..ctor ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0156004 s]  verified
+
+Spec# program verifier finished with 15 verified, 4 errors
+ 
+-------------------- List2 -------------------- 
+
+Running abstract interpretation...
+  [0.2028052 s]
+
+Verifying List.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.3744096 s]  
+Linearising ... finished   [0.0156004 s]  
+  [1.014026 s]  verified
+
+Verifying List..ctor ...
+Linearising ... finished   [0.0624016 s]  
+  [0.156004 s]  verified
+
+Verifying List..cctor ...
+Linearising ... finished   [0 s]  
+  [0 s]  verified
+
+Verifying Node.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.0312008 s]  
+  [0.0936024 s]  verified
+
+Verifying Node..ctor ...
+Linearising ... finished   [0.0156004 s]  
+  [0.0312008 s]  verified
+
+Verifying Node.Insert$System.Int32$System.Boolean ...
+Linearising ... finished   [0.0468012 s]  
+  [0.6084156 s]  verified
+
+Verifying Node..ctor$System.Int32$Node$Node$notnull ...
+Linearising ... finished   [0.1092028 s]  
+  [0.7644196 s]  verified
+
+Verifying Node..cctor ...
+Linearising ... finished   [0 s]  
+  [0 s]  verified
+
+Spec# program verifier finished with 8 verified, 0 errors

@@ -1,0 +1,33 @@
+BOOGIEROOT=..\..\CodePlex
+BOOGIEBINDIR = Binaries
+SPECSHARPROOT = c:\Program Files\Microsoft\Spec^#
+SPECSHARPBINDIR = bin
+
+all: 
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Mscorlib.Contracts.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.SpecSharp.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Contracts.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Framework.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Contracts.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.pdb"
+	copy /y "$(SPECSHARPROOT)\$(SPECSHARPBINDIR)\ssc.exe"

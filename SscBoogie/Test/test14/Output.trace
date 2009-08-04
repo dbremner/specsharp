@@ -1,0 +1,671 @@
+Start 
+ 
+-------------------- Core.dll -------------------- 
+
+Running abstract interpretation...
+  [0.6396082 s]
+
+Verifying Microsoft.Boogie.XmlSink.Boogie.ContractConsistencyCheck.get_IsOpen ...
+Linearising ... finished   [1.2948166 s]  
+Linearising ... finished   [0.0156002 s]  
+  [2.8236362 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.get_IsOpen ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink..ctor$System.String$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.4524058 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.Open ...
+Linearising ... finished   [0.234003 s]  
+Xml.ssc(36,9): Error: assigning the owner of this object may violate the modifies clause
+Xml.ssc(33,15): Related information:     (trace position)
+Xml.ssc(36,9): Error: illegal assignment to rep field, RHS may already have a different owner
+Xml.ssc(33,15): Related information:     (trace position)
+Xml.ssc(37,9): Error: Possible null dereference
+Xml.ssc(33,15): Related information:     (trace position)
+  [9.7033244 s]  errors
+
+Verifying Microsoft.Boogie.XmlSink.Close ...
+Linearising ... finished   [0.078001 s]  
+  [0.4836062 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteStartMethod$System.String$notnull$System.DateTime ...
+Linearising ... finished   [0.0936012 s]  
+  [0.9204118 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteEndMethod$System.String$notnull$System.DateTime$System.TimeSpan ...
+Linearising ... finished   [0.2028026 s]  
+  [2.262029 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteError$System.String$notnull$Microsoft.Boogie.IToken$notnull$Microsoft.Boogie.IToken$Microsoft.Boogie.BlockSeq ...
+Linearising ... finished   [0.468006 s]  
+  [4.524058 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteError$System.String$notnull$System.Compiler.Node$notnull$Microsoft.Boogie.BlockSeq ...
+Linearising ... finished   [0.3744048 s]  
+  [2.652034 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteTokenAttributes$Microsoft.Boogie.IToken ...
+Linearising ... finished   [0.2028026 s]  
+  [1.2948166 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteTokenAttributes$System.Compiler.Node$notnull ...
+Linearising ... finished   [0.1404018 s]  
+  [1.2168156 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteStartInference$System.String$notnull ...
+Linearising ... finished   [0.078001 s]  
+  [0.6084078 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteEndInference ...
+Linearising ... finished   [0.0156002 s]  
+  [0.3588046 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteContractParaAssignment$System.String$notnull$System.String ...
+Linearising ... finished   [0.1248016 s]  
+  [1.0452134 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteStartFile$System.String$notnull ...
+Linearising ... finished   [0.0624008 s]  
+  [0.6084078 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteEndFile ...
+Linearising ... finished   [0.0468006 s]  
+  [0.3588046 s]  verified
+
+Verifying Microsoft.Boogie.XmlSink.WriteFileFragment$System.String$notnull ...
+Linearising ... finished   [0.078001 s]  
+  [0.7176092 s]  verified
+
+Verifying Microsoft.Boogie.XmlFileScope..ctor$Microsoft.Boogie.XmlSink$System.String$notnull ...
+Linearising ... finished   [0.078001 s]  
+  [1.1856152 s]  verified
+
+Verifying Microsoft.Boogie.XmlFileScope.Dispose ...
+Linearising ... finished   [0.0156002 s]  
+  [0.1092014 s]  verified
+
+Spec# program verifier finished with 18 verified, 3 errors
+
+Running abstract interpretation...
+  [1.014013 s]
+
+Verifying Microsoft.Boogie.CommandLineOptions.AiFlags.Boogie.ContractConsistencyCheck.get_AnySet ...
+Linearising ... finished   [1.2636162 s]  
+Linearising ... finished   [0.0156002 s]  
+  [3.1356402 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.AiFlags.get_AnySet ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.AiFlags..ctor ...
+Linearising ... finished   [0.0468006 s]  
+  [0.5616072 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.HoudiniFlags..ctor ...
+Linearising ... finished   [0.0312004 s]  
+  [0.3588046 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.0312004 s]  
+  [0.1092014 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState..ctor$System.String.array$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.9828126 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.CheckBooleanFlag$System.String$notnull$System.Boolean.ptr$System.Boolean ...
+Linearising ... finished   [0.0936012 s]  
+  [0.702009 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.CheckBooleanFlag$System.String$notnull$System.Boolean.ptr ...
+Linearising ... finished   [0.0156002 s]  
+  [0.1092014 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.GetNumericArgument$System.Int32.ptr ...
+Linearising ... finished   [0.0936012 s]  
+  [1.3572174 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.GetNumericArgument$System.Int32.ptr$System.Int32 ...
+Linearising ... finished   [0.0624008 s]  
+  [1.2012154 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.GetNumericArgument$System.Double.ptr ...
+Linearising ... finished   [0.1092014 s]  
+  [1.248016 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.ConfirmArgumentCount$System.Int32 ...
+Linearising ... finished   [0.1248016 s]  
+  [2.7768356 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.CommandLineParseState.Error$System.String$notnull$System.String.array$notnull ...
+Linearising ... finished   [0.1248016 s]  
+  [1.0296132 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.set_InputFileExtension$System.String$notnull ...
+Linearising ... finished   [0.078001 s]  
+  [0.6396082 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.Boogie.ContractConsistencyCheck.get_ToolName ...
+Linearising ... finished   [0.0156002 s]  
+  [0.1248016 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.get_ToolName ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.Boogie.ContractConsistencyCheck.get_Version ...
+Linearising ... finished   [0 s]  
+  [0.1092014 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.get_Version ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0468006 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.ExpandFilename$System.String.ptr ...
+Linearising ... finished   [0.1872024 s]  
+  [1.1544148 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.2496032 s]  
+  [0.4992064 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.Boogie.ContractConsistencyCheck.get_NoConsistencyChecks ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.get_NoConsistencyChecks ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.set_NoConsistencyChecks$System.Boolean ...
+Linearising ... finished   [0 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.Boogie.ContractConsistencyCheck.get_XmlRefuted ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.get_XmlRefuted ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions..cctor ...
+Linearising ... finished   [0.078001 s]  
+  [0.3432044 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.SetProverOptions ...
+Linearising ... finished   [0.3588046 s]  
+  [260.4141386 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.UserWantsMethodLogging$System.String$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.5148066 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.UserWantsToBreak$System.String$notnull ...
+Linearising ... finished   [0.0156002 s]  
+  [1.170015 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.UserWantsToCheckRoutine$System.String$notnull ...
+Linearising ... finished   [0.1092014 s]  
+  [0.3744048 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.UserWantsToTranslateRoutine$System.Compiler.Method$notnull$System.String$notnull ...
+Linearising ... finished   [0.1092014 s]  
+  [0.5304068 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.UserWantsToTranslateRoutineInclude$System.Compiler.Method$notnull$System.String$notnull ...
+Linearising ... finished   [0.6864088 s]  
+  [12.2617572 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.GetSourceDocument$System.Compiler.Method$notnull ...
+Linearising ... finished   [0.624008 s]  
+  [2.1684278 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.GetSourceDocumentFromStatements$System.Compiler.StatementList ...
+Linearising ... finished   [0.1092014 s]  
+  [0.6552084 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.ParseNamedArgumentList$System.String ...
+Linearising ... finished   [0.1872024 s]  
+  [1.1856152 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.GetArgumentSeparatorIndex$System.String$notnull$System.Int32 ...
+Linearising ... finished   [0.0624008 s]  
+  [0.234003 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.AttributeUsage ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0936012 s]  verified
+
+Verifying Microsoft.Boogie.CommandLineOptions.Usage ...
+Linearising ... finished   [0.0156002 s]  
+  [0.156002 s]  verified
+
+Spec# program verifier finished with 38 verified, 0 errors
+ 
+-------------------- BytecodeTranslation.dll -------------------- 
+
+Running abstract interpretation...
+  [0.6396082 s]
+
+Verifying Microsoft.Boogie.FlowedValue.Type.SpecSharp.CheckInvariant$System.Boolean ...
+Linearising ... finished   [0.7644098 s]  
+Linearising ... finished   [0.0936012 s]  
+  [2.0904268 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type..ctor$Microsoft.Boogie.FlowedValue.Type.Tag ...
+Linearising ... finished   [0.0312004 s]  
+  [0.1872024 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type..ctor$Microsoft.Boogie.FlowedValue.Type$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.234003 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type..ctor$Microsoft.Boogie.FlowedValue.Type.Tag$System.Compiler.TypeNode$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.2496032 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type..ctor$Microsoft.Boogie.FlowedValue.Pointee$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.2496032 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type..ctor$System.Compiler.Parameter$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.2496032 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Bottom ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Zero ...
+Linearising ... finished   [0.0156002 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_One ...
+Linearising ... finished   [0.0156002 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Bool ...
+Linearising ... finished   [0.0312004 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_BitPattern ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Nat ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Enum$System.Compiler.TypeNode$notnull ...
+Linearising ... finished   [0.0156002 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Int ...
+Linearising ... finished   [0.0156002 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Real ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Ref ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Struct ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Top ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Array$Microsoft.Boogie.FlowedValue.Type$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.0936012 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.TypeToken$System.Compiler.TypeNode$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.TypeObject$System.Compiler.TypeNode$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.1092014 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.AddrOf$Microsoft.Boogie.FlowedValue.Pointee$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Arg$System.Compiler.Parameter$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_IsArray ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_IsArray ...
+Linearising ... finished   [0 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_IsEnum ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_IsEnum ...
+Linearising ... finished   [0 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_IsAddrOf ...
+Linearising ... finished   [0 s]  
+  [0.0468006 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_IsAddrOf ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_IsArg ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_IsArg ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_IsSingleton ...
+Linearising ... finished   [0 s]  
+  [0 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_IsSingleton ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_IsStruct ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_IsStruct ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_IsTypeToken ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_IsTypeToken ...
+Linearising ... finished   [0 s]  
+  [0.0312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.get_TypeTag ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_TypeTag ...
+Linearising ... finished   [0 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_ElementType ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0468006 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_EnumType ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0468006 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_TToken ...
+Linearising ... finished   [0 s]  
+  [0.0468006 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Pointee ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0624008 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_Parameter ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.get_PointeeType ...
+Linearising ... finished   [0.078001 s]  
+  [0.312004 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Boogie.ContractConsistencyCheck.ToString ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0468006 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.ToString ...
+Linearising ... finished   [0.7176092 s]  
+  [2.4336312 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.Join$Microsoft.Boogie.FlowedValue.Type$notnull$Microsoft.Boogie.FlowedValue.Type$notnull ...
+Linearising ... finished   [0.624008 s]  
+  [1.5756202 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type..cctor ...
+Linearising ... finished   [0 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.FlowedValue.Type.System.Object.Object.ToString ...
+Linearising ... finished   [0.0312004 s]  
+  [0.078001 s]  verified
+
+Spec# program verifier finished with 50 verified, 0 errors
+ 
+-------------------- DafnyPipeline.dll -------------------- 
+*** Error: '..\..\Binaries\DafnyPipeline.dll': File not found.
+ 
+-------------------- VCGeneration.dll -------------------- 
+
+Running abstract interpretation...
+  [0.1872024 s]
+
+Verifying Microsoft.Boogie.ProverException..ctor$System.String ...
+Linearising ... finished   [0.546007 s]  
+Linearising ... finished   [0.0312004 s]  
+  [1.5288196 s]  verified
+
+Verifying Microsoft.Boogie.UnexpectedProverOutputException..ctor$System.String ...
+Linearising ... finished   [0.0312004 s]  
+  [0.0624008 s]  verified
+
+Spec# program verifier finished with 2 verified, 0 errors
+ 
+
+Running abstract interpretation...
+  [0.5772074 s]
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.Boogie.ContractConsistencyCheck.get_NumFormulasChecked ...
+Linearising ... finished   [0.6084078 s]  
+Linearising ... finished   [0.0156002 s]  
+  [1.6848216 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.get_NumFormulasChecked ...
+Linearising ... finished   [0 s]  
+  [0 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.get_PeakVirtualMemorySize ...
+Linearising ... finished   [0.0468006 s]  
+  [0.2028026 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.Boogie.ContractConsistencyCheck.get_HasExited ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0156002 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.get_HasExited ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0468006 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess..ctor$System.Diagnostics.ProcessStartInfo$notnull$System.String$notnull ...
+Linearising ... finished   [0.2028026 s]  
+  [10.2649316 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.get_ParameterSettings ...
+Linearising ... finished   [0.0312004 s]  
+  [0.156002 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.Close ...
+Linearising ... finished   [0.0624008 s]  
+  [0.2652034 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.ReportWarning$System.String$notnull ...
+Linearising ... finished   [0.1248016 s]  
+  [0.5304068 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.AddAxioms$System.String$notnull ...
+Linearising ... finished   [0.078001 s]  
+  [0.4368056 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.Feed$System.String$notnull$System.Int32 ...
+Linearising ... finished   [0.0468006 s]  
+  [0.234003 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.PopAxioms ...
+Linearising ... finished   [0.0312004 s]  
+  [0.2028026 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.ToFlush ...
+Linearising ... finished   [0.0312004 s]  
+  [0.1404018 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.BeginCheck$System.String$notnull$System.String$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.1404018 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.ParseLabels$System.String$notnull ...
+Linearising ... finished   [0.234003 s]  
+  [4.1808536 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.Expect$System.Int32$System.String$notnull ...
+Linearising ... finished   [0.5928076 s]  
+  [4.4928576 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.FromReadChar ...
+Linearising ... finished   [0.0312004 s]  
+  [0.1872024 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.KillProver$System.Object ...
+Linearising ... finished   [0.0312004 s]  
+  [0.234003 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.FromReadChar$System.Int32 ...
+Linearising ... finished   [0.1092014 s]  
+  [0.78001 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.FromReadLine ...
+Linearising ... finished   [0.0312004 s]  
+  [0.2028026 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.FromStdErrorAll ...
+Linearising ... finished   [0.0312004 s]  
+  [0.2028026 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.ProverProcess.ToWriteLine$System.String$notnull ...
+Linearising ... finished   [0.0312004 s]  
+  [0.2028026 s]  verified
+
+Spec# program verifier finished with 22 verified, 0 errors
+ 
+
+Running abstract interpretation...
+  [0.5304068 s]
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess..ctor$System.String$notnull$System.Boolean ...
+Linearising ... finished   [0.5928076 s]  
+Linearising ... finished   [0.4056052 s]  
+  [11.0449416 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.OptionComments ...
+Linearising ... finished   [0.0156002 s]  
+  [0.0936012 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.EatPrompt ...
+Linearising ... finished   [0.1716022 s]  
+  [0.78001 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.AddAxioms$System.String$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.2184028 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.Feed$System.String$notnull$System.Int32 ...
+Linearising ... finished   [0.1092014 s]  
+  [0.4992064 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.PopAxioms ...
+Linearising ... finished   [0.0468006 s]  
+  [0.1872024 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.DoBeginCheck$System.String$notnull$System.String$notnull ...
+Linearising ... finished   [0.0468006 s]  
+  [0.2028026 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.CheckOutcome$Microsoft.Boogie.ProverInterface.ErrorHandler$notnull ...
+Linearising ... finished   [1.1232144 s]  
+  [10.0933294 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.ReadLabels$System.Int32 ...
+Linearising ... finished   [0.1716022 s]  
+  [1.8096232 s]  verified
+
+Verifying Microsoft.Boogie.Simplify.SimplifyProverProcess.ConsumeWarnings$System.Int32 ...
+Linearising ... finished   [0.2808036 s]  
+  [6.0216772 s]  verified
+
+Spec# program verifier finished with 10 verified, 0 errors
+ 
+
+Running abstract interpretation...
+  [0.6708086 s]
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.AddOption$System.Collections.Generic.List`1...optional...Microsoft.Contracts.NonNullType.Microsoft.Boogie.Z3.Z3ProverProcess.OptionValue$notnull$System.String$notnull$System.String$notnull ...
+Linearising ... finished   [0.6396082 s]  
+Linearising ... finished   [0.078001 s]  
+  [2.0124258 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.OptionComments ...
+Linearising ... finished   [0.390005 s]  
+  [4.0716522 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.get_ParameterSettings ...
+Linearising ... finished   [0.0312004 s]  
+  [0.1716022 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.OptionChar ...
+Linearising ... finished   [0.0468006 s]  
+  [0.156002 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.DoBeginCheck$System.String$notnull$System.String$notnull ...
+Linearising ... finished   [0.156002 s]  
+  [0.8112104 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.TimedFromReadChar ...
+Linearising ... finished   [0.1092014 s]  
+  [0.2652034 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.Trace$System.String$notnull ...
+Linearising ... finished   [0.0624008 s]  
+  [0.234003 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.CheckOutcome$Microsoft.Boogie.ProverInterface.ErrorHandler$notnull ...
+Linearising ... finished   [3.9156502 s]  
+  [227.528917 s]  verified
+
+Spec# program verifier finished with 8 verified, 0 errors
+
+Running abstract interpretation...
+  [0.312004 s]
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.ParseModel$Microsoft.Boogie.Z3.Z3ErrorModel.ptr ...
+Linearising ... finished   [0.6552084 s]  
+Linearising ... finished   [0.5148066 s]  
+  [8.9077142 s]  verified
+
+Verifying Microsoft.Boogie.Z3.Z3ProverProcess.ParseModelZidAndIdentifiers$System.Int32$System.String$notnull$System.Collections.Generic.Dictionary`2...optional...Microsoft.Contracts.NonNullType.System.String`~`System.Int32$notnull$System.Collections.Generic.List`1...System.Collections.Generic.List`1...optional...Microsoft.Contracts.NonNullType.System.String$notnull ...
+Linearising ... finished   [0.4992064 s]  
+  [5.538071 s]  verified
+
+Spec# program verifier finished with 2 verified, 0 errors
