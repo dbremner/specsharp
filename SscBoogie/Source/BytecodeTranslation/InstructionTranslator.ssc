@@ -716,7 +716,7 @@ namespace Microsoft.Boogie
       bool isAdditiveField;
       Cci.TypeNode baseType = field.DeclaringType.BaseType;
       if (baseType == null) {
-        assert field.DeclaringType == Cci.SystemTypes.Object;
+        assert field.DeclaringType.Equals(Cci.SystemTypes.Object);
         // if field is of type System.Object, we say the field is additive
         isAdditiveField = true;
       } else if (Sink.IsAdditive(field)) {
