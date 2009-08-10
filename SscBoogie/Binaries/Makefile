@@ -1,7 +1,5 @@
-BOOGIEROOT=..\..\CodePlex
+BOOGIEROOT=d:\TestBoogie
 BOOGIEBINDIR = Binaries
-SPECSHARPROOT = c:\Program Files\Microsoft\Spec^#
-SPECSHARPBINDIR = bin
 
 all: 
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.dll"
@@ -30,4 +28,4 @@ all:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.pdb"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.pdb"
-	copy /y "$(SPECSHARPROOT)\$(SPECSHARPBINDIR)\ssc.exe"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ssc.exe"
