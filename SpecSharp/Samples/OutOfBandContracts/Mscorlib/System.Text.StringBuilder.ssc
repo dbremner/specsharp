@@ -50,7 +50,7 @@ namespace System.Text
         [WriteConfined]
         public StringBuilder! Replace (Char oldChar, Char newChar);
 
-        [Pure][Reads(ReadsAttribute.Reads.Owned)]
+        [Pure]
         public bool Equals (StringBuilder sb);
 
         [WriteConfined]
@@ -209,26 +209,28 @@ namespace System.Text
 
         [WriteConfined]
         public StringBuilder! Append (Char[]! value, int startIndex, int charCount)
-            requires startIndex >= 0 otherwise ArgumentOutOfRangeException;
-            requires charCount >= 0 otherwise ArgumentOutOfRangeException;
-            requires charCount <= (value.Length - startIndex) otherwise ArgumentOutOfRangeException;
+            requires 0 <= startIndex otherwise ArgumentOutOfRangeException;
+            requires 0 <= charCount otherwise ArgumentOutOfRangeException;
+            requires charCount <= value.Length - startIndex otherwise ArgumentOutOfRangeException;
+            ensures result == this;
+            ensures Length == old(Length) + charCount;
 
         [WriteConfined]
         public StringBuilder! Append (Char value, int repeatCount)
-            requires repeatCount == 0 || repeatCount >= 0 otherwise ArgumentOutOfRangeException;
+            requires 0 <= repeatCount otherwise ArgumentOutOfRangeException;
 
-        [Pure][Reads(ReadsAttribute.Reads.Owned)]
+        [Pure]
         public string! ToString (int startIndex, int length);
             requires 0 <= startIndex otherwise ArgumentOutOfRangeException;
             requires 0 <= length otherwise ArgumentOutOfRangeException;
             requires startIndex + length <= Length otherwise ArgumentOutOfRangeException;
             ensures result.Length == length;
 
-        [Pure][Reads(ReadsAttribute.Reads.Owned)]
+        [Pure]
         public string! ToString ();
             ensures result.Length == this.Length;
 
-        [Pure][Reads(ReadsAttribute.Reads.Owned)]
+        [Pure]
         public int EnsureCapacity (int capacity)
             requires capacity >= 0 otherwise ArgumentOutOfRangeException;
 
