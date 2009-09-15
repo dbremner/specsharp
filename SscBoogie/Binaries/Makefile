@@ -1,5 +1,6 @@
-BOOGIEROOT=d:\TestBoogie
+BOOGIEROOT=c:\boogie
 BOOGIEBINDIR = Binaries
+REG_DIR=..\..\SpecSharp\Microsoft.SpecSharp\Registration
 
 all: 
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.dll"
@@ -29,3 +30,37 @@ all:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.pdb"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ssc.exe"
+
+register: 
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.pdb" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.dll" "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.pdb" "$(REG_DIR)"
+	copy /y Prelude.dll "$(REG_DIR)"
+	copy /y Prelude.pdb "$(REG_DIR)"
+	copy /y BytecodeTranslation.dll "$(REG_DIR)"
+	copy /y BytecodeTranslation.pdb "$(REG_DIR)"
+	copy /y DriverHelper.dll "$(REG_DIR)"
+	copy /y DriverHelper.pdb "$(REG_DIR)"
+	copy /y BoogiePlugin.dll "$(REG_DIR)"
+	copy /y BoogiePlugin.pdb "$(REG_DIR)"
+	copy /y PRELUDE.bpl "$(REG_DIR)"
+	copy /y FSharp.Core.dll "$(REG_DIR)"
+	copy /y FSharp.PowerPack.dll "$(REG_DIR)"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\TypedUnivBackPred2.sx" "$(REG_DIR)"
