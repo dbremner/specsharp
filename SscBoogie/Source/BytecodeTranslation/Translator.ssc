@@ -711,18 +711,21 @@ namespace Microsoft.Boogie
           // This is needed for loops in addition to the regular frame condition, because it is useful to know the
           // unchangedness of the owners of objects allocated by the method before the loop starts.
           
-          loopinv.Add(Sink.MakeComment(s, "default loop invariant: owner fields"));
-          
-          // If the owner of an object $o changes to [ow,OT], then check: either $o or ow is newly allocated or $o is a captured parameter
+          if (CommandLineOptions.Clo.LoopFrameConditions > 0)
           {
-            Bpl.Expr cond = sig.GenerateOwnerChangeCondition(loopEntryHeap);
-            Bpl.Cmd a;
-            if (CommandLineOptions.Clo.CheckingLevel < 1) {
-              a = Sink.Assume(cond);
-            } else {
-              a = Sink.Assert(cond, s, "In a loop, an owner is allowed to be changed only for captured parameters and objects allocated during the loop iteration");
+            loopinv.Add(Sink.MakeComment(s, "default loop invariant: owner fields"));
+            
+            // If the owner of an object $o changes to [ow,OT], then check: either $o or ow is newly allocated or $o is a captured parameter
+            {
+              Bpl.Expr cond = sig.GenerateOwnerChangeCondition(loopEntryHeap);
+              Bpl.Cmd a;
+              if (CommandLineOptions.Clo.CheckingLevel < 1) {
+                a = Sink.Assume(cond);
+              } else {
+                a = Sink.Assert(cond, s, "In a loop, an owner is allowed to be changed only for captured parameters and objects allocated during the loop iteration");
+              }
+              loopinv.Add(a);
             }
-            loopinv.Add(a);
           }
 
           this.defaultLoopInv = loopinv;

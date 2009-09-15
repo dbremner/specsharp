@@ -113,7 +113,7 @@ public sealed class Types {
   }
 
   static Types SomeValue()
-    ensures result.IsNew;  // BOGUS:  why don't we get a null warning here?
+    ensures result.IsNew;
   {
     return new Types();
   }

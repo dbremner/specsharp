@@ -10,15 +10,11 @@ FOR %%f in (InitialValuesGood.ssc InitialValuesBad.ssc
             WhileGood.ssc WhileBad.ssc DoWhileGood.ssc
             DoWhileBad.ssc Ensures.ssc PureCall.ssc
             StaticFields.ssc Cast.ssc BoxedInt.ssc
-            DefinedExpressions.ssc) do (
+            DefinedExpressions.ssc Finally.ssc) do (
   echo.
   echo -------------------- %%f --------------------
   "%SSCEXE%" /target:library /debug /verify %SSC_ARGS% %%f
 )
-
-echo.
-echo -------------------- Finally.ssc --------------------
-"%SSCEXE%" /target:library /debug Finally.ssc /verify %SSC_ARGS% /verifyopt:/modifiesOnLoop:0 /verifyopt:/level:1 /verifyopt:/modifiesDefault:4
 
 echo.
 echo -------------------- Search.ssc --------------------
