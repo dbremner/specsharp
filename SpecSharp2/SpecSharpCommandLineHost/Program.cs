@@ -49,8 +49,9 @@ namespace Microsoft.Cci.SpecSharp {
 
       var sourceLocationProvider = assem.Compilation.SourceLocationProvider;
       //var localScopeProvider = assem.Compilation.LocalScopeProvider;
-      var pdbWriter = new PdbWriter(Path.ChangeExtension(assem.Location, "pdb"), sourceLocationProvider);
-      PeWriter.WritePeToStream(assem, hostEnvironment, File.Create(Path.ChangeExtension(assem.Location, "exe")), sourceLocationProvider, null, pdbWriter);
+      using (var pdbWriter = new PdbWriter(Path.ChangeExtension(assem.Location, "pdb"), sourceLocationProvider)) {
+        PeWriter.WritePeToStream(assem, hostEnvironment, File.Create(Path.ChangeExtension(assem.Location, "exe")), sourceLocationProvider, null, pdbWriter);
+      }
     }
 
     private static List<IAssemblyReference> GetAssemblyReferences(SpecSharpOptions commandLineOptions, HostEnvironment hostEnvironment) {
