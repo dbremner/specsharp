@@ -1,4 +1,4 @@
-﻿// *********************************************
+// *********************************************
 // *                                          *
 // *   Boogie 2 prelude for MSIL translator   *
 // *                                          *
@@ -904,5 +904,151 @@ axiom (∀ h: HeapType, a: ref, b: ref •
  ⇒
  #System.String.IsInterned$System.String$notnull(h, a) == 
  #System.String.IsInterned$System.String$notnull(h, b));
+
+// ---------------------------------------------------------------
+// -- Axiomatization of sequences --------------------------------
+// ---------------------------------------------------------------
+
+#if UseSequences
+function Ref2Seq(ref) returns (Seq int);
+
+axiom Ref2Seq(##RR.Sequence.Empty()) == Seq#Empty();
+
+axiom (forall x: int ::
+  { ##RR.Sequence.Singleton$System.Int32(x) }
+  Ref2Seq(##RR.Sequence.Singleton$System.Int32(x)) ==
+  Seq#Singleton(x));
+
+axiom (forall s: ref ::
+  { ##RR.Sequence.get_Length(s) }
+  ##RR.Sequence.get_Length(s) ==
+  Seq#Length(Ref2Seq(s)));
+
+axiom (forall s: ref, i: int ::
+  { ##RR.Sequence.get_Item$System.Int32(s, i) }
+  ##RR.Sequence.get_Item$System.Int32(s, i) ==
+  Seq#Index(Ref2Seq(s), i));
+
+axiom (forall s: ref, x: int ::
+  { ##RR.Sequence.Contains$System.Int32(s, x) }
+  ##RR.Sequence.Contains$System.Int32(s, x) ==
+  Seq#Contains(Ref2Seq(s), x));
+
+axiom (forall s: ref, from: int, to: int ::
+  { ##RR.Sequence.SubSequence$System.Int32$System.Int32(s, from, to) }
+  Ref2Seq(##RR.Sequence.SubSequence$System.Int32$System.Int32(s, from, to)) ==
+  Seq#Take(Seq#Drop(Ref2Seq(s), from), to-from));
+
+axiom (forall s: ref, howMany: int ::
+  { ##RR.Sequence.Take$System.Int32(s, howMany) }
+  Ref2Seq(##RR.Sequence.Take$System.Int32(s, howMany)) ==
+  Seq#Take(Ref2Seq(s), howMany));
+
+axiom (forall s: ref, howMany: int ::
+  { ##RR.Sequence.Drop$System.Int32(s, howMany) }
+  Ref2Seq(##RR.Sequence.Drop$System.Int32(s, howMany)) ==
+  Seq#Drop(Ref2Seq(s), howMany));
+
+axiom (forall s: ref, t: ref ::
+  { ##RR.Sequence.Concat$RR.Sequence$notnull(s, t) }
+  Ref2Seq(##RR.Sequence.Concat$RR.Sequence$notnull(s, t)) ==
+  Seq#Append(Ref2Seq(s), Ref2Seq(t)));
+
+axiom (forall s: ref, t: ref ::
+  { ##RR.Sequence.op_Equality$RR.Sequence$notnull$RR.Sequence$notnull(s, t) }
+  ##RR.Sequence.op_Equality$RR.Sequence$notnull$RR.Sequence$notnull(s, t) ==
+  Seq#Equal(Ref2Seq(s), Ref2Seq(t)));
+
+
+type Seq T;
+
+function Seq#Length<T>(Seq T) returns (int);
+axiom (forall<T> s: Seq T :: { Seq#Length(s) } 0 <= Seq#Length(s));
+
+function Seq#Empty<T>() returns (Seq T);
+axiom (forall<T> :: Seq#Length(Seq#Empty(): Seq T) == 0);
+axiom (forall<T> s: Seq T :: { Seq#Length(s) } Seq#Length(s) == 0 ==> s == Seq#Empty());
+
+function Seq#Singleton<T>(T) returns (Seq T);
+axiom (forall<T> t: T :: { Seq#Length(Seq#Singleton(t)) } Seq#Length(Seq#Singleton(t)) == 1);
+
+function Seq#Build<T>(s: Seq T, index: int, val: T, newLength: int) returns (Seq T);
+axiom (forall<T> s: Seq T, i: int, v: T, len: int :: { Seq#Length(Seq#Build(s,i,v,len)) }
+  0 <= len ==> Seq#Length(Seq#Build(s,i,v,len)) == len);
+
+function Seq#Append<T>(Seq T, Seq T) returns (Seq T);
+axiom (forall<T> s0: Seq T, s1: Seq T :: { Seq#Length(Seq#Append(s0,s1)) }
+  Seq#Length(Seq#Append(s0,s1)) == Seq#Length(s0) + Seq#Length(s1));
+
+function Seq#Index<T>(Seq T, int) returns (T);
+axiom (forall<T> t: T :: { Seq#Index(Seq#Singleton(t), 0) } Seq#Index(Seq#Singleton(t), 0) == t);
+axiom (forall<T> s0: Seq T, s1: Seq T, n: int :: { Seq#Index(Seq#Append(s0,s1), n) }
+  (n < Seq#Length(s0) ==> Seq#Index(Seq#Append(s0,s1), n) == Seq#Index(s0, n)) &&
+  (Seq#Length(s0) <= n ==> Seq#Index(Seq#Append(s0,s1), n) == Seq#Index(s1, n - Seq#Length(s0))));
+axiom (forall<T> s: Seq T, i: int, v: T, len: int, n: int :: { Seq#Index(Seq#Build(s,i,v,len),n) }
+  0 <= n && n < len ==>
+    (i == n ==> Seq#Index(Seq#Build(s,i,v,len),n) == v) &&
+    (i != n ==> Seq#Index(Seq#Build(s,i,v,len),n) == Seq#Index(s,n)));
+
+function Seq#Contains<T>(Seq T, T) returns (bool);
+axiom (forall<T> s: Seq T, x: T :: { Seq#Contains(s,x) }
+  Seq#Contains(s,x) <==>
+    (exists i: int :: { Seq#Index(s,i) } 0 <= i && i < Seq#Length(s) && Seq#Index(s,i) == x));
+axiom (forall x: ref ::
+  { Seq#Contains(Seq#Empty(), x) }
+  !Seq#Contains(Seq#Empty(), x));
+axiom (forall<T> s0: Seq T, s1: Seq T, x: T ::
+  { Seq#Contains(Seq#Append(s0, s1), x) }
+  Seq#Contains(Seq#Append(s0, s1), x) <==>
+    Seq#Contains(s0, x) || Seq#Contains(s1, x));
+axiom (forall<T> s: Seq T, i: int, v: T, len: int, x: T ::
+  { Seq#Contains(Seq#Build(s, i, v, len), x) }
+  Seq#Contains(Seq#Build(s, i, v, len), x) <==>
+    (0 <= i && i < len && x == v)  ||  
+    (exists j: int :: { Seq#Index(s,j) } 0 <= j && j < Seq#Length(s) && j < len && j!=i && Seq#Index(s,j) == x));
+axiom (forall<T> s: Seq T, n: int, x: T ::
+  { Seq#Contains(Seq#Take(s, n), x) }
+  Seq#Contains(Seq#Take(s, n), x) <==>
+    (exists i: int :: { Seq#Index(s, i) }
+      0 <= i && i < n && i < Seq#Length(s) && Seq#Index(s, i) == x));
+axiom (forall<T> s: Seq T, n: int, x: T ::
+  { Seq#Contains(Seq#Drop(s, n), x) }
+  Seq#Contains(Seq#Drop(s, n), x) <==>
+    (exists i: int :: { Seq#Index(s, i) }
+      0 <= n && n <= i && i < Seq#Length(s) && Seq#Index(s, i) == x));
+
+function Seq#Equal<T>(Seq T, Seq T) returns (bool);
+axiom (forall<T> s0: Seq T, s1: Seq T :: { Seq#Equal(s0,s1) }
+  Seq#Equal(s0,s1) <==>
+    Seq#Length(s0) == Seq#Length(s1) &&
+    (forall j: int :: { Seq#Index(s0,j) } { Seq#Index(s1,j) }
+        0 <= j && j < Seq#Length(s0) ==> Seq#Index(s0,j) == Seq#Index(s1,j)));
+axiom(forall<T> a: Seq T, b: Seq T :: { Seq#Equal(a,b) }  // extensionality axiom for sequences
+  Seq#Equal(a,b) ==> a == b);
+
+function Seq#SameUntil<T>(Seq T, Seq T, int) returns (bool);
+axiom (forall<T> s0: Seq T, s1: Seq T, n: int :: { Seq#SameUntil(s0,s1,n) }
+  Seq#SameUntil(s0,s1,n) <==>
+    (forall j: int :: { Seq#Index(s0,j) } { Seq#Index(s1,j) }
+        0 <= j && j < n ==> Seq#Index(s0,j) == Seq#Index(s1,j)));
+
+function Seq#Take<T>(Seq T, howMany: int) returns (Seq T);
+axiom (forall<T> s: Seq T, n: int :: { Seq#Length(Seq#Take(s,n)) }
+  0 <= n ==>
+    (n <= Seq#Length(s) ==> Seq#Length(Seq#Take(s,n)) == n) &&
+    (Seq#Length(s) < n ==> Seq#Length(Seq#Take(s,n)) == Seq#Length(s)));
+axiom (forall<T> s: Seq T, n: int, j: int :: { Seq#Index(Seq#Take(s,n), j) }
+  0 <= j && j < n && j < Seq#Length(s) ==>
+    Seq#Index(Seq#Take(s,n), j) == Seq#Index(s, j));
+
+function Seq#Drop<T>(Seq T, howMany: int) returns (Seq T);
+axiom (forall<T> s: Seq T, n: int :: { Seq#Length(Seq#Drop(s,n)) }
+  0 <= n ==>
+    (n <= Seq#Length(s) ==> Seq#Length(Seq#Drop(s,n)) == Seq#Length(s) - n) &&
+    (Seq#Length(s) < n ==> Seq#Length(Seq#Drop(s,n)) == 0));
+axiom (forall<T> s: Seq T, n: int, j: int :: { Seq#Index(Seq#Drop(s,n), j) }
+  0 <= n && 0 <= j && j < Seq#Length(s)-n ==>
+    Seq#Index(Seq#Drop(s,n), j) == Seq#Index(s, j+n));
+#endif
 
 // ************** END PRELUDE **************
