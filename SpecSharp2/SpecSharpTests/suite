@@ -5227,6 +5227,7 @@ class Foo {
   int e;
 }
 `
+(2,22)-(2,25): error: The name 'foo' does not exist in the current context.
 `
 class Foo { 
   foo::A<a.list<blah,g::toto>.foo,bar,baz,int>.B.List<System.Int32> field;
@@ -5237,6 +5238,7 @@ class Foo {
   public void Foo(a::foo a, int b) { } 
 }
 `
+(2,19)-(2,25): error: Alias 'a' not found.
 `
 using foo = A.B.C; 
 using bar = A<int>.B.Foo<f>; 

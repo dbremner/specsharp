@@ -7,31 +7,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Metadata", "Metadata", "{EB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ast", "Ast", "{BEDD0E63-6EFD-4FF6-B0F9-D155D8DC5205}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstsProjectedAsCodeModel", ".\cci\Sources\AstsProjectedAsCodeModel\AstsProjectedAsCodeModel.csproj", "{15FF2982-EBD1-45DC-8FDF-4D901236E3D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstsProjectedAsCodeModel", "cci\Sources\AstsProjectedAsCodeModel\AstsProjectedAsCodeModel.csproj", "{15FF2982-EBD1-45DC-8FDF-4D901236E3D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeModel", ".\cci\Sources\CodeModel\CodeModel.csproj", "{035FEA7F-0D36-4AE4-B694-EC45191B9AF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeModel", "cci\Sources\CodeModel\CodeModel.csproj", "{035FEA7F-0D36-4AE4-B694-EC45191B9AF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeModelNormalizer", ".\cci\Sources\CodeModelNormalizer\CodeModelNormalizer.csproj", "{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeModelToIL", "cci\Sources\CodeModelToIL\CodeModelToIL.csproj", "{CEB76EA1-A168-49B0-A410-2C4195FEE86F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeModelToIL", ".\cci\Sources\CodeModelToIL\CodeModelToIL.csproj", "{CEB76EA1-A168-49B0-A410-2C4195FEE86F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataHelper", "cci\Metadata\Sources\MetadataHelper\MetadataHelper.csproj", "{4A34A3C5-6176-49D7-A4C5-B2B671247F8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataHelper", ".\cci\Metadata\Sources\MetadataHelper\MetadataHelper.csproj", "{4A34A3C5-6176-49D7-A4C5-B2B671247F8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataModel", "cci\Metadata\Sources\MetadataModel\MetadataModel.csproj", "{33CAB640-0D03-43DF-81BD-22CDC6C0A597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataModel", ".\cci\Metadata\Sources\MetadataModel\MetadataModel.csproj", "{33CAB640-0D03-43DF-81BD-22CDC6C0A597}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MutableMetadataModel", "cci\Metadata\Sources\MutableMetadataModel\MutableMetadataModel.csproj", "{319E151C-8F33-49E7-81C9-30F02F9BA90A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MutableMetadataModel", ".\cci\Metadata\Sources\MutableMetadataModel\MutableMetadataModel.csproj", "{319E151C-8F33-49E7-81C9-30F02F9BA90A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MutableCodeModel", "cci\Sources\MutableCodeModel\MutableCodeModel.csproj", "{319E150C-8F33-49E7-81CA-30F02F9BA90A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MutableCodeModel", ".\cci\Sources\MutableCodeModel\MutableCodeModel.csproj", "{319E150C-8F33-49E7-81CA-30F02F9BA90A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceModel", "cci\Metadata\Sources\SourceModel\SourceModel.csproj", "{4B0054FD-124A-4037-9965-BDB55E6BF389}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceModel", ".\cci\Metadata\Sources\SourceModel\SourceModel.csproj", "{4B0054FD-124A-4037-9965-BDB55E6BF389}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILGenerator", "cci\Metadata\Sources\ILGenerator\ILGenerator.csproj", "{08156C78-403A-4112-AD81-8646AC51CD2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILGenerator", ".\cci\Metadata\Sources\ILGenerator\ILGenerator.csproj", "{08156C78-403A-4112-AD81-8646AC51CD2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeReader", "cci\Metadata\Sources\PeReader\PeReader.csproj", "{34B9A0CE-DF18-4CBC-8F7A-90C2B74338D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeReader", ".\cci\Metadata\Sources\PeReader\PeReader.csproj", "{34B9A0CE-DF18-4CBC-8F7A-90C2B74338D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeWriter", "cci\Metadata\Sources\PeWriter\PeWriter.csproj", "{304A8B0B-851B-4AA6-A17D-5F87F39C5E5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeWriter", ".\cci\Metadata\Sources\PeWriter\PeWriter.csproj", "{304A8B0B-851B-4AA6-A17D-5F87F39C5E5C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdbWriter", ".\cci\Metadata\Sources\PdbWriter\PdbWriter.csproj", "{6D83F687-ABB5-40B3-915E-CA53DA0EB7F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdbWriter", "cci\Metadata\Sources\PdbWriter\PdbWriter.csproj", "{6D83F687-ABB5-40B3-915E-CA53DA0EB7F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecSharp", "SpecSharp\SpecSharp.csproj", "{B855D039-8A27-419D-9A81-86FF93227E30}"
 EndProject
@@ -63,14 +61,6 @@ Global
 		{035FEA7F-0D36-4AE4-B694-EC45191B9AF2}.NightlyRelease|Any CPU.Build.0 = Release|Any CPU
 		{035FEA7F-0D36-4AE4-B694-EC45191B9AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{035FEA7F-0D36-4AE4-B694-EC45191B9AF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.NightlyDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.NightlyDebug|Any CPU.Build.0 = Debug|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.NightlyRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.NightlyRelease|Any CPU.Build.0 = Release|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CEB76EA1-A168-49B0-A410-2C4195FEE86F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CEB76EA1-A168-49B0-A410-2C4195FEE86F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEB76EA1-A168-49B0-A410-2C4195FEE86F}.NightlyDebug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -192,7 +182,6 @@ Global
 		{6D83F687-ABB5-40B3-915E-CA53DA0EB7F3} = {EB228A9D-76D8-4B9A-AA71-24F092FAAD7C}
 		{15FF2982-EBD1-45DC-8FDF-4D901236E3D9} = {BEDD0E63-6EFD-4FF6-B0F9-D155D8DC5205}
 		{035FEA7F-0D36-4AE4-B694-EC45191B9AF2} = {BEDD0E63-6EFD-4FF6-B0F9-D155D8DC5205}
-		{B98C89CF-BF3E-405C-88DE-D60AE4AADA15} = {BEDD0E63-6EFD-4FF6-B0F9-D155D8DC5205}
 		{CEB76EA1-A168-49B0-A410-2C4195FEE86F} = {BEDD0E63-6EFD-4FF6-B0F9-D155D8DC5205}
 		{319E150C-8F33-49E7-81CA-30F02F9BA90A} = {BEDD0E63-6EFD-4FF6-B0F9-D155D8DC5205}
 	EndGlobalSection
