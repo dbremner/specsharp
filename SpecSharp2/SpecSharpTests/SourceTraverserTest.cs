@@ -35,7 +35,8 @@ namespace SpecSharpTests
             StringBuilder testOuput = new StringBuilder();
             Console.SetOut(new StringWriter(testOuput));
 
-            File.Move("system.more", "system.exe");
+            if (!File.Exists("system.exe"))
+              File.Move("system.more", "system.exe");
             Process.Start("system").WaitForExit();
             var compiler = new MSBuildCompiler();
             var assembly = compiler.CompileProject(@"System\System.More.csproj");
