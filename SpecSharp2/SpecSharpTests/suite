@@ -5674,3 +5674,817 @@ public class Test
 `
 (25,24)-(25,25): error: ) expected.
 `
+
+// This tests accessibilty in derived classes
+// Also access to Array types.
+
+namespace Accessibility
+{
+    public class Base
+    {
+        public static char[] chararray = new char[3];
+        public float foo;
+        public int Add(int i) { return i; }
+    }
+
+    public class Derived : Base
+    {
+        public float bar;
+        public int Add(int i, int j) { return i + j; }
+
+        public void Lookup()
+        {
+            Derived Ref = new MoreDerived();
+            int r = Ref.Add(7, 0);
+        }
+    }
+
+    public sealed class MoreDerived : Derived
+    {
+        public float baz;
+        public int Add(int i, int j, int k) { return i + j + k; }
+
+        public int Tester() { return this.Add(1) + Add(2, 3) + Add(3, 4, 5); }
+    }
+
+    public static class Program
+    {
+        public static void Main()
+        {
+            int length = Base.chararray.Length;
+            MoreDerived Obj = new MoreDerived();
+            Obj.foo = Obj.Add(1) + Obj.Add(2, 3) + Obj.Add(4, 5, 6);
+            float sum = Obj.foo + Obj.bar + Obj.baz;
+            System.Console.WriteLine(sum + length);
+        }
+    }
+}
+
+`
+24
+`
+
+// This tests accessibilty in derived classes
+// Checks binding of candidate methods from multiple classes.
+
+using Sys = System;
+using Con = System.Console;
+
+namespace Accessibility
+{
+    public class Base
+    {
+        public int Add(int i) { return i; }
+    }
+
+    public class Derived : Base
+    {
+        public int Add(int i, int j) { return i + j; }
+    }
+
+    public sealed class MoreDerived : Derived
+    {
+        public int Add(int i, int j, int k) { return i + j + k; }
+    }
+
+    public static class Program
+    {
+        public static void Main()
+        {
+            MoreDerived Obj = new MoreDerived();
+            int foo = Obj.Add(1) + Obj.Add(2, 3) + Obj.Add(4, 5, 6);
+            Con.WriteLine("Good-bye");
+            Sys::Console.WriteLine();
+        }
+    }
+}
+`
+Good-bye
+
+`
+
+// This tests assignment compatability
+// Some cases that rely on value compatibility
+
+namespace Assignment
+{
+    public class Program
+    {
+        public const int iVal = 25;
+        public const long lVal = iVal + 1;
+
+        public static void Main()
+        {
+            ulong u = lVal;
+            byte b = iVal;
+            short s = 1;
+        }
+    }
+}
+`
+`
+
+// This tests assignment compatability
+// Some tricky cases that rely on special rules in the spec #7.16.2, second bullet
+
+namespace Assignment
+{
+    public class Program
+    {
+        public enum ShortEnum : byte { one = 1, two = 2, three = 4 }
+
+        public static ushort one, two;
+        public static ShortEnum eOne, eTwo;
+
+        public static void Main()
+        {
+            one |= two; // Virtual RHS "one | two" is converted back to ushort.
+            eOne |= eTwo; // OK
+        }
+    }
+}
+`
+`
+
+namespace ConstructedType
+{
+    public class Generic<T>
+    {
+        public T[] tArr;
+        public Generic(int count)
+        {
+            tArr = new T[count];
+        }
+
+        public Generic(int count, T t)
+        {
+            tArr = new T[count];
+            for (int i = 0; i < count; i++)
+                tArr[i] = t;
+        }
+
+        public Generic(int count, params T[] args)
+        {
+            tArr = new T[count];
+            for (int i = 0; i < count; i++)
+                tArr[i] = args[i];
+        }
+    }
+
+    public class Program
+    {
+        public static void Main()
+        {
+            Generic<string> sObj = new Generic<string>(2, "blank");
+            Generic<int> iObj = new Generic<int>(2);
+            iObj = new Generic<int>(2, 3, 4);
+        }
+    }
+}
+`
+`
+
+namespace ConstructedType
+{
+    public class Generic<T>
+    {
+        private T[] tArr;
+
+        public T[] Copy(Generic<T> other)
+        {
+            return other.tArr;
+        }
+
+        public Generic(int count, T value)
+        {
+            tArr = new T[count];
+            for (int i = 0; i < count; i++)
+                tArr[i] = value;
+        }
+    }
+
+    public class Program
+    {
+        public static void Main()
+        {
+        }
+    }
+}
+`
+`
+
+using System.Collections.Generic;
+
+namespace ConstructedType
+{
+    public class Table<TKey, TValue>
+    {
+        private Dictionary<TKey, TValue> table;
+
+        public Dictionary<TValue, TKey> Inverse()
+        {
+            Dictionary<TValue, TKey> result = new Dictionary<TValue, TKey>();
+            foreach (KeyValuePair<TKey, TValue> pair in table)
+                result.Add(pair.Value, pair.Key);
+            return result;
+        }
+
+        public Table()
+        {
+            table = new Dictionary<TKey, TValue>();
+        }
+
+        public void Add(TKey key, TValue value) { table.Add(key, value); }
+    }
+
+    public class Program
+    {
+        public static void Main()
+        {
+        }
+    }
+}
+`
+`
+
+using System;
+
+namespace EnumTest
+{
+    public enum Bar : int { one, two, three, four }
+
+    public static class Program
+    {
+        enum Foo : byte { first, ninth = 10, tenth, next, repeat = first }
+
+        public static void Main()
+        {
+            Foo fooval = (Foo)10.3D;     // numeric to enum  -- should be Foo 10
+            Console.WriteLine(fooval);
+
+            int intval = (int)Foo.next;  // enum to numeric  -- should be int 12
+            float fltval = (float)25;    // numeric to numeric -- should be float 25.0
+            Bar barval = (Bar)Foo.tenth; // enum to enum -- should be Bar 11
+
+            Foo fooval2 = checked((Foo)266.0D);   // numeric to enum  -- should be Foo 266 ... ie an error
+            Console.WriteLine(fooval);
+            bool result = fooval == fooval2;
+
+            unchecked
+            {
+                intval = (int)Foo.tenth; // enum to numeric  -- should be int 11
+                fltval = (float)25;      // numeric to numeric -- should be float 25.0
+                barval = (Bar)Foo.tenth; // enum to enum -- should be Bar 11
+                fooval = (Foo)10.3E2D;   // numeric to enum  -- should be Foo 1030 ... ie an error
+            }
+        }
+    }
+}
+`
+(21,40)-(21,46): error: Constant value '266' cannot be converted to a 'EnumTest.Program.Foo'.
+Value was either too large or too small for an unsigned byte.
+`
+
+using System;
+
+namespace EnumTest
+{
+    public enum Bar : int { one, two, three, four }
+
+    public static class Program
+    {
+        enum Foo : byte { first, ninth = 10, tenth, next, repeat = first }
+
+        static Foo f2;
+        static Bar b2;
+
+        public static void Main()
+        {
+            EnumTest.Program.Foo f3 = Foo.first;
+            Bar b1 = Bar.one;
+            Foo f1 = Foo.first;
+            if (b1 == b2) { }
+            if (f1 == f2) { }
+        }
+    }
+}
+`
+`
+
+// This tests assignment compatability
+
+using System;
+
+namespace FieldInit
+{
+    public class Program
+    {
+        public static int statF1 = DateTime.Now.Day;
+        public int instF1 = DateTime.Now.Month;
+        public int instF2 = statF1 + 1;
+
+        public static void Main()
+        {
+        }
+    }
+}
+`
+` 
+
+namespace Indexer
+{
+    public class NonGeneric
+    {
+        private System.Collections.Generic.Dictionary<string, int> itable
+            = new System.Collections.Generic.Dictionary<string, int>();
+
+        public int this[string name]
+        {
+            get { return itable[name]; }
+            set { itable[name] = value; }
+        }
+    }
+
+    public class Generic<T>
+    {
+        private System.Collections.Generic.Dictionary<string, T> ttable
+            = new System.Collections.Generic.Dictionary<string, T>();
+
+        public T this[string name] 
+        {
+            get { return ttable[name]; }
+            set { ttable[name] = value; }
+        }
+    }
+    
+    public class Program
+    {
+        public static void Main() { }
+    }
+}
+`
+`
+
+namespace Indexer2
+{
+    public class Base
+    {
+        public virtual int this[int index]
+        {
+            get { return index * 2; }
+            set { }
+        }
+    }
+
+    public class Derived : Base
+    {
+        public override int this[int index] // Ok
+        {
+            get { return index * 3;  }
+            set { }
+        }
+
+        public int this[string index] // Ok
+        {
+            get { return index.GetHashCode(); }
+        }
+    }
+
+    public sealed class MoreDerived : Derived
+    {
+        public override int this[int index] // Ok
+        {
+            get { return base[index] * 4; } // Non-virtual call to 
+            set { }                         // Indexer.Derived::get_Item(index)
+        }
+    }
+
+
+    public static class Program
+    {
+        public static void Main()
+        {
+            MoreDerived myRef = new MoreDerived();
+            int val = myRef[42]; // virtual call to Indexer.Base::get_Item(0);
+            int hsh = myRef["blah"];
+            myRef[0] = 42;
+        }
+    }
+}
+`
+`
+
+namespace Invoker
+{
+    public static class Program
+    {
+        public static void Main()
+        {
+            Dummy(new string[] { "foo", "bar" });
+        }
+
+        public static void Dummy(string[] args)
+        {
+            VarArgMethod(42, 17, args); // Covariant array assignment
+            VarArgMethod(42, 17, "blah", "blah");  // Compiler constructs object array
+        }
+
+        public static void VarArgMethod(int a, int b, params object[] args)
+        {
+            foreach (object obj in args) { System.Console.WriteLine(obj.ToString()); }
+        }
+    }
+}
+`
+foo
+bar
+blah
+blah
+`
+
+namespace Mutability
+{
+    public class Foo
+    {
+        readonly int roInt;
+
+        public Foo(int init)
+        {
+            roInt = init;
+        }
+
+        public Foo(float init)
+        {
+            Twice((int)init, out this.roInt);
+        }
+
+        public static void Twice(int inPar, out int outPar) { outPar = 2 * inPar; }
+    }
+
+    public class Program
+    {
+        public static void Main() { }
+    }
+}
+`
+`
+
+// Tests accessibility of nested classes
+
+public class Outer
+{
+    static PublicInner pi = new PublicInner();
+
+    public class PublicInner
+    {
+        public void Blah() { }
+    }
+
+    class PrivateInner
+    {
+        public void Blah(int i) { }
+        void Blah(PrivateInner a) { }
+        public int pubFld;
+        private int priFld;
+    }
+
+    public static void Bzz() { }
+
+    public static void Main()
+    {
+        PublicInner pub;
+        PrivateInner pri;
+        pub = pi;
+        pri = new PrivateInner();
+        Bzz();
+        pub.Blah();
+        pri.Blah(42);   // OK
+        // pri.Blah();     // Error: inaccessible
+        // pri.priFld = 0; // Error: inaccessible
+        pri.pubFld = 0; // OK
+    }
+}
+`
+`
+
+// Tests accessibility IN nested classes
+
+namespace MyNamespace
+{
+    public class Outer
+    {
+        static Outer singleton = new Outer(); // Initialize outer first
+        static PublicInner pi = new PublicInner();
+
+        public int pub;
+        private int pri;
+
+        public class PublicInner
+        {
+            private int ppi;
+
+            public void Blah() { }
+
+            public PublicInner()
+            {
+                ppi = singleton.pub + singleton.pri;
+            }
+        }
+
+        class PrivateInner
+        {
+            public void Blah(int i) { }
+            void Blah(PrivateInner a) { }
+            public int pubFld;
+            private int priFld;
+
+            internal PrivateInner()
+            {
+                pubFld = singleton.pub + singleton.pri;
+            }
+        }
+
+        public static void Bzz() { }
+
+        public static void Main()
+        {
+        }
+    }
+}
+`
+`
+
+// Tests ImplicitReferenceCompatability
+
+namespace MyNamespace
+{
+    public class Base
+    {
+    }
+
+    public class Derived : Base
+    {
+    }
+
+    public class MoreDerived : Derived
+    {
+    }
+
+    public class Program
+    {
+        static Base[] bArray;
+        static Derived[] dArray;
+        static MoreDerived mArray;
+
+        public static void Main()
+        {
+            bArray = new Base[4]; 
+            bArray = new Derived[4];
+            bArray = new MoreDerived[4];
+        }
+    }
+}
+`
+`
+
+
+// Tests ImplicitReferenceCompatability
+
+namespace MyNamespace
+{
+    public class Base
+    {
+    }
+
+    public class Derived : Base
+    {
+    }
+
+    public class MoreDerived : Derived
+    {
+    }
+
+    public class Program
+    {
+        static Base[] bArray;
+        static Derived[] dArray;
+        static MoreDerived mArray;
+
+        public static void Main()
+        {
+            dArray = new Base[4]; // Error:
+            dArray = new Derived[4]; // OK
+            dArray = new MoreDerived[4]; // OK
+        }
+    }
+}
+`
+(27,22)-(27,34): error: Cannot implicitly convert type 'MyNamespace.Base[]' to 'MyNamespace.Derived[]'. An explicit conversion exists (are you missing a cast?)
+`
+
+// Tests ImplicitReferenceCompatability
+
+namespace MyNamespace
+{
+    public class Base
+    {
+    }
+
+    public class Derived : Base
+    {
+    }
+
+    public class MoreDerived : Derived
+    {
+    }
+
+    public class Program
+    {
+        static int[] iArray;
+        static long[] lArray;
+        static Base[] bArray;
+        static Derived[] dArray;
+        static MoreDerived mArray;
+
+        public static void Main()
+        {
+            lArray = iArray;
+            iArray = lArray;
+        }
+    }
+}
+`
+(28,22)-(28,28): error: Cannot implicitly convert type 'int[]' to 'long[]'.
+(29,22)-(29,28): error: Cannot implicitly convert type 'long[]' to 'int[]'.
+`
+
+//
+// This checks out the various exemptions in spec 7.5.4.1
+//
+// Case 1: field with ambiguous typename
+
+class Annotations
+{
+    public static Annotations Empty;
+}
+
+class Expressions
+{
+     public Annotations Annotations;
+
+     public void Break()
+     {
+         object r = Annotations.Empty;
+     }
+}
+`
+`
+//
+// This check out the various exemptions in spec 7.5.4.1
+//
+// Case 2: property with ambiguous typename
+
+class Annotations
+{
+    public static Annotations Empty;
+}
+
+class Expressions
+{
+     private Annotations anno;
+     public Annotations Annotations { get { return anno; } }
+
+     public void Break()
+     {
+         object r = Annotations.Empty;
+     }
+}
+`
+`
+//
+// This check out the various exemptions in spec 7.5.4.1
+//
+// Case 3: local variable with the ambiguous type
+
+class Annotations
+{
+    public static Annotations Empty;
+}
+
+class Expressions
+{
+     public void Break()
+     {
+         Annotations Annotations;
+         object r = Annotations.Empty;
+     }
+}
+`
+`
+
+//
+// This check out the various exemptions in spec 7.5.4.1
+//
+// Case 4: parameter with the ambiguous type
+
+class Annotations
+{
+    public static Annotations Empty;
+}
+
+class Expressions
+{
+     public void Break(Annotations Annotations)
+     {
+         object r = Annotations.Empty;
+     }
+}
+`
+`
+
+//
+// This check out the various exemptions in spec 7.5.4.1
+//
+// Case 5: field with the ambiguous type
+
+class Annotations
+{
+    public class Nested { }
+}
+
+class Expressions
+{
+     public Annotations Annotations;
+
+     public void Break()
+     {
+         object r = new Annotations.Nested();
+     }
+}
+`
+`
+//
+// This check out the various exemptions in spec 7.5.4.1
+//
+// Case 6: property with the ambiguous type
+
+class Annotations
+{
+    public class Nested { }
+}
+
+class Expressions
+{
+     private Annotations anno;
+     public Annotations Annotations { get { return anno; } }
+
+     public void Break()
+     {
+         object r = new Annotations.Nested();
+     }
+}
+`
+`
+
+//
+// This check out the various exemptions in spec 7.5.4.1
+//
+// Case 7: local variable with the ambiguous type
+
+class Annotations
+{
+    public class Nested { }
+}
+
+class Expressions
+{
+     public void Break()
+     {
+         Annotations Annotations;
+         object r = new Annotations.Nested();
+         // Annotations.Nested n = (Annotations.Nested)r;
+     }
+}
+`
+`
+
+//
+// This check out the various exemptions in spec 7.5.4.1
+//
+// Case 8: parameter with the ambiguous type
+
+class Annotations
+{
+    public class Nested { }
+}
+
+class Expressions
+{
+     public void Break(Annotations Annotations)
+     {
+         object r = new Annotations.Nested();
+     }
+}
+
+`
+`
