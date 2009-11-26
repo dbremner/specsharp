@@ -10,7 +10,7 @@ using System.Text;
 using Microsoft.Cci.Ast;
 
 namespace Microsoft.Cci.SpecSharp {
-  
+
   public class SpecSharpCommandLineHost {
     /// <summary>
     /// The main entry point for the application.
@@ -48,9 +48,9 @@ namespace Microsoft.Cci.SpecSharp {
       }
 
       var sourceLocationProvider = assem.Compilation.SourceLocationProvider;
-      //var localScopeProvider = assem.Compilation.LocalScopeProvider;
+      var localScopeProvider = assem.Compilation.LocalScopeProvider;
       using (var pdbWriter = new PdbWriter(Path.ChangeExtension(assem.Location, "pdb"), sourceLocationProvider)) {
-        PeWriter.WritePeToStream(assem, hostEnvironment, File.Create(Path.ChangeExtension(assem.Location, "exe")), sourceLocationProvider, null, pdbWriter);
+        PeWriter.WritePeToStream(assem, hostEnvironment, File.Create(Path.ChangeExtension(assem.Location, "exe")), sourceLocationProvider, localScopeProvider, pdbWriter);
       }
     }
 
