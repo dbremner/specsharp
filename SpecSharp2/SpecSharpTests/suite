@@ -6488,3 +6488,114 @@ class Expressions
 
 `
 `
+
+
+// Instantiation of Generic class objects
+// Also testing of constructors with parameter arrays.
+
+namespace ConstructedType
+{
+    public class Generic<T>
+    {
+        public T[] tArr;
+
+        public Generic(int count, params T[] tList)
+        {
+            tArr = new T[count];
+            for (int i = 0; i < count && i < tList.Length; i++)
+                tArr[i] = tList[i];
+        }
+    }
+
+    public class Program
+    {
+        public static void Main()
+        {
+            Generic<object> sObj = new Generic<object>(2, "blank");
+            Generic<int> iObj = new Generic<int>(2);  // Param array empty, but should compile
+            sObj = new Generic<object>(2, 3, 4);
+            iObj = new Generic<int>(2, 3, 4);
+            if (sObj.tArr[0].ToString() == iObj.tArr[0].ToString() &&
+                sObj.tArr[1].ToString() == iObj.tArr[1].ToString())
+                System.Console.WriteLine("Passed");
+            else
+                System.Console.WriteLine("Failed");
+        }
+    }
+}
+`
+Passed
+`
+
+// Test that sending a readonly value-type "this" to 
+// ToString() is correctly handled by copying the value.
+// If not, program will fail verification
+
+namespace ReadOnlyTest
+{
+    public class Program
+    {
+        static readonly int foo = 27;
+
+        public static void Main()
+        {
+            string s = foo.ToString(); System.Console.WriteLine(s);
+        }
+    }
+}
+`
+27
+`
+
+// Check that reload of cls.fld uses correct opcode
+namespace ScratchTest
+{
+    public class Program
+    {
+        static int bar;
+        static Cls cls = new Cls();
+
+        public static void Main() {
+            bar = ++cls.fld;
+            System.Console.WriteLine(bar);
+        }
+    }
+
+    public class Cls { public int fld; }
+}
+`
+1
+`
+
+// Tests for correct behavior for pre- and postfix increment
+// including tricky cases of diving into nested structs.
+namespace ScratchTest {
+  public class Program {
+    static int bar;
+    static Cls cls = new Cls();
+    static int count; // Starts at zero
+
+    static Cls GetCls() { count++; return cls; }
+
+    public static void Main()
+    {
+      bar = GetCls().cFld++;         // Each of these must call GetCls once only!
+      bar = GetCls().outer.oFld++;
+      bar = GetCls().outer.inner.iFld++;
+      bar = ++GetCls().cFld;
+      bar = ++GetCls().outer.oFld;
+      bar = ++GetCls().outer.inner.iFld;
+      
+      System.Console.WriteLine("{0},{1},{2} Calls of GetCls {3}",
+      cls.cFld, cls.outer.oFld, cls.outer.inner.iFld, count);
+    }
+  }
+
+  public class Cls { public int cFld; public OuterRec outer; }
+  public struct InnerRec { public int iFld; }
+  public struct OuterRec { public int oFld; public InnerRec inner; }
+}
+
+`
+2,2,2 Calls of GetCls 6
+`
