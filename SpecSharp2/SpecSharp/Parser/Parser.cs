@@ -2571,11 +2571,12 @@ namespace Microsoft.Cci.SpecSharp {
       //^ requires this.currentToken == Token.Yield;
       //^ ensures followers[this.currentToken] || this.currentToken == Token.EndOfFile;
     {
+      SourceLocationBuilder slb = new SourceLocationBuilder(this.scanner.SourceLocationOfLastScannedToken);
       Token nextToken = this.PeekNextToken();
       if (nextToken == Token.Break){
         this.GetNextToken();
-        ISourceLocation sctx = this.scanner.SourceLocationOfLastScannedToken;
-        Statement result = new YieldBreakStatement(sctx);
+        slb.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
+        Statement result = new YieldBreakStatement(slb);
         this.SkipOverTo(Token.Break, followers);
         return result;
       } 
@@ -2584,8 +2585,8 @@ namespace Microsoft.Cci.SpecSharp {
         //^ assume this.currentToken == Token.Return;
         this.GetNextToken();
         Expression val = this.ParseExpression(followers);
-        ISourceLocation sctx = this.scanner.SourceLocationOfLastScannedToken;
-        Statement result = new YieldReturnStatement(val, sctx);
+        slb.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
+        Statement result = new YieldReturnStatement(val, slb);
         //^ assume followers[this.currentToken] || this.currentToken == Token.EndOfFile;
         return result;
       }
