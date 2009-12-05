@@ -1,29 +1,10 @@
-using System;
-
-class B {
-  protected internal static int intI {
-    get {
-      return 2;
-    }
+public class Base { public int pblc; }
+public class Derived : Base { private float prvt; }
+public sealed class MoreDerived : Derived { }
+public static class Program {
+  public static void Main(string[] args) {
+    MoreDerived m = new MoreDerived();
+    m.prvt = 0.42F;
   }
 }
 
-class D : B {
-  public static int F() {
-    return B.intI;
-  }
-}
-
-class MyTest {
-  static void foo() {
-    return;
-  }
-
-  static int Main() {
-    if (D.F() == 2) {
-      return 0;
-    } else {
-      return 1;
-    }
-  }
-}
