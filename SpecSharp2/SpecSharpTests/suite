@@ -1,3 +1,16 @@
+public class Base { public int pblc; }
+public class Derived : Base { private float prvt; }
+public sealed class MoreDerived : Derived { }
+public static class Program {
+  public static void Main(string[] args) {
+    MoreDerived m = new MoreDerived();
+    m.prvt = 0.42F;
+  }
+}
+`
+(7,5)-(7,11): error: 'Derived.prvt' is inaccessible due to its protection level.
+(2,45)-(2,49): (Location of symbol related to previous error.)
+`
 using System;
   
 class B {
