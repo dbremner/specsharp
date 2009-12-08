@@ -6612,3 +6612,41 @@ namespace ScratchTest {
 `
 2,2,2 Calls of GetCls 6
 `
+
+// Extra  "++" test. Postfix Unary Increment using Properties.
+  public class Program {
+
+    private static int i;
+    public static int I {
+      get { return i; }
+      set { i = value; }
+    }
+
+    public static void Main()
+    {
+      OuterCls cls = new OuterCls();
+      I = cls.J++;
+      System.Console.WriteLine("{0},{1}", I, cls.J);
+    }
+  }
+
+  public class OuterCls {
+    private int j;
+    public int J { get { return j; } set { j = value; } }
+  }
+`
+0,1
+`
+
+// Test that no-arg ctor for value-types does not fail verification
+public class Program {
+  public static void Main() {
+    Record rec = new Record();
+    rec.i++;
+    System.Console.WriteLine(rec.i);
+  }
+}
+public struct Record { public int i; int j; }
+`
+1
+`
