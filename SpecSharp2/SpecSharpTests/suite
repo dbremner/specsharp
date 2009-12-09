@@ -5955,7 +5955,6 @@ namespace EnumTest
 }
 `
 (21,40)-(21,46): error: Constant value '266' cannot be converted to a 'EnumTest.Program.Foo'.
-Value was either too large or too small for an unsigned byte.
 `
 
 using System;
