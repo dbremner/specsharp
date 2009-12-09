@@ -47,6 +47,7 @@ namespace Microsoft.Cci.SpecSharp {
         programSources.Add(new SpecSharpSourceDocument(helper, name, Path.GetFullPath(fileName), instream));
       }
 
+      if (assem.Compilation.HasErrors) return;
       var sourceLocationProvider = assem.Compilation.SourceLocationProvider;
       var localScopeProvider = assem.Compilation.LocalScopeProvider;
       using (var pdbWriter = new PdbWriter(Path.ChangeExtension(assem.Location, "pdb"), sourceLocationProvider)) {
@@ -275,6 +276,7 @@ namespace Microsoft.Cci.SpecSharp {
         programSources.Add(hostEnvironment.previousDocument = new SpecSharpSourceDocument(helper, name, "", test));
         unit = assem;
       }
+      if (assem != null && assem.Compilation.HasErrors) return 0;
       if (assem != null && assem.EntryPoint.ResolvedMethod != Dummy.Method) {
         var memStream = new MemoryStream();
         PeWriter.WritePeToStream(assem, hostEnvironment, memStream);
