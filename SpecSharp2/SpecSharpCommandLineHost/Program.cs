@@ -22,7 +22,7 @@ namespace Microsoft.Cci.SpecSharp {
       SpecSharpOptions commandLineOptions = OptionParser.ParseCommandLineArguments(hostEnvironment, args);
       if (hostEnvironment.hasError) return;
       if (commandLineOptions.DisplayCommandLineHelp)
-        DisplayCommandLineHelp();
+        DisplayCommandLineHelp(OptionParser.GetOptionUsage());
       else if (commandLineOptions.RunTestSuite)
         RunTestSuite(commandLineOptions);
       else
@@ -73,8 +73,9 @@ namespace Microsoft.Cci.SpecSharp {
       return assemblyReferences;
     }
 
-    private static void DisplayCommandLineHelp() {
-      Console.Out.WriteLine("please write something here");
+    private static void DisplayCommandLineHelp(IList<string> lines) {
+      foreach (string line in lines)
+        Console.WriteLine(line);
     }
 
     static void RunTestSuite(SpecSharpOptions commandLineOptions) {
