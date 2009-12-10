@@ -1,21 +1,46 @@
-using System;
-using System.Collections.Generic;
 
-class test {
-  public static void Main() {
-    foo();
-    //IEnumerable<int> ints = GetInts();
-    //IEnumerator<int> enumerator = ints.GetEnumerator();
-    //enumerator.MoveNext();
-    //enumerator.MoveNext();
-  }
+namespace Indexer2
+{
+    public class Base
+    {
+        public virtual int this[int index]
+        {
+            get { return 0; }
+            set { }
+        }
+    }
 
-  //static IEnumerable<int> GetInts() {
-  //  int i = 1;
-  //  yield return i;
-  //  {
-  //    int j = 2;
-  //    yield return j;
-  //  }
-  //}
+    public class Derived : Base
+    {
+        public override int this[int index] // Ok
+        {
+            get { return 0;  }
+            set { }
+        }
+
+        public int this[string index] // Ok
+        {
+            get { return 0; }
+        }
+    }
+
+    public sealed class MoreDerived : Derived
+    {
+        public override int this[int index] // Ok
+        {
+            get { return 0; } // Non-virtual call to 
+            set { }                         // Indexer.Derived::get_Item(index)
+        }
+    }
+
+
+    public static class Program
+    {
+        public static void Main()
+        {
+            MoreDerived myRef = new MoreDerived();
+            int hsh = myRef["blah"];
+            myRef[0] = 42;
+        }
+    }
 }
