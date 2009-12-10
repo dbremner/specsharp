@@ -1586,12 +1586,18 @@ namespace Microsoft.Cci.SpecSharp {
       List<Statement> statements = new List<Statement>();
       SourceLocationBuilder bodyCtx = new SourceLocationBuilder(this.scanner.SourceLocationOfLastScannedToken);
       BlockStatement body = new BlockStatement(statements, bodyCtx);
+
+      bool isExtensionMethod;
+      this.ParseGenericMethodParameters(genericParameters, followers|Token.LeftParenthesis|Token.Where|Token.LeftBrace|Token.Semicolon);
+      this.ParseParameters(parameters, Token.RightParenthesis, followers|Token.Where|Token.LeftBrace|Token.Semicolon, out isExtensionMethod);
+      if (isExtensionMethod)
+        flags |= MethodDeclaration.Flags.ExtensionMethod;
+
       MethodDeclaration method = new MethodDeclaration(attributes, flags, visibility, 
         type, implementedInterfaces, name, genericParameters, parameters, null, body, sctx);
       members.Add(method);
 
-      this.ParseGenericMethodParameters(genericParameters, followers|Token.LeftParenthesis|Token.Where|Token.LeftBrace|Token.Semicolon);
-      this.ParseParameters(parameters, Token.RightParenthesis, followers|Token.Where|Token.LeftBrace|Token.Semicolon);
+      // Now: how to get 
       this.ParseGenericMethodParameterConstraintsClauses(genericParameters, followers|Token.LeftBrace|Token.Semicolon);
       //bool swallowedSemicolonAlready = false;
       //this.ParseMethodContract(oper, followers|Token.LeftBrace|Token.Semicolon, ref swallowedSemicolonAlready);
@@ -2020,22 +2026,52 @@ namespace Microsoft.Cci.SpecSharp {
       this.SkipOverTo(Token.RightBrace, followers);
     }
 
-    private void ParseParameters(List<Ast.ParameterDeclaration> parameters, Token closingToken, TokenSet followers) {
-      this.ParseParameters(parameters, closingToken, followers, new SourceLocationBuilder(this.scanner.SourceLocationOfLastScannedToken));
+    private void ParseParameters(List<Ast.ParameterDeclaration> parameters, Token closingToken, TokenSet followers, SourceLocationBuilder ctx)
+    {
+      bool dummy;
+      this.ParseParameters(parameters, closingToken, followers, ctx, out dummy);
+      if (dummy)
+        this.HandleError(ctx, Error.NoThisParameterAllowedHere);
     }
 
-    private void ParseParameters(List<Ast.ParameterDeclaration> parameters, Token closingToken, TokenSet followers, SourceLocationBuilder ctx) 
+    private void ParseParameters(List<Ast.ParameterDeclaration> parameters, Token closingToken, TokenSet followers)
+    {
+      bool dummy;
+      SourceLocationBuilder location = new SourceLocationBuilder(this.scanner.SourceLocationOfLastScannedToken);
+      this.ParseParameters(parameters, closingToken, followers, location, out dummy);
+      if (dummy)
+        this.HandleError(location, Error.NoThisParameterAllowedHere);
+    }
+
+    /// <summary>
+    /// This method overload is called in contexts where an extension method might be legal
+    /// </summary>
+    /// <param name="parameters"></param>
+    /// <param name="closingToken"></param>
+    /// <param name="followers"></param>
+    /// <param name="hasThisParameter"></param>
+    private void ParseParameters(List<Ast.ParameterDeclaration> parameters, Token closingToken, TokenSet followers, out bool hasThisParameter)
+    {
+      SourceLocationBuilder location = new SourceLocationBuilder(this.scanner.SourceLocationOfLastScannedToken);
+      this.ParseParameters(parameters, closingToken, followers, location, out hasThisParameter);
+    }
+
+    private void ParseParameters(List<Ast.ParameterDeclaration> parameters, Token closingToken, TokenSet followers, SourceLocationBuilder ctx, out bool isExtensionMethod) 
       //^ requires closingToken == Token.RightBracket || closingToken == Token.RightParenthesis;
       //^ ensures followers[this.currentToken] || this.currentToken == Token.EndOfFile;
     {
+      isExtensionMethod = false;
       ctx.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
       if (closingToken == Token.RightBracket)
         this.Skip(Token.LeftBracket);
       else
         this.Skip(Token.LeftParenthesis);
       while (this.currentToken != closingToken && this.currentToken != Token.EndOfFile){
-        SpecSharpParameterDeclaration parameter = this.ParseParameter((ushort)parameters.Count, closingToken == Token.RightParenthesis, followers|Token.Comma|closingToken);
+        SpecSharpParameterDeclaration parameter = this.ParseParameter((ushort)parameters.Count, 
+          closingToken == Token.RightParenthesis, followers|Token.Comma|closingToken);
         parameters.Add(parameter);
+        if (parameter.IsThis)
+          isExtensionMethod = true;
         if (this.currentToken != Token.Comma) break;
         this.GetNextToken();
       }
@@ -2053,6 +2089,7 @@ namespace Microsoft.Cci.SpecSharp {
       bool isParamArray = false;
       bool isOut = false;
       bool isRef = false;
+      bool isThisParam = false;
       if (this.currentToken == Token.Params) {
         isParamArray = true;
         this.GetNextToken();
@@ -2065,6 +2102,12 @@ namespace Microsoft.Cci.SpecSharp {
         isOut = allowRefParameters;
         if (!allowRefParameters)
           this.HandleError(Error.IndexerWithRefParam);
+        this.GetNextToken();
+      } else if (this.currentToken == Token.This) {
+        if (index != 0)
+          this.HandleError(Error.ThisNotOnFirstParameter);
+        else 
+          isThisParam = true;
         this.GetNextToken();
       }
       TypeExpression type = this.ParseTypeExpression(false, false, followers|Parser.IdentifierOrNonReservedKeyword);
@@ -2085,7 +2128,7 @@ namespace Microsoft.Cci.SpecSharp {
         }
       }
       sctx.UpdateToSpan(name.SourceLocation);
-      SpecSharpParameterDeclaration result = new SpecSharpParameterDeclaration(attributes, type, name, null, index, false, isOut, isParamArray, isRef, sctx);
+      SpecSharpParameterDeclaration result = new SpecSharpParameterDeclaration(attributes, type, name, null, index, false, isOut, isParamArray, isRef, isThisParam, sctx);
       this.SkipTo(followers);
       return result;
     }
@@ -2571,12 +2614,11 @@ namespace Microsoft.Cci.SpecSharp {
       //^ requires this.currentToken == Token.Yield;
       //^ ensures followers[this.currentToken] || this.currentToken == Token.EndOfFile;
     {
-      SourceLocationBuilder slb = new SourceLocationBuilder(this.scanner.SourceLocationOfLastScannedToken);
       Token nextToken = this.PeekNextToken();
       if (nextToken == Token.Break){
         this.GetNextToken();
-        slb.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
-        Statement result = new YieldBreakStatement(slb);
+        ISourceLocation sctx = this.scanner.SourceLocationOfLastScannedToken;
+        Statement result = new YieldBreakStatement(sctx);
         this.SkipOverTo(Token.Break, followers);
         return result;
       } 
@@ -2585,8 +2627,8 @@ namespace Microsoft.Cci.SpecSharp {
         //^ assume this.currentToken == Token.Return;
         this.GetNextToken();
         Expression val = this.ParseExpression(followers);
-        slb.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
-        Statement result = new YieldReturnStatement(val, slb);
+        ISourceLocation sctx = this.scanner.SourceLocationOfLastScannedToken;
+        Statement result = new YieldReturnStatement(val, sctx);
         //^ assume followers[this.currentToken] || this.currentToken == Token.EndOfFile;
         return result;
       }
