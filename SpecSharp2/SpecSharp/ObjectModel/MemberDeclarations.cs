@@ -51,8 +51,9 @@ namespace Microsoft.Cci.SpecSharp {
   internal sealed class SpecSharpParameterDeclaration : ParameterDeclaration {
 
     internal SpecSharpParameterDeclaration(List<SourceCustomAttribute>/*?*/ sourceAttributes,
-      TypeExpression type, NameDeclaration name, Expression/*?*/ defaultValue, ushort index, bool isOptional, bool isOut, bool isParameterArray, bool isRef, ISourceLocation sourceLocation)
-      : base(sourceAttributes, type, name, defaultValue, index, isOptional, isOut, isParameterArray, isRef, sourceLocation)
+      TypeExpression type, NameDeclaration name, Expression/*?*/ defaultValue, ushort index, 
+      bool isOptional, bool isOut, bool isParameterArray, bool isRef, bool isThis, ISourceLocation sourceLocation)
+      : base(sourceAttributes, type, name, defaultValue, index, isOptional, isOut, isParameterArray, isRef, isThis, sourceLocation)
       //^ requires isParameterArray ==> type is ArrayTypeExpression;
     {
     }

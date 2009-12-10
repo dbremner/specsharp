@@ -487,6 +487,8 @@ namespace Microsoft.Cci.SpecSharp
 		UnexpectedToken,
 
 		AmbiguousAssignment = 2500,
+    NoThisParameterAllowedHere,
+    ThisNotOnFirstParameter,
 		CannotMarkAbstractPropertyVirtual,
 		CannotMarkOverridePropertyNewOrVitual,
 		ClosingTagMismatch,

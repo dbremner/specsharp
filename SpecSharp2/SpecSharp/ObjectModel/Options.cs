@@ -32,6 +32,23 @@ public class OptionParser : OptionParser<SpecSharpOptions> {
     return parser.options;
   }
 
+  public static IList<string> GetOptionUsage()
+  {
+    List<string> result = new List<string>();
+    result.Add("Usage: ssc [options] filename(s)");
+    result.Add("ssc options:");  
+    result.Add("/help                  - display usage message");
+    result.Add("/?                     - display usage message");
+    result.Add("/checked               - emit checked arithmetic, shortform /c");
+    result.Add("/checked+              - emit checked arithmetic, shortform /c+");
+    result.Add("/checked-              - emit unchecked arithmetic, shortform /c-");
+    result.Add("/define:SymbolList     - define the listed symbols, shortform /d");
+    result.Add("/reference:Assemblies  - reference the listed assemblies, shortform /r");
+    result.Add("/suite                 - run the test suite, shortform /s"); ;
+    result.Add(" -- Lists may be either comma or semicolon-separated"); ;
+    return result;
+  }
+
   protected override bool ParseCompilerOption(string arg) {
     int n = arg.Length;
     if (n <= 1) return false;
