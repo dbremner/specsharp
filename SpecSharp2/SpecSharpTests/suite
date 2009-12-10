@@ -6665,3 +6665,59 @@ public struct Record { public int i; int j; }
 `
 1
 `
+
+// Tests on semantically incorrect extension method definitions
+// Various illegal cases.
+
+namespace Extensions {
+  static class Program {
+    public static void Main() {
+    }
+
+    public static void Foo(int i, this int j) { } // Error: this not on param-0
+  }
+}
+`
+(10,35)-(10,39): error: Method has a parameter modifier 'this' which is not on the first parameter.
+`
+
+namespace Extensions {
+  static class Program {
+    public static void Main() {
+    }
+    
+    static class Nested {  // Error: cannot have ext-method in nested class
+      public static string AppLn(this string rec) { return "hello"; } 
+    }
+  }
+}
+`
+(8,7)-(8,70): error: Extension methods must be defined in a top-level static class.
+`
+
+namespace Extensions {
+  static class Program {
+    public static void Main() {
+    }
+  }
+
+  public class Wrapper1 {  // Error: enclosing class must be marked static
+    public static string AppLn(this string rec) { return "hello"; }
+  }
+}
+`
+(9,5)-(9,68): error: Extension methods must be defined in a top-level static class.
+`
+
+namespace Extensions {
+  static class Program {
+    public static void Main(string[] args) {
+    }
+  }
+  public static class Wrapper2<T> {  // Error: cannot have ext-method on generic class
+    public static string AppLn(this T rec) { return "hello"; }
+  }
+}
+`
+(8,5)-(8,63): error: Extension methods must be defined in a non-generic static class.
+`
