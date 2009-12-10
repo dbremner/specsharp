@@ -1,3 +1,19 @@
+namespace ScratchTest {
+  public class Program {
+    public static void Main(string[] args) {
+      OuterCls cls = new OuterCls();
+      cls.Foo(42, 3.14159);
+    }
+  }
+  public class OuterCls {
+    public void Foo(int x) { }
+    public void Foo(int x, int y) { }
+  }
+}
+`
+(5,7)-(5,27): error: The best overloaded method match for 'ScratchTest.OuterCls.Foo(int, int)' has some invalid arguments.
+(5,19)-(5,26): error: Argument '2': cannot convert from 'double' to 'int'.
+`
 public class Base { public int pblc; }
 public class Derived : Base { private float prvt; }
 public sealed class MoreDerived : Derived { }
@@ -5954,7 +5970,7 @@ namespace EnumTest
     }
 }
 `
-(21,40)-(21,46): error: Constant value '266' cannot be converted to a 'EnumTest.Program.Foo'.
+(21,35)-(21,46): error: Constant value '266' cannot be converted to a 'EnumTest.Program.Foo' (use 'unchecked' syntax to override).
 `
 
 using System;
