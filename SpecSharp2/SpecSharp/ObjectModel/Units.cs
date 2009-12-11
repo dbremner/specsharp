@@ -29,7 +29,7 @@ namespace Microsoft.Cci.SpecSharp {
     public override void Dispatch(IMetadataVisitor visitor) {
     }
 
-    public override IRootUnitNamespace UnitNamespaceRoot {
+    public override RootUnitNamespace UnitNamespaceRoot {
       get { return this.Compilation.Result.UnitNamespaceRoot; }
     }
 
