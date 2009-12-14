@@ -2090,6 +2090,8 @@ namespace Microsoft.Cci.SpecSharp {
       bool isOut = false;
       bool isRef = false;
       bool isThisParam = false;
+      // This code syntactically enforces certain semantic rules,
+      // such as "this" parameters can have no other modifiers.
       if (this.currentToken == Token.Params) {
         isParamArray = true;
         this.GetNextToken();
