@@ -1,6 +1,6 @@
 namespace ScratchTest {
   public class Program {
-    public static void Main(string[] args) {
+    public static void Main() {
       OuterCls cls = new OuterCls();
       cls.Foo(42, 3.14159);
     }
@@ -6720,4 +6720,126 @@ namespace Extensions {
 }
 `
 (8,5)-(8,63): error: Extension methods must be defined in a non-generic static class.
+`
+
+// This tests extension methods as delegate targets.
+using System;
+
+public static class E 
+{
+  public static void F(this object obj, int i) { Console.WriteLine("extension method E.F(object,int)"); }
+  public static void F(this object obj, string s) { Console.WriteLine("extension method E.F(object,string)"); } 
+}
+
+public delegate void DelS(string s);
+public delegate void DelI(int i);
+
+class A {
+  public void F(long l) { Console.WriteLine("instance method A.F(long)"); } 
+}
+
+class B 
+{
+  public void F(int i) { Console.WriteLine("instance method B.F(int)"); } 
+}
+
+class C 
+{
+  public void F(object obj) { Console.WriteLine("instance method C.F(object)"); } 
+}
+
+class D { }
+
+class Program {
+  static void Main() {
+    A a = new A();
+    B b = new B();
+    C c = new C();
+    D d = new D();
+    DelS d1 = a.F; // Should bind to E.F(object,string) ... A.F(long) not applicable
+    DelI d2 = b.F; // Binds to B.F(int)
+    DelS d3 = c.F; // Binds to C.F(object)
+    DelI d4 = d.F; // Binds to E.F(object,int)
+    d1("");
+    d2(0);
+    d3("");
+    d4(0);
+    //DelI d4 = new DelI(a.F); // Error: A.F(long) applicable but incompatible
+  }
+}
+`
+extension method E.F(object,string)
+instance method B.F(int)
+instance method C.F(object)
+extension method E.F(object,int)
+`
+
+// Instantiation of delegate types;
+
+using System;
+
+namespace DelegateInstantiation
+{
+    public delegate void Printer(string arg);
+
+    public class Wrapper
+    {
+         private char prefix;
+         private char suffix;
+
+         public Wrapper(char pre, char suf) { prefix = pre; suffix = suf; }
+
+         public void WrappedPrint(string str)
+         {
+             Console.WriteLine(prefix + str + suffix);
+         }
+    }
+
+    public class Program
+    {
+        public static void Main()
+        {
+            Wrapper w1 = new Wrapper('<', '>');
+            Wrapper w2 = new Wrapper('{', '}');
+            Printer p1 = w1.WrappedPrint;
+            Printer p2 = w2.WrappedPrint;
+
+            p1("Foo");
+            p2("Foo");
+        }
+    }
+}
+`
+<Foo>
+{Foo}
+`
+
+// This tests a subtle corner case of extension methods in the presence of extension
+// methods.  An extension method is only sought in the event that no applicable 
+// instance method is found.  If there is an instance method but it is not compatible
+// C# V3 Specification 6.6, third top-level bullet, page 126.
+// In the absence of this check a.F would bind to E.F(object,int) in this test.
+
+using System;
+
+public static class E {
+  public static void F(this object obj, int i) { Console.WriteLine("extension method E.F(object,int)"); }
+}
+
+public delegate void DelI(int i);
+
+class A {
+  public void F(long l) { Console.WriteLine("instance method A.F(long)"); } 
+}
+
+class Program {
+  static void Main() {
+    A a = new A();
+    DelI d5 = a.F; // Error: A.F(long) applicable but incompatible
+    d5(0);
+  }
+}
+
+`
+(23,15)-(23,18): error: No overload for 'A.F(long)' matches delegate 'DelI'.
 `
