@@ -6842,5 +6842,34 @@ class Program {
 }
 
 `
-(23,15)-(23,18): error: No overload for 'A.F(long)' matches delegate 'DelI'.
+(24,15)-(24,18): error: No overload for 'A.F(long)' matches delegate 'DelI'.
+`
+
+using System;
+namespace DelegateInstantiation
+{
+    public delegate void Printer(int arg);
+
+    public static class SupplyExt {
+      public static void Ext(this string s, int n) {
+        for (; n > 0; n--)
+          Console.WriteLine(s);
+      }
+    }
+
+    public class Program {
+      public static void Main() {
+        string s = "Hello";
+        Printer p1 = s.Ext; // Curries hello.
+        s = "Goodbye";
+        Printer p2 = s.Ext; // Curries goodbye.
+        p1(2);
+        p2(1);
+      }
+    }
+}
+`
+Hello
+Hello
+Goodbye
 `
