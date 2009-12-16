@@ -6816,7 +6816,8 @@ namespace DelegateInstantiation
 
 // This tests a subtle corner case of delegate instantiation in the presence of extension
 // methods.  An extension method is only sought in the event that no applicable 
-// instance method is found.  If there is an instance method but it is not compatible
+// instance method is found.  If there is one or more instance method but none is 
+// compatible then a compile error occurs.
 // C# V3 Specification 6.6, third top-level bullet, page 126.
 // In the absence of this check a.F would bind to E.F(object,int) in this test.
 
