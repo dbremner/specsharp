@@ -6814,7 +6814,7 @@ namespace DelegateInstantiation
 {Foo}
 `
 
-// This tests a subtle corner case of extension methods in the presence of extension
+// This tests a subtle corner case of delegate instantiation in the presence of extension
 // methods.  An extension method is only sought in the event that no applicable 
 // instance method is found.  If there is an instance method but it is not compatible
 // C# V3 Specification 6.6, third top-level bullet, page 126.
