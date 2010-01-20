@@ -786,8 +786,8 @@ axiom (∀ i:int • InRange(i, System.Char)  ⇔  0 ≤ i ∧ i < 65536);
 
 
 function $IntToInt(val: int, fromType: TName, toType: TName) returns (int);
-function $IntToReal(int, fromType: TName, toType: TName) returns (real);
-function $RealToInt(real, fromType: TName, toType: TName) returns (int);
+function $IntToReal(val: int, fromType: TName, toType: TName) returns (real);
+function $RealToInt(val: real, fromType: TName, toType: TName) returns (int);
 function $RealToReal(val: real, fromType: TName, toType: TName) returns (real);
 
 axiom (∀ z: int, B: TName, C: TName • InRange(z, C) ⇒ $IntToInt(z, B, C) == z);
