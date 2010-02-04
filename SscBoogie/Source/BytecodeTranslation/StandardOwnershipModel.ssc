@@ -295,20 +295,20 @@ namespace Microsoft.Boogie
     /// <summary>
     ///   free ensures 
     ///     $Heap[this, $ownerFrame] != $PeerGroupPlaceholder IMPLIES
-    ///       ($Heap[$Heap[this, $ownerRef], $inv] SUBTYPE $Heap[this, $ownerFrame] AND
-    ///        $Heap[$Heap[this, $ownerRef], $localinv] != $BaseClass($Heap[this, $ownerFrame])
+    ///       ($Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $inv] SUBTYPE $Heap[$Heap[this, $ownerRef], $ownerFrame] AND
+    ///        $Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $localinv] != $BaseClass($Heap[$Heap[this, $ownerRef], $ownerFrame])
     ///        IMPLIES
     ///        $Heap[this, $FirstConsistentOwner] == $Heap[this, $ownerRef])
     ///       AND
-    ///       (!($Heap[$Heap[this, $ownerRef], $inv] SUBTYPE $Heap[this, $ownerFrame] AND
-    ///          $Heap[$Heap[this, $ownerRef], $localinv] != $BaseClass($Heap[this, $ownerFrame]))
+    ///       (!($Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $inv] SUBTYPE $Heap[$Heap[this, $ownerRef], $ownerFrame] AND
+    ///          $Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $localinv] != $BaseClass($Heap[$Heap[this, $ownerRef], $ownerFrame]))
     ///        IMPLIES
     ///        $Heap[this, $FirstConsistentOwner] == $Heap[$Heap[this, $ownerRef], $FirstConsistentOwner]);
     /// </summary>
     override internal Bpl.Expr! FCOInfo (Bpl.Expr! targetObject, Bpl.Expr! heap)
     {
       Bpl.Expr targetHasOwner = Bpl.Expr.Not(HasNoOwner(targetObject, heap));
-      Bpl.Expr ownerIsConsistent = OwnerIsExposed(targetObject, heap, false);
+      Bpl.Expr ownerIsConsistent = OwnerIsExposed(OwnerRef(targetObject, heap), heap, false);
       Bpl.Expr FCO = Bpl.Expr.Select(heap, targetObject, sink.Fields.FirstConsistentOwner);
       Bpl.Expr FCOIsOwner = Bpl.Expr.Eq(FCO, OwnerRef(targetObject, heap));
       Bpl.Expr FCOIsOwnerFCO = Bpl.Expr.Eq(FCO, Bpl.Expr.Select(heap, OwnerRef(targetObject, heap), sink.Fields.FirstConsistentOwner));
