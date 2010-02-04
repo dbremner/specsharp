@@ -608,7 +608,7 @@ const unique $FirstConsistentOwner: Field ref;
 #endif
 
 function $AsPureObject(ref) returns (ref);  // used only for triggering
-function ##FieldDependsOnFCO<alpha>(o: ref, f: Field alpha, ev: exposeVersionType) returns (exposeVersionType);
+function ##FieldDependsOnFCO<alpha>(o: ref, f: Field alpha, ev: exposeVersionType) returns (alpha);
 
 #if !TrivialObjectModel
 // The following axiom say that for any committed object o, each field of o is determined

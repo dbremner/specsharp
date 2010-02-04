@@ -173,13 +173,13 @@ namespace Microsoft.Boogie
           // That is to say:
           //   free ensures 
           //     $Heap[this, $ownerFrame] != $PeerGroupPlaceholder ==>
-          //       ($Heap[$Heap[this, $ownerRef], $inv] <: $Heap[this, $ownerFrame] &&
-          //        $Heap[$Heap[this, $ownerRef], $localinv] != $BaseClass($Heap[this, $ownerFrame])
+          //       ($Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $inv] <: $Heap[$Heap[this, $ownerRef], $ownerFrame] &&
+          //        $Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $localinv] != $BaseClass($Heap[$Heap[this, $ownerRef], $ownerFrame])
           //        ==>
           //        $Heap[this, $FirstConsistentOwner] == $Heap[this, $ownerRef])
           //       &&
-          //       (!($Heap[$Heap[this, $ownerRef], $inv] <: $Heap[this, $ownerFrame] &&
-          //          $Heap[$Heap[this, $ownerRef], $localinv] != $BaseClass($Heap[this, $ownerFrame]))
+          //       (!($Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $inv] <: $Heap[$Heap[this, $ownerRef], $ownerFrame] &&
+          //          $Heap[$Heap[$Heap[this, $ownerRef], $ownerRef], $localinv] != $BaseClass($Heap[$Heap[this, $ownerRef], $ownerFrame]))
           //        ==>
           //        $Heap[this, $FirstConsistentOwner] == $Heap[$Heap[this, $ownerRef], $FirstConsistentOwner]);
           freePost = om.FCOInfo(param, sink.HeapExpr());
