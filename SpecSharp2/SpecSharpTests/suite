@@ -6876,3 +6876,119 @@ Hello
 Hello
 Goodbye
 `
+
+namespace ScratchTest {
+  public class Program {
+      static int [,] arrFld;
+
+    public static void Main() {
+      Initialize('a', 'b', 'c', 'd');
+      System.Console.WriteLine(arrFld[0,0] + arrFld[0,1] + arrFld[1,0] + arrFld[1,1]); // "394"
+    } 
+
+    static void Initialize(int e11, int e12, int e21, int e22) {
+      arrFld = new int[2,2] { { e11, e12 }, { e21, e22 } };
+    }
+  }
+}
+`
+394
+`
+
+namespace ScratchTest {
+  public class Program {
+    static int[, ,] arrFld = new int[,,] {
+        { { 1, 2 } , { 3, 4 }, { 5, 6} },
+        { { 7, 8 } , { 9, 10 }, { 11, 12 }},
+        { { 13, 14 } , { 15, 16 }, { 17, 18 }},
+        { { 19, 20 } , { 21, 22 }, { 23, 24 }}
+      };
+
+    public static void Main() {
+      int total = 0;
+      for (int i = 0; i < arrFld.GetLength(0); i++) {
+        for (int j = 0; j < arrFld.GetLength(1); j++) {
+          for (int k = 0; k < arrFld.GetLength(2); k++) {
+            total += arrFld[i, j, k];
+          }
+        }
+      }
+      System.Console.WriteLine(total);
+    }
+  }
+}
+`
+300
+`
+
+namespace ScratchTest {
+  public class Program {
+      static int [,] arrFld;
+
+    public static void Main() {
+      Initialize('a', 'b', 'c', 'd');
+      System.Console.WriteLine(arrFld[0,0] + arrFld[0,1] + arrFld[1,0] + arrFld[1,1]); // "394"
+    } 
+
+    static void Initialize(int e11, int e12, int e21, int e22) {
+      arrFld = new int[2,3] { { e11, e12 }, { e21, e22 } };
+    }
+  }
+}
+`
+(12,26)-(12,27): error: Explicit array size 3 does not match array initializer dimension 2.
+`
+
+namespace ScratchTest {
+  public class Program {
+      static int [,] arrFld;
+
+    public static void Main() {
+      Initialize('a', 'b', 'c', 'd');
+      System.Console.WriteLine(arrFld[0,0] + arrFld[0,1] + arrFld[1,0] + arrFld[1,1]); // "394"
+    } 
+
+    static void Initialize(int e11, int e12, int e21, int e22) {
+      arrFld = new int[2,2] { { e11, e12 }, { e21 } };
+    }
+  }
+}
+`
+(12,45)-(12,52): error: This initializer element count 1 is different from count 2 in first element.
+`
+
+namespace ScratchTest {
+  public class Program {
+      static int [,] arrFld;
+
+    public static void Main() {
+      Initialize('a', 'b', 'c', 'd');
+      System.Console.WriteLine(arrFld[0,0] + arrFld[0,1] + arrFld[1,0] + arrFld[1,1]); // "394"
+    } 
+
+    static void Initialize(int e11, int e12, int e21, int e22) {
+      arrFld = new int[,] { { e11, e12 }, { e21, e22, 42 } };
+    }
+  }
+}
+`
+(12,43)-(12,59): error: This initializer element count 3 is different from count 2 in first element.
+`
+
+namespace ScratchTest {
+  public class Program {
+      static int [,] arrFld;
+
+    public static void Main() {
+      Initialize('a', 'b', 'c', 'd');
+      System.Console.WriteLine(arrFld[0,0] + arrFld[0,1] + arrFld[1,0] + arrFld[1,1]); // "394"
+    } 
+
+    static void Initialize(int e11, int e12, int e21, int e22) {
+      arrFld = new int[,] { { e11, e12, 42.5 }, { e21, e22, 42 } };
+    }
+  }
+}
+`
+(12,41)-(12,45): error: Constant value '42.5' cannot be converted to a 'int'.
+`
