@@ -6876,7 +6876,7 @@ Hello
 Hello
 Goodbye
 `
-
+// Some simple tests for multi-dimensional arrays
 namespace ScratchTest {
   public class Program {
       static int [,] arrFld;
@@ -6895,6 +6895,7 @@ namespace ScratchTest {
 394
 `
 
+// Making sure the dimension order corresponds to the index order.
 namespace ScratchTest {
   public class Program {
     static int[, ,] arrFld = new int[,,] {
@@ -6921,6 +6922,9 @@ namespace ScratchTest {
 300
 `
 
+// Next Four Tests ...
+// Tests of various malformed array initializers.
+// Testing the new diagnostics.
 namespace ScratchTest {
   public class Program {
       static int [,] arrFld;
