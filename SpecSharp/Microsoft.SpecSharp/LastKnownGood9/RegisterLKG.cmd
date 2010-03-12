@@ -1,5 +1,9 @@
 @echo off
-regasm /nologo /codebase Microsoft.VisualStudio.Package.dll
-regasm /nologo /codebase Microsoft.SpecSharp.dll
-regasm /nologo /codebase ContractsPropertyPane.dll
+
+set REGASM=regasm
+if not "%1"=="" set REGASM=%1
+
+%REGASM% /nologo /codebase Microsoft.VisualStudio.Package.dll
+%REGASM% /nologo /codebase Microsoft.SpecSharp.dll
+%REGASM% /nologo /codebase ContractsPropertyPane.dll
 rem devenv /setup
