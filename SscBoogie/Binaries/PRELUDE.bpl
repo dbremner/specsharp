@@ -858,8 +858,16 @@ axiom (∀ x: int, y: int, z: int •  { z*(x+y) }  z*(x+y) == z*x + z*y);
 axiom (∀ x: int, y: int, z: int •  { z*(x-y) }  z*(x-y) == z*x - z*y);
 #endif
 
+axiom (∀ x: int, y: int • { #and(x,y) }  #and(x,y) == #and(y,x));
+axiom (∀ x: int, y: int • { #or(x,y) }  #or(x,y) == #or(y,x));
+
 axiom (∀ x: int, y: int • { #and(x,y) }  0 ≤ x ∨ 0 ≤ y  ⇒  0 ≤ #and(x,y));
 axiom (∀ x: int, y: int • { #or(x,y) }  0 ≤ x ∧ 0 ≤ y  ⇒  0 ≤ #or(x,y) ∧ #or(x,y) ≤ x + y);
+
+axiom (∀ x: int • { #and(x,-1) }  #and(x,-1) == x);
+axiom (∀ x: int • { #and(x,0) }  #and(x,0) == 0);
+axiom (∀ x: int • { #or(x,-1) }  #or(x,-1) == -1);
+axiom (∀ x: int • { #or(x,0) }  #or(x,0) == x);
 
 axiom (∀ i:int • {#shl(i,0)} #shl(i,0) == i);
 axiom (∀ i:int, j:int • {#shl(i,j)}  1 ≤ j ⇒ #shl(i,j) == #shl(i,j-1) * 2);

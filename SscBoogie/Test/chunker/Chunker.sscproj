@@ -32,9 +32,12 @@
            TreatWarningsAsErrors="False"
            WarningLevel="4"
            RunProgramVerifier="True"
-           ReferenceTypesAreNonNullByDefault="False"
+           ReferenceTypesAreNonNullByDefault="True"
            RunProgramVerifierWhileEditing="True"
            ProgramVerifierCommandLineOptions=""
+           AllowPointersToManagedStructures="False"
+           CheckContractAdmissibility="False"
+           CheckPurity="False"
            />
         <Config Name="Release"
            AllowUnsafeBlocks="false"
