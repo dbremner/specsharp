@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "Chunker", "Chunker.sscproj", "{06ACDBB6-2419-496F-B48F-4426E5016C54}"
 EndProject
 Global

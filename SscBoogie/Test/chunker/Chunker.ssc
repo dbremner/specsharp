@@ -1,32 +1,29 @@
-public class Chunker
+class Chunker
 {
-  string! src;
-  public readonly int ChunkSize;
-  invariant 0 < ChunkSize;
+  string src;
+  int ChunkSize;
+  invariant 0 <= ChunkSize;
   int n;  // the number of characters returned so far
   invariant 0 <= n && n <= src.Length;
 
-  public string! NextChunk()
+  public string NextChunk()
     ensures result.Length <= ChunkSize;
   {
-    expose (this) {
-      string s;
-      if (n + ChunkSize <= src.Length) {
-        s = src.Substring(n, ChunkSize);
-      } else {
-        s = src.Substring(n);
-      }
-      n += s.Length;
-      return s;
+    string s;
+    if (n + ChunkSize <= src.Length) {
+      s = src.Substring(n, ChunkSize);
+    } else {
+      s = src.Substring(n);
     }
+    n += s.Length;
+    return s;
   }
-
-  public Chunker(string! source, int chunkSize)
-    requires 0 < chunkSize;
+    
+  public Chunker(string source, int chunkSize)
+    requires 0 <= chunkSize;
   {
     src = source;
     ChunkSize = chunkSize;
     n = 0;
-    base();
   }
 }
