@@ -75,3 +75,6 @@ register:
 	copy /y BoogiePlugin.dll "$(REG_DIR)"
 	copy /y BoogiePlugin.pdb "$(REG_DIR)"
 	copy /y PRELUDE.bpl "$(REG_DIR)"
+
+zip:
+  .\PrepareSpecSharpZip.bat
