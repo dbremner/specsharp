@@ -6298,7 +6298,7 @@ namespace Microsoft.Contracts{
     }
 
     [Pure][Reads(ReadsAttribute.Reads.Everything)]
-    public static bool IsConsistent([NotNull] object o){
+    public static bool IsConsistent([NotNull][Delayed] object o){
       Guard objectGuard = GetObjectGuard(o);
       if (objectGuard != null){
         return objectGuard.CanStartWriting;
@@ -6308,7 +6308,7 @@ namespace Microsoft.Contracts{
     }
 
     [Pure][Reads(ReadsAttribute.Reads.Everything)]
-    public static bool IsPeerConsistent([NotNull] object o){
+    public static bool IsPeerConsistent([NotNull][Delayed] object o){
       return IsConsistent(o);
     }
 
