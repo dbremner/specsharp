@@ -74,6 +74,7 @@ namespace Microsoft.Boogie
     public const string! BaseClassFunctionName   = "$BaseClass";
     public const string! IsMemberlessTypeName    = "$IsMemberlessType";
     public const string! ZeroInit                = "ZeroInit";
+    public const string! ZeroInitStruct          = "ZeroInitStruct";
     
     public const string! AsDirectSubClass        = "AsDirectSubClass";
     public const string! BeingContructedName     = "$BeingConstructed";

@@ -321,6 +321,8 @@ axiom (∀<alpha,beta> s: struct, f: Field alpha, f': Field beta, x: alpha •  
 function ZeroInit(s:struct, typ:TName) returns (bool);
 // TODO: ZeroInit needs axiomatization that says the fields of s are 0 or null or ZeroInit, depending on their types
 
+function ZeroInitStruct(TName): struct;
+axiom (∀ t: TName •  { ZeroInitStruct(t) } ZeroInit(ZeroInitStruct(t), t));
 
 //------------ Encode type information
 

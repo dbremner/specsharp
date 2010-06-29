@@ -983,6 +983,7 @@ namespace Microsoft.Boogie
       AsRefField,
       AsNonNullRefField,
       ZeroInit,
+      ZeroInitStruct,
       ElementType,
       ElementProxy,
       ElementProxyStruct,
@@ -1188,6 +1189,9 @@ namespace Microsoft.Boogie
         case BuiltinFunction.ZeroInit:
           assert args.Length == 2;
           return Function(Prelude.ZeroInit, Bpl.Type.Bool, args);
+        case BuiltinFunction.ZeroInitStruct:
+          assert args.Length == 1;
+          return Function(Prelude.ZeroInitStruct, StructType, args);
         case BuiltinFunction.ElementType:
           assert args.Length == 1;
           return Function(Prelude.ElementTypeName, TypeType, args);
