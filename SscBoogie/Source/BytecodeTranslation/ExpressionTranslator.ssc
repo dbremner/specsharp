@@ -524,13 +524,8 @@ namespace Microsoft.Boogie
           //HACK: could be the allocation of a struct (which 'hides' as a local .newObj of the right type)
           //code only deals with struct, and is not integrated with InstructionTranslator code.
           //Also, the ZeroInitStruct function needs an axiomatization.
-          if (local.Name.Name == ((!)Cci.StandardIds.NewObj).Name) {            
-            Bpl.Formal zeroInitArg = new Bpl.Formal(NoToken, new Bpl.TypedIdent(NoToken, "", sink.TypeType), true);
-            Bpl.Formal zeroInitRes = new Bpl.Formal(NoToken, new Bpl.TypedIdent(NoToken, "", sink.StructType), true);
-            Bpl.Function zeroInitFun = new Bpl.Function(NoToken, "ZeroInitStruct", new VariableSeq(zeroInitArg), zeroInitRes);
-            this.sink.AddDeclaration(zeroInitFun, true);                                                
-            
-            Bpl.Expr zeroInitCall = sink.Function("ZeroInitStruct", sink.StructType, this.sink.TypeNameExpression(local.Type));          
+          if (local.Name.Name == ((!)Cci.StandardIds.NewObj).Name) {
+            Bpl.Expr zeroInitCall = sink.Function(Sink.BuiltinFunction.ZeroInitStruct, this.sink.TypeNameExpression(local.Type));          
             return zeroInitCall;
           }
           
