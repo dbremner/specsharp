@@ -39,7 +39,7 @@ for %%f in (
   Microsoft.Build.Utilities.Contracts.dll
   PresentationCore.Contracts.dll
   PresentationFramework.Contracts.dll
-  Clean.cmd RegisterLKG.ccnet.cmd RegisterLKG.cmd UpdateLKG.cmd
+  Clean.cmd RegisterLKG.ccnet.cmd RegisterLKG.cmd Register.cmd UpdateLKG.cmd
   Microsoft.SpecSharp.resources.dll
   PropertyPageUI.dll
   TaskManagerUI.dll
