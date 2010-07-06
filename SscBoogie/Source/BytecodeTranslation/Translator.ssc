@@ -796,16 +796,13 @@ namespace Microsoft.Boogie
         if (CommandLineOptions.Clo.UseArithDistributionAxioms) {
           defines.Add("ArithDistributionAxioms");
         }
-        using (System.IO.Stream stream = new System.IO.FileStream(preludePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
-        {
-          BoogiePL.Buffer.Fill(new System.IO.StreamReader(stream), defines);
-          BoogiePL.Scanner.Init("<PRELUDE.bpl>");
-          Bpl.Program prel;
-          int errorCount = BoogiePL.Parser.Parse(out prel);
-          if (prel == null || errorCount > 0) 
-            prelude = new Bpl.Program();
-          else
-            prelude = prel;
+
+        Bpl.Program prel;
+        int errorCount = Bpl.Parser.Parse(preludePath, defines, out prel);
+        if (prel == null || errorCount > 0) {
+          prelude = new Bpl.Program();
+        } else {
+          prelude = prel;
         }
 
         // we already resolve the prelude so that the meaning of type synonyms is known
