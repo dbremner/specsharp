@@ -1,11 +1,5 @@
-# Aste started: 2010-07-10 19:00:07
+# Aste started: 2010-07-11 01:00:03
 # Host id: Boogiebox
-# [2010-07-10 19:00:13] SpecSharp revision: 54390
-# [2010-07-10 19:00:17] Boogie revision: 54986
-# [2010-07-10 19:00:21] SscBoogie revision: 54839
-[2010-07-10 19:00:53] [Error] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build Debug
-
-    21>Project : error PRJ0019: A tool returned an error code from "Performing Makefile project actions"
-    NMAKE : fatal error U1073:
-    2 error
-    1 failed
+# [2010-07-11 01:00:07] SpecSharp revision: 54390
+# [2010-07-11 01:00:10] Boogie revision: 54986
+# [2010-07-11 01:00:13] SscBoogie revision: 54839
