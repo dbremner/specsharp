@@ -31,6 +31,7 @@ all:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.PowerPack.dll"
 	rem Things needed to build and run SscBoogie:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ssc.exe"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.Contracts.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Contracts.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Framework.dll"
