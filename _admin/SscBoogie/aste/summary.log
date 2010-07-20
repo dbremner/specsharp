@@ -1,14 +1,25 @@
-# Aste started: 2010-07-16 18:08:39
+# Aste started: 2010-07-20 07:00:07
 # Host id: Boogiebox
-# [2010-07-16 18:10:47] SpecSharp revision: 54390
-# [2010-07-16 18:11:43] Boogie revision: 55161
-# [2010-07-16 18:12:08] SscBoogie revision: 54839
-[2010-07-16 18:12:41] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-07-20 07:02:14] SpecSharp revision: 54390
+# [2010-07-20 07:03:11] Boogie revision: 55267
+# [2010-07-20 07:03:39] SscBoogie revision: 54839
+[2010-07-20 07:04:04] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
 
     warning CS1668
     warning CS1668
-[2010-07-16 18:38:36] 0 out of 25 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
-# [2010-07-16 18:40:21] Released nightly of Boogie
-[2010-07-16 19:58:42] 18 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
-['test3', 'test5', 'test6', 'test10', 'test11', 'aitest9', 'objinv', 'Bag', 'chunker', 'bob', 'iterators', 'test12', 'test13', 'BoundedStack', 'textbook', 'WindowsCard', 'PrettySx', 'test16']
-# [2010-07-16 20:01:46] Released nightly of SscBoogie
+[2010-07-20 07:05:52] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
+
+    D:\Temp\aste\Boogie\Source\AbsInt\ExprFactories.cs(111,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\AbsInt\ExprFactories.cs(290,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\AbsInt\ExprFactories.cs(308,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\AbsInt\LoopInvariantsOnDemand.cs(44,7): warning CC1032: Method 'Microsoft.Boogie.AbstractInterpretation.FreeVariablesVisitor.Default(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IExpr)' overrides 'Microsoft.AbstractInterpretationFramework.ExprVisitor.Default(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IExpr)', thus cannot add Requires.
+    D:\Temp\aste\Boogie\Source\AbsInt\LoopInvariantsOnDemand.cs(65,7): warning CC1032: Method 'Microsoft.Boogie.AbstractInterpretation.FreeVariablesVisitor.VisitFunApp(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunApp)' overrides 'Microsoft.AbstractInterpretationFramework.ExprVisitor.VisitFunApp(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunApp)', thus cannot add Requires.
+    D:\Temp\aste\Boogie\Source\AbsInt\LoopInvariantsOnDemand.cs(74,7): warning CC1032: Method 'Microsoft.Boogie.AbstractInterpretation.FreeVariablesVisitor.VisitFunction(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunction)' overrides 'Microsoft.AbstractInterpretationFramework.ExprVisitor.VisitFunction(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunction)', thus cannot add Requires.
+    warning CS0162
+    warning CS0162
+    warning CS0162
+[2010-07-20 07:30:11] 0 out of 25 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+# [2010-07-20 07:31:54] Released nightly of Boogie
+[2010-07-20 08:06:36] 24 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
+['test3', 'test5', 'test6', 'test8', 'test9', 'test10', 'test11', 'aitest9', 'quanttest', 'framecond', 'objinv', 'Bag', 'chunker', 'bob', 'iterators', 'test12', 'test13', 'BoundedStack', 'textbook', 'WindowsCard', 'PrettySx', 'test16', 'test18', 'test22']
+# [2010-07-20 08:09:40] Released nightly of SscBoogie
