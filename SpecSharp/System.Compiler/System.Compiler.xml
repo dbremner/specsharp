@@ -4,50 +4,43 @@
         <name>System.Compiler</name>
     </assembly>
     <members>
-        <member name="T:System.Compiler.Metadata.MemoryMappedFile">
+        <member name="T:System.Compiler.DoubleVisitor">
             <summary>
-            Public only for use by the Framework. Do not use this class.
-            Well, if you really really must, use it only if you can tolerate keeping the file locked for at least as long as any Identifier
-            derived from the file stays alive.
+            Base for all classes that process two IR trees, possibily transforming one of them.
+            </summary>
+        </member>
+        <member name="M:System.Compiler.DoubleVisitor.Visit(System.Compiler.Node,System.Compiler.Node)">
+            <summary>
+            Switches on node.NodeType to call a visitor method that has been specialized for node.
+            </summary>
+            <returns> Returns null if node1 is null. Otherwise returns an updated node (possibly a different object).</returns>
+        </member>
+        <member name="M:System.Compiler.DoubleVisitor.TransferStateTo(System.Compiler.DoubleVisitor)">
+            <summary>
+            Transfers the state from one visitor to another. This enables separate visitor instances to cooperative process a single IR.
+            </summary>
+        </member>
+        <member name="T:System.Compiler.StandardDoubleVisitor">
+            <summary>
+            Walks an IR, mutuating it into a new form
             </summary>   
         </member>
-        <member name="T:System.Compiler.ISourceText">
+        <member name="T:System.Compiler.Comparer">
             <summary>
-            This interface can be used to link an arbitrary source text provider into an IR tree via a DocumentText instance.
+            Performs a deep value comparison between two IR trees of the same type.
             </summary>
         </member>
-        <member name="M:System.Compiler.ISourceText.Substring(System.Int32,System.Int32)">
+        <member name="M:System.Compiler.Comparer.GetDifferences(System.Compiler.Node,System.Compiler.Node)">
             <summary>
-            Retrieves a substring from this instance. The substring starts with the character at the specified index and has a specified length.
+            Gets a difference object representing the differences between node1 and node2. Caches the result and returns it for subsequent calls.
+            I.e. this is a caching factory method for Differences instances. Calls GetNewDifferences to construct new instances when needed.
             </summary>
         </member>
-        <member name="M:System.Compiler.ISourceText.MakeCollectible">
+        <member name="T:System.Compiler.Unstacker">
             <summary>
-            Indicates that the text has been fully scanned and futher references to the text are expected to be infrequent.
-            The underlying object can now choose to clear cached information if it comes under resource pressure.
-            </summary>
-        </member>
-        <member name="P:System.Compiler.ISourceText.Length">
-            <summary>
-            The number of characters in the source text. 
-            A "character" corresponds to a System.Char which is actually a Unicode UTF16 code point to be precise.
-            </summary>
-        </member>
-        <member name="P:System.Compiler.ISourceText.Item(System.Int32)">
-            <summary>
-            Retrieves the character at the given position. The first character is at position zero.
-            </summary>
-        </member>
-        <member name="P:System.Compiler.ISourceTextBuffer.Buffer">
-            <summary>
-            Returns null unless the implementer is based on an ASCII buffer that stays alive as long at the implementer itself.
-            An implementer that returns a non-null value is merely a wrapper to keep the buffer alive. No further methods will
-            be called on the interface in this case.
-            </summary>
-        </member>
-        <member name="T:System.Compiler.Specializer">
-            <summary>
-            This class specializes a normalized IR by replacing type parameters with type arguments.
+            Walks a normalized IR, removing push, pop and dup instructions, replacing them with references to local variables.
+            Requires all Blocks to be basic blocks. I.e. any transfer statement is always the last statement in a block.
+            (This precondition is established by Reader but not by Normalizer.)
             </summary>
         </member>
         <member name="T:System.Compiler.StandardVisitor">
@@ -83,6 +76,75 @@
             [The type viewer acts like the identity function, except for dialects (e.g. Extensible Sing#)
             that allow extensions and differing views of types.]
             null can be returned to represent an identity-function type viewer.
+            </summary>
+        </member>
+        <member name="T:System.Compiler.IParser">
+            <summary>
+            Provides methods for invoking a parser to obtain AST nodes corresponding to various types of code snippets.
+            </summary>
+        </member>
+        <member name="M:System.Compiler.IParser.ParseCompilationUnit(System.Compiler.CompilationUnit)">
+            <summary>
+            Parses the parser's source document as an entire compilation unit and adds the resulting AST nodes to the
+            Nodes list of the given CompilationUnit instance.
+            </summary>
+            <param name="compilationUnit">The compilation unit whose Nodes list will receive the AST root node(s) that the parser produces.</param>
+        </member>
+        <member name="T:System.Compiler.IParserFactory">
+            <summary>Provides a way for general purpose code to construct parsers using an standard interface. 
+            Useful for base classes without complete knowledge of all the different kinds of parsers that might be used in an application.</summary>
+        </member>
+        <member name="T:System.Compiler.Duplicator">
+            <summary>
+            Walks an IR, duplicating it while fixing up self references to point to the duplicate IR. Only good for one duplication. 
+            Largest unit of duplication is a single module.
+            </summary>
+        </member>
+        <member name="M:System.Compiler.Duplicator.#ctor(System.Compiler.Module,System.Compiler.TypeNode)">
+            <param name="module">The module into which the duplicate IR will be grafted.</param>
+            <param name="type">The type into which the duplicate Member will be grafted. Ignored if entire type, or larger unit is duplicated.</param>
+        </member>
+        <member name="M:System.Compiler.MemberList.Remove(System.Compiler.Member)">
+            <summary>
+            Removes member (by nulling slot) if present
+            </summary>
+        </member>
+        <member name="F:System.Compiler.SystemAssemblyLocation.SystemAssemblyCache">
+            <summary>
+            Allows compilers to share an assembly cache for loading runtime and system dlls.
+            </summary>
+        </member>
+        <member name="M:System.Compiler.TargetPlatform.SetToPostV2(System.String)">
+            <summary>
+            Use this to set the target platform to a platform with a superset of the platform assemblies in version 2.0, but
+            where the public key tokens and versions numbers are determined by reading in the actual assemblies from
+            the supplied location. Only assemblies recognized as platform assemblies in version 2.0 will be unified.
+            </summary>
+        </member>
+        <member name="M:System.Compiler.TargetPlatform.SetToPostV1_1(System.String)">
+            <summary>
+            Use this to set the target platform to a platform with a superset of the platform assemblies in version 1.1, but
+            where the public key tokens and versions numbers are determined by reading in the actual assemblies from
+            the supplied location. Only assemblies recognized as platform assemblies in version 1.1 will be unified.
+            </summary>
+        </member>
+        <member name="M:System.Compiler.SystemTypes.UnifyMsCorlibReferences(System.Compiler.AssemblyNode)">
+            <summary>
+            Finds assembly references to mscorlib in assem and redirects them to SystemTypes.SystemAssembly
+            </summary>
+        </member>
+        <member name="T:System.Compiler.Specializer">
+            <summary>
+            This class specializes a normalized IR by replacing type parameters with type arguments.
+            </summary>
+        </member>
+        <member name="M:System.Compiler.GlobalAssemblyCache.Contains(System.Uri)">
+            <param name="codeBaseUri">Uri pointing to the assembly</param>
+        </member>
+        <member name="M:System.Compiler.GlobalAssemblyCache.GetLocation(System.Compiler.AssemblyReference)">
+            <summary>
+            Returns the original location of the corresponding assembly if available, otherwise returns the location of the shadow copy.
+            If the corresponding assembly is not in the GAC, null is returned.
             </summary>
         </member>
         <member name="M:System.Compiler.Ir2md.VisitLocalDeclarationsStatement(System.Compiler.LocalDeclarationsStatement)">
@@ -673,80 +735,44 @@
         <member name="P:System.Compiler.Module.Types">
             <summary>The types contained in this module or assembly.</summary>
         </member>
-        <member name="T:System.Compiler.Unstacker">
-            <summary>
-            Walks a normalized IR, removing push, pop and dup instructions, replacing them with references to local variables.
-            Requires all Blocks to be basic blocks. I.e. any transfer statement is always the last statement in a block.
-            (This precondition is established by Reader but not by Normalizer.)
-            </summary>
-        </member>
         <member name="T:System.Compiler.Metadata.SynchronizedWeakDictionary">
             <summary>
             A thin wrapper for a synchronized System.Collections.Hashtable that inserts and strips WeakReference wrappers for the values stored in the table.
             </summary>
         </member>
-        <member name="T:System.Compiler.DoubleVisitor">
+        <member name="T:System.Compiler.ISourceText">
             <summary>
-            Base for all classes that process two IR trees, possibily transforming one of them.
+            This interface can be used to link an arbitrary source text provider into an IR tree via a DocumentText instance.
             </summary>
         </member>
-        <member name="M:System.Compiler.DoubleVisitor.Visit(System.Compiler.Node,System.Compiler.Node)">
+        <member name="M:System.Compiler.ISourceText.Substring(System.Int32,System.Int32)">
             <summary>
-            Switches on node.NodeType to call a visitor method that has been specialized for node.
-            </summary>
-            <returns> Returns null if node1 is null. Otherwise returns an updated node (possibly a different object).</returns>
-        </member>
-        <member name="M:System.Compiler.DoubleVisitor.TransferStateTo(System.Compiler.DoubleVisitor)">
-            <summary>
-            Transfers the state from one visitor to another. This enables separate visitor instances to cooperative process a single IR.
+            Retrieves a substring from this instance. The substring starts with the character at the specified index and has a specified length.
             </summary>
         </member>
-        <member name="T:System.Compiler.StandardDoubleVisitor">
+        <member name="M:System.Compiler.ISourceText.MakeCollectible">
             <summary>
-            Walks an IR, mutuating it into a new form
-            </summary>   
-        </member>
-        <member name="M:System.Compiler.MemberList.Remove(System.Compiler.Member)">
-            <summary>
-            Removes member (by nulling slot) if present
+            Indicates that the text has been fully scanned and futher references to the text are expected to be infrequent.
+            The underlying object can now choose to clear cached information if it comes under resource pressure.
             </summary>
         </member>
-        <member name="T:System.Compiler.Comparer">
+        <member name="P:System.Compiler.ISourceText.Length">
             <summary>
-            Performs a deep value comparison between two IR trees of the same type.
+            The number of characters in the source text. 
+            A "character" corresponds to a System.Char which is actually a Unicode UTF16 code point to be precise.
             </summary>
         </member>
-        <member name="M:System.Compiler.Comparer.GetDifferences(System.Compiler.Node,System.Compiler.Node)">
+        <member name="P:System.Compiler.ISourceText.Item(System.Int32)">
             <summary>
-            Gets a difference object representing the differences between node1 and node2. Caches the result and returns it for subsequent calls.
-            I.e. this is a caching factory method for Differences instances. Calls GetNewDifferences to construct new instances when needed.
+            Retrieves the character at the given position. The first character is at position zero.
             </summary>
         </member>
-        <member name="T:System.Compiler.IParser">
+        <member name="P:System.Compiler.ISourceTextBuffer.Buffer">
             <summary>
-            Provides methods for invoking a parser to obtain AST nodes corresponding to various types of code snippets.
+            Returns null unless the implementer is based on an ASCII buffer that stays alive as long at the implementer itself.
+            An implementer that returns a non-null value is merely a wrapper to keep the buffer alive. No further methods will
+            be called on the interface in this case.
             </summary>
-        </member>
-        <member name="M:System.Compiler.IParser.ParseCompilationUnit(System.Compiler.CompilationUnit)">
-            <summary>
-            Parses the parser's source document as an entire compilation unit and adds the resulting AST nodes to the
-            Nodes list of the given CompilationUnit instance.
-            </summary>
-            <param name="compilationUnit">The compilation unit whose Nodes list will receive the AST root node(s) that the parser produces.</param>
-        </member>
-        <member name="T:System.Compiler.IParserFactory">
-            <summary>Provides a way for general purpose code to construct parsers using an standard interface. 
-            Useful for base classes without complete knowledge of all the different kinds of parsers that might be used in an application.</summary>
-        </member>
-        <member name="T:System.Compiler.Duplicator">
-            <summary>
-            Walks an IR, duplicating it while fixing up self references to point to the duplicate IR. Only good for one duplication. 
-            Largest unit of duplication is a single module.
-            </summary>
-        </member>
-        <member name="M:System.Compiler.Duplicator.#ctor(System.Compiler.Module,System.Compiler.TypeNode)">
-            <param name="module">The module into which the duplicate IR will be grafted.</param>
-            <param name="type">The type into which the duplicate Member will be grafted. Ignored if entire type, or larger unit is duplicated.</param>
         </member>
         <member name="T:System.Compiler.CollectibleSourceText">
             <summary>
@@ -1762,6 +1788,13 @@
             that support non-identity-function type viewers, e.g. Extensible Sing#.
             </summary>
         </member>
+        <member name="T:System.Compiler.Metadata.MemoryMappedFile">
+            <summary>
+            Public only for use by the Framework. Do not use this class.
+            Well, if you really really must, use it only if you can tolerate keeping the file locked for at least as long as any Identifier
+            derived from the file stays alive.
+            </summary>   
+        </member>
         <member name="T:System.Compiler.BinaryWriter">
             <summary>
             High performance replacement for System.IO.BinaryWriter.
@@ -1770,39 +1803,6 @@
         <member name="T:System.Compiler.BetterPath">
             <summary>
             A version of System.IO.Path that does not throw exceptions.
-            </summary>
-        </member>
-        <member name="M:System.Compiler.GlobalAssemblyCache.Contains(System.Uri)">
-            <param name="codeBaseUri">Uri pointing to the assembly</param>
-        </member>
-        <member name="M:System.Compiler.GlobalAssemblyCache.GetLocation(System.Compiler.AssemblyReference)">
-            <summary>
-            Returns the original location of the corresponding assembly if available, otherwise returns the location of the shadow copy.
-            If the corresponding assembly is not in the GAC, null is returned.
-            </summary>
-        </member>
-        <member name="F:System.Compiler.SystemAssemblyLocation.SystemAssemblyCache">
-            <summary>
-            Allows compilers to share an assembly cache for loading runtime and system dlls.
-            </summary>
-        </member>
-        <member name="M:System.Compiler.TargetPlatform.SetToPostV2(System.String)">
-            <summary>
-            Use this to set the target platform to a platform with a superset of the platform assemblies in version 2.0, but
-            where the public key tokens and versions numbers are determined by reading in the actual assemblies from
-            the supplied location. Only assemblies recognized as platform assemblies in version 2.0 will be unified.
-            </summary>
-        </member>
-        <member name="M:System.Compiler.TargetPlatform.SetToPostV1_1(System.String)">
-            <summary>
-            Use this to set the target platform to a platform with a superset of the platform assemblies in version 1.1, but
-            where the public key tokens and versions numbers are determined by reading in the actual assemblies from
-            the supplied location. Only assemblies recognized as platform assemblies in version 1.1 will be unified.
-            </summary>
-        </member>
-        <member name="M:System.Compiler.SystemTypes.UnifyMsCorlibReferences(System.Compiler.AssemblyNode)">
-            <summary>
-            Finds assembly references to mscorlib in assem and redirects them to SystemTypes.SystemAssembly
             </summary>
         </member>
     </members>
