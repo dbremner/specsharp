@@ -29,9 +29,9 @@ all:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\UnivBackPred2.smt"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.Core.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.PowerPack.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.Contracts.dll"
 	rem Things needed to build and run SscBoogie:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ssc.exe"
-	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.Contracts.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Contracts.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Framework.dll"
@@ -66,6 +66,7 @@ register:
 	copy /y UnivBackPred2.smt "$(REG_DIR)"
 	copy /y FSharp.Core.dll "$(REG_DIR)"
 	copy /y FSharp.PowerPack.dll "$(REG_DIR)"
+	copy /y Microsoft.Contracts.dll "$(REG_DIR)"
 	rem New things built here:
 	copy /y Prelude.dll "$(REG_DIR)"
 	copy /y Prelude.pdb "$(REG_DIR)"
