@@ -68,6 +68,7 @@ for %%f in (
   VCGeneration.dll VCGeneration.pdb
   TypedUnivBackPred2.sx UnivBackPred2.sx UnivBackPred2.smt
   FSharp.Core.dll
+  Microsoft.Contracts.dll
 ) do (
   copy %SSCBOOGIE_DIR%\%%f %DEST_DIR%
 )
