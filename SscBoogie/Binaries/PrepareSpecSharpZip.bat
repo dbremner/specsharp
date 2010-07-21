@@ -2,7 +2,7 @@
 setlocal
 
 set SSCBOOGIE_DIR=.
-set COMPILER_DIR=..\..\SpecSharp\Microsoft.SpecSharp\LastKnownGood9
+set COMPILER_DIR=..\..\SpecSharp\Microsoft.SpecSharp\Registration
 set DEST_DIR=export
 
 if exist %DEST_DIR%\1033 del /q %DEST_DIR%\1033\*
@@ -28,25 +28,23 @@ for %%f in (
   PropertyPage.dll PropertyPage.pdb
   System.Compiler.Contracts.dll System.Compiler.Contracts.pdb
   System.Compiler.Framework.Contracts.dll System.Compiler.Framework.Contracts.pdb
-  System.Compiler.Framework.dll System.Compiler.Framework.pdb System.Compiler.Framework.xml
+  System.Compiler.Framework.dll System.Compiler.Framework.pdb
   System.Compiler.Runtime.dll System.Compiler.Runtime.pdb
-  System.Compiler.dll System.Compiler.pdb System.Compiler.xml
+  System.Compiler.dll System.Compiler.pdb
   System.Contracts.dll System.Contracts.pdb
   System.Xml.Contracts.dll System.Xml.Contracts.pdb
   TaskManager.dll TaskManager.pdb
   ssc.exe ssc.pdb
-  LastKnownGood.vcproj
-  Microsoft.Build.Utilities.Contracts.dll
-  PresentationCore.Contracts.dll
-  PresentationFramework.Contracts.dll
-  Clean.cmd RegisterLKG.ccnet.cmd RegisterLKG.cmd Register.cmd UpdateLKG.cmd
-  Microsoft.SpecSharp.resources.dll
-  PropertyPageUI.dll
-  TaskManagerUI.dll
 ) do (
   copy %COMPILER_DIR%\%%f %DEST_DIR%
 )
-REM ...and the 1033 directory --------------------
+REM ...and copy these to a different name --------------------
+for %%f in (
+  Clean.cmd Register.cmd
+) do (
+  copy %COMPILER_DIR%\Export%%f %DEST_DIR%\%%f
+)
+REM ...and copy the 1033 directory and its contents --------------------
 for %%f in (
   Microsoft.SpecSharp.resources.dll
   PropertyPageUI.dll

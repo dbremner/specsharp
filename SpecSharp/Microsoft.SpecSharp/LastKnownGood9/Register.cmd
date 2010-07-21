@@ -12,7 +12,7 @@ if "%1"=="Clean" (
 	if "%1"=="RegisterLKG" (
 		set OPTS=/nologo /codebase
 	) else (
-		echo "Register.cmd <Clean|Register> [path to regasm]"
+		echo "Register.cmd <Clean|RegisterLKG> [path to regasm]"
 		set ERRLVL=1
 		goto :quit
 	)
