@@ -1,25 +1,110 @@
-# Aste started: 2010-07-23 07:00:03
+# Aste started: 2010-07-31 07:00:05
 # Host id: Boogiebox
-# [2010-07-23 07:02:07] SpecSharp revision: 55320
-# [2010-07-23 07:03:03] Boogie revision: 55452
-# [2010-07-23 07:03:25] SscBoogie revision: 55325
-[2010-07-23 07:03:49] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-07-31 07:02:13] SpecSharp revision: 55320
+# [2010-07-31 07:03:06] Boogie revision: 55909
+# [2010-07-31 07:03:27] SscBoogie revision: 55325
+[2010-07-31 07:03:54] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
 
     warning CS1668
     warning CS1668
-[2010-07-23 07:05:29] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
+[2010-07-31 07:05:29] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
 
+    D:\Temp\aste\Boogie\Source\VCGeneration\VC.cs(4223,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\VCGeneration\VC.cs(720,15): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\VCGeneration\VCDoomed.cs(742,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\VCGeneration\VCDoomed.cs(1084,11): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\VCGeneration\Wlp.cs(77,8): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\VCGeneration\Check.cs(379,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\VCGeneration\Check.cs(445,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\VCGeneration\VC.cs(856,29): warning CS0649: Field 'VC.VCGen.Split.first_assert' is never assigned to, and will always have its default value null
+    D:\Temp\aste\Boogie\Source\VCGeneration\DoomCheck.cs(177,22): warning CS0169: The field 'VC.DoomCheck._tmpUseFreshBVars' is never used
+    D:\Temp\aste\Boogie\Source\Provers\Simplify\Prover.cs(65,9): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\Provers\Simplify\Prover.cs(339,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\Provers\Simplify\Prover.cs(364,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\Provers\Simplify\Prover.cs(380,7): warning CS0162: Unreachable code detected
+    D:\Temp\aste\Boogie\Source\Provers\Simplify\Prover.cs(403,7): warning CS0162: Unreachable code detected
     D:\Temp\aste\Boogie\Source\AbsInt\ExprFactories.cs(111,7): warning CS0162: Unreachable code detected
     D:\Temp\aste\Boogie\Source\AbsInt\ExprFactories.cs(290,7): warning CS0162: Unreachable code detected
     D:\Temp\aste\Boogie\Source\AbsInt\ExprFactories.cs(308,7): warning CS0162: Unreachable code detected
     D:\Temp\aste\Boogie\Source\AbsInt\LoopInvariantsOnDemand.cs(44,7): warning CC1032: Method 'Microsoft.Boogie.AbstractInterpretation.FreeVariablesVisitor.Default(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IExpr)' overrides 'Microsoft.AbstractInterpretationFramework.ExprVisitor.Default(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IExpr)', thus cannot add Requires.
     D:\Temp\aste\Boogie\Source\AbsInt\LoopInvariantsOnDemand.cs(65,7): warning CC1032: Method 'Microsoft.Boogie.AbstractInterpretation.FreeVariablesVisitor.VisitFunApp(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunApp)' overrides 'Microsoft.AbstractInterpretationFramework.ExprVisitor.VisitFunApp(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunApp)', thus cannot add Requires.
     D:\Temp\aste\Boogie\Source\AbsInt\LoopInvariantsOnDemand.cs(74,7): warning CC1032: Method 'Microsoft.Boogie.AbstractInterpretation.FreeVariablesVisitor.VisitFunction(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunction)' overrides 'Microsoft.AbstractInterpretationFramework.ExprVisitor.VisitFunction(optional(Microsoft.Contracts.NonNullType) Microsoft.AbstractInterpretationFramework.IFunction)', thus cannot add Requires.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(38,25): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(190,73): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(226,25): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(283,13): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(357,25): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(470,48): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(571,76): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(614,25): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\BoogieDriver\BoogieDriver.cs(732,7): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\BoogieDriver\cce.cs'.
     warning CS0162
     warning CS0162
     warning CS0162
-[2010-07-23 07:29:16] 0 out of 25 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
-# [2010-07-23 07:30:58] Released nightly of Boogie
-[2010-07-23 08:49:31] 18 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
-['test3', 'test5', 'test6', 'test10', 'test11', 'aitest9', 'objinv', 'Bag', 'chunker', 'bob', 'iterators', 'test12', 'test13', 'BoundedStack', 'textbook', 'WindowsCard', 'PrettySx', 'test16']
-# [2010-07-23 08:52:43] Released nightly of SscBoogie
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0649
+    warning CS0169
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0162
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+[2010-07-31 07:05:52] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Dafny.sln /Build Debug
+
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(39,24): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(187,73): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(220,21): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(302,13): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(371,25): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(426,23): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(457,44): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(572,76): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(617,48): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(735,7): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\VCGeneration\bin\Debug\VCGeneration.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+    warning CS0436
+[2010-07-31 07:29:19] 0 out of 26 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+# [2010-07-31 07:31:03] Released nightly of Boogie
+[2010-07-31 07:31:57] [Error] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SscBoogie.sln /Build Debug
+
+    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(32,34): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.BlockSeq')
+    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(65,36): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<string>')
+    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(73,52): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CallCmd')
+    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(74,37): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Requires')
+    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(105,22): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.AssertCmd')
+    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(87,37): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Ensures')
+    D:\Temp\aste\SscBoogie\Source\CompilerPlugin\Plugin.ssc(430,35): error CS0121: The call is ambiguous between the following methods or properties: 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, out System.Collections.Generic.List<Microsoft.Boogie.Counterexample>)' and 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, Microsoft.Boogie.VerifierCallback)'
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(552,23): error CS0121: The call is ambiguous between the following methods or properties: 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, out System.Collections.Generic.List<Microsoft.Boogie.Counterexample>)' and 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, Microsoft.Boogie.VerifierCallback)'
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(614,17): error CS0121: The call is ambiguous between the following methods or properties: 'System.Collections.Generic.List<Microsoft.Boogie.Counterexample!>.Sort(System.Collections.Generic.IComparer<Microsoft.Boogie.Counterexample!>)' and 'System.Collections.Generic.List<Microsoft.Boogie.Counterexample!>.Sort(System.Comparison<Microsoft.Boogie.Counterexample!>)'
+    warning CS2614
+    warning CS2614
+    warning CS2614
+    warning CS2614
+    warning CS2614
+    warning CS2614
+    1 error
+    2 error
+    2 failed
