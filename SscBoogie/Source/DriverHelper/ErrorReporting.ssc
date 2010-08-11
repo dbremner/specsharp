@@ -19,7 +19,7 @@ namespace Microsoft.Boogie
 
   public class ErrorReporting {
     public void errorReportingWithTrace(TranslatedProgram! translatedProgram, 
-                      System.Collections.Generic.List<Microsoft.Boogie.Counterexample!> errors,
+                      System.Collections.Generic.List<Microsoft.Boogie.Counterexample> errors,
                       Implementation! impl) {
       if (errors != null){
         foreach (Counterexample! error in errors)
@@ -29,7 +29,7 @@ namespace Microsoft.Boogie
           if (CommandLineOptions.Clo.ErrorTrace > 0) {
             List<Cci.CfgBlock!>! l = new List<Cci.CfgBlock!>();
             bool lastBlockHasSourceLocation = false;
-            foreach (Block! b in error.Trace) {
+            foreach (Block! b in (!)error.Trace) {
               lastBlockHasSourceLocation = false;
               string blockLabel = b.Label;
               if (blockLabel == null) {
@@ -62,7 +62,7 @@ namespace Microsoft.Boogie
             }
           }
           
-          foreach (string! info in error.relatedInformation) {
+          foreach (string! info in (!)error.relatedInformation) {
             trace += "\r\n       " + info;
           }
           
@@ -70,8 +70,8 @@ namespace Microsoft.Boogie
           if (error is CallCounterexample)
           {
               CallCounterexample! error_ = (CallCounterexample!) error;
-              Cci.Node offendingNode = (Cci.Node!) error_.FailingCall.ErrorData;
-              string msg = (string!)error_.FailingRequires.ErrorData;
+              Cci.Node offendingNode = (Cci.Node!) ((!)error_.FailingCall).ErrorData;
+              string msg = (string!)((!)error_.FailingRequires).ErrorData;
               msg += trace;
               translatedProgram.HandleError(offendingNode, msg);
               foreach (Cci.Node! relPosNode in relatedPositionNodesList) {
@@ -84,7 +84,7 @@ namespace Microsoft.Boogie
           else if (error is ReturnCounterexample)
           {
               ReturnCounterexample! error_ = (ReturnCounterexample!) error;
-              string msg = (string!)error_.FailingEnsures.ErrorData;
+              string msg = (string!)((!)error_.FailingEnsures).ErrorData;
               if (impl.Name.Contains("Boogie.ContractConsistencyCheck.")) {
                 msg = msg.Replace("Boogie.ContractConsistencyCheck.", "");
                 msg = "Could not establish consistency of pure method contract. " + msg;                
@@ -102,7 +102,7 @@ namespace Microsoft.Boogie
           else // (error is AssertCounterExample)
           {                    
               AssertCounterexample! error_ = (AssertCounterexample!) error;
-              assume error_.FailingAssert.ErrorData is Translator.ErrorPair;
+              assume ((!)error_.FailingAssert).ErrorData is Translator.ErrorPair;
               Translator.ErrorPair! ep = (Translator.ErrorPair)error_.FailingAssert.ErrorData;
               string reason = ep.reason;
               if (impl.Name.Contains("Boogie.ContractConsistencyCheck.")) {
