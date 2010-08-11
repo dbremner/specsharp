@@ -1,13 +1,13 @@
-# Aste started: 2010-08-10 07:00:03
+# Aste started: 2010-08-11 07:00:03
 # Host id: Boogiebox
-# [2010-08-10 07:02:13] SpecSharp revision: 55320
-# [2010-08-10 07:03:10] Boogie revision: 56292
-# [2010-08-10 07:03:35] SscBoogie revision: 55325
-[2010-08-10 07:04:00] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-08-11 07:02:05] SpecSharp revision: 55320
+# [2010-08-11 07:03:03] Boogie revision: 56317
+# [2010-08-11 07:03:26] SscBoogie revision: 56316
+[2010-08-11 07:03:50] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
 
     warning CS1668
     warning CS1668
-[2010-08-10 07:05:26] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
+[2010-08-11 07:05:18] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
 
     D:\Temp\aste\Boogie\Source\VCGeneration\VC.cs(4271,7): warning CS0162: Unreachable code detected
     D:\Temp\aste\Boogie\Source\VCGeneration\VC.cs(717,15): warning CS0162: Unreachable code detected
@@ -61,7 +61,7 @@
     warning CS0436
     warning CS0436
     warning CS0436
-[2010-08-10 07:05:32] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Dafny.sln /Build Debug
+[2010-08-11 07:05:25] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com Dafny.sln /Build Debug
 
     D:\Temp\aste\Boogie\Source\Dafny\Parser.cs(760,18): warning CS0168: The variable 's' is declared but never used
     D:\Temp\aste\Boogie\Source\Dafny\Parser.cs(1340,72): warning CS0168: The variable 'id' is declared but never used
@@ -95,26 +95,9 @@
     warning CS0436
     warning CS0436
     warning CS0436
-[2010-08-10 07:33:36] 1 out of 27 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+[2010-08-11 07:33:04] 1 out of 27 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
 ['bitvectors']
-# [2010-08-10 07:35:22] Released nightly of Boogie
-[2010-08-10 07:36:12] [Error] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SscBoogie.sln /Build Debug
-
-    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(32,34): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.BlockSeq')
-    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(65,36): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<string>')
-    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(73,52): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CallCmd')
-    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(74,37): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Requires')
-    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(105,22): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.AssertCmd')
-    D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(87,37): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Ensures')
-    D:\Temp\aste\SscBoogie\Source\CompilerPlugin\Plugin.ssc(430,35): error CS0121: The call is ambiguous between the following methods or properties: 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, out System.Collections.Generic.List<Microsoft.Boogie.Counterexample>)' and 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, Microsoft.Boogie.VerifierCallback)'
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(552,23): error CS0121: The call is ambiguous between the following methods or properties: 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, out System.Collections.Generic.List<Microsoft.Boogie.Counterexample>)' and 'VC.ConditionGeneration.VerifyImplementation(Microsoft.Boogie.Implementation, Microsoft.Boogie.Program, Microsoft.Boogie.VerifierCallback)'
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(614,17): error CS0121: The call is ambiguous between the following methods or properties: 'System.Collections.Generic.List<Microsoft.Boogie.Counterexample!>.Sort(System.Collections.Generic.IComparer<Microsoft.Boogie.Counterexample!>)' and 'System.Collections.Generic.List<Microsoft.Boogie.Counterexample!>.Sort(System.Comparison<Microsoft.Boogie.Counterexample!>)'
-    warning CS2614
-    warning CS2614
-    warning CS2614
-    warning CS2614
-    warning CS2614
-    warning CS2614
-    1 error
-    2 error
-    2 failed
+# [2010-08-11 07:34:49] Released nightly of Boogie
+[2010-08-11 08:53:29] 18 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
+['test3', 'test5', 'test6', 'test10', 'test11', 'aitest9', 'objinv', 'Bag', 'chunker', 'bob', 'iterators', 'test12', 'test13', 'BoundedStack', 'textbook', 'WindowsCard', 'PrettySx', 'test16']
+# [2010-08-11 08:56:42] Released nightly of SscBoogie
