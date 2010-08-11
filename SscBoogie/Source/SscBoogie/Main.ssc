@@ -532,7 +532,7 @@ namespace Microsoft.Boogie
       {
         Implementation impl = decl as Implementation;
         if (impl != null && CommandLineOptions.Clo.UserWantsToCheckRoutine((!)impl.Name) && !impl.SkipVerification) {
-          List<Counterexample!>? errors;
+          List<Counterexample>? errors;
 
           DateTime start = new DateTime();  // to please compiler's definite assignment rules
           if (CommandLineOptions.Clo.Trace || CommandLineOptions.Clo.XmlSink != null) {
@@ -617,8 +617,8 @@ namespace Microsoft.Boogie
                   if (error is CallCounterexample)
                   {
                     CallCounterexample! err = (CallCounterexample) error;
-                    ReportBplError(err.FailingCall, "Error BP5002: A precondition for this call might not hold.", true);
-                    ReportBplError(err.FailingRequires, "Related location: This is the precondition that might not hold.", false);
+                    ReportBplError((!)err.FailingCall, "Error BP5002: A precondition for this call might not hold.", true);
+                    ReportBplError((!)err.FailingRequires, "Related location: This is the precondition that might not hold.", false);
                     if (CommandLineOptions.Clo.XmlSink != null) {
                       CommandLineOptions.Clo.XmlSink.WriteError("precondition violation", err.FailingCall.tok, err.FailingRequires.tok, error.Trace);
                     }
@@ -626,15 +626,15 @@ namespace Microsoft.Boogie
                   else if (error is ReturnCounterexample)
                   {
                     ReturnCounterexample! err = (ReturnCounterexample) error;
-                    ReportBplError(err.FailingReturn, "Error BP5003: A postcondition might not hold at this return statement.", true);
-                    ReportBplError(err.FailingEnsures, "Related location: This is the postcondition that might not hold.", false);
+                    ReportBplError((!)err.FailingReturn, "Error BP5003: A postcondition might not hold at this return statement.", true);
+                    ReportBplError((!)err.FailingEnsures, "Related location: This is the postcondition that might not hold.", false);
                     if (CommandLineOptions.Clo.XmlSink != null) {
                       CommandLineOptions.Clo.XmlSink.WriteError("postcondition violation", err.FailingReturn.tok, err.FailingEnsures.tok, error.Trace);
                     }
                   }
                   else // error is AssertCounterexample
                   {
-                    AssertCounterexample! err = (AssertCounterexample) error;
+                    AssertCounterexample! err = (AssertCounterexample!)error;
                     if (err.FailingAssert is LoopInitAssertCmd) {
                       ReportBplError(err.FailingAssert, "Error BP5004: This loop invariant might not hold on entry.", true);
                       if (CommandLineOptions.Clo.XmlSink != null) {
@@ -648,7 +648,7 @@ namespace Microsoft.Boogie
                         CommandLineOptions.Clo.XmlSink.WriteError("loop invariant maintenance violation", err.FailingAssert.tok, null, error.Trace);
                       }
                     } else {
-                      string msg = err.FailingAssert.ErrorData as string;
+                      string msg = ((!)err.FailingAssert).ErrorData as string;
                       if (msg == null) {
                         msg = "Error BP5001: This assertion might not hold.";
                       }
@@ -659,13 +659,13 @@ namespace Microsoft.Boogie
                     }
                   }
                   if (CommandLineOptions.Clo.EnhancedErrorMessages == 1) { 
-                    foreach (string! info in error.relatedInformation) {
+                    foreach (string! info in (!)error.relatedInformation) {
                       Console.WriteLine("       " + info);
                     } 
                   }
                   if (CommandLineOptions.Clo.ErrorTrace > 0) {
                     Console.WriteLine("Execution trace:");
-                    foreach (Block! b in error.Trace) {
+                    foreach (Block! b in (!)error.Trace) {
                       if (b.tok == null) {
                         Console.WriteLine("    <intermediate block>");
                       } else {

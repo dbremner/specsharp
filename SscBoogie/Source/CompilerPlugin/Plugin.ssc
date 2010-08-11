@@ -424,7 +424,7 @@ namespace Microsoft.Boogie
                     }
                     
                     VCGen.Outcome outcome;
-                    List<Counterexample!>? errors;
+                    List<Counterexample> errors;
                     try
                     {
                         outcome = vcgen.VerifyImplementation(impl, program.Program, out errors);
