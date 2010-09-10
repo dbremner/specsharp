@@ -307,15 +307,9 @@ namespace Microsoft.Cci.SpecSharp {
       if (loc == null) {
         loc = string.Empty;
       }
-      this.mscorlibIdentity =
-      new AssemblyIdentity(
-          this.NameTable.GetNameFor("mscorlib"),
-          string.Empty,
-          new Version(2, 0, 0, 0),
-          new byte[] { 0xB7, 0x7A, 0x5C, 0x56, 0x19, 0x34, 0xE0, 0x89 },
-          loc
-        );
-      this.RegisterAsLatest(this.peReader.OpenAssembly(BinaryDocument.GetBinaryDocumentForFile(this.mscorlibIdentity.Location, this)));
+      var mscoreAssembly = this.peReader.OpenAssembly(BinaryDocument.GetBinaryDocumentForFile(loc, this));
+      this.mscorlibIdentity = mscoreAssembly.AssemblyIdentity;
+      this.RegisterAsLatest(mscoreAssembly);
     }
 
     internal void HandleErrors(object sender, Microsoft.Cci.ErrorEventArgs args) {
