@@ -6940,7 +6940,7 @@ namespace ScratchTest {
   }
 }
 `
-(12,26)-(12,27): error: Explicit array size 3 does not match array initializer dimension 2.
+(15,26)-(15,27): error: Explicit array size 3 does not match array initializer dimension 2.
 `
 
 namespace ScratchTest {
