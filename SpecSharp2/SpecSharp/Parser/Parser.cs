@@ -2270,6 +2270,11 @@ namespace Microsoft.Cci.SpecSharp {
       //^ ensures followers[this.currentToken] || this.currentToken == Token.EndOfFile;
       //^ ensures result is ExpressionStatement || result is LocalDeclarationsStatement || (acceptLabel && result is LabeledStatement);
     {
+      if (this.currentToken == Token.Var) {
+        var slb = new SourceLocationBuilder(this.scanner.SourceLocationOfLastScannedToken);
+        this.GetNextToken();
+        return this.ParseLocalDeclarations(slb, null, false, false, skipSemicolon, followers);
+      }
       int position = this.scanner.CurrentDocumentPosition();
       Token nextToken = this.PeekNextToken();
       TypeExpression/*?*/ te = null;
@@ -2355,9 +2360,10 @@ namespace Microsoft.Cci.SpecSharp {
       return result;
     }
 
-    private LocalDeclarationsStatement ParseLocalDeclarations(SourceLocationBuilder slb, TypeExpression typeExpression, bool constant, bool initOnly, bool skipSemicolon, TokenSet followers)
+    private LocalDeclarationsStatement ParseLocalDeclarations(SourceLocationBuilder slb, TypeExpression/*?*/ typeExpression, bool constant, bool initOnly, bool skipSemicolon, TokenSet followers)
       //^ ensures followers[this.currentToken] || this.currentToken == Token.EndOfFile;
     {
+      var typeLocation = slb.GetSourceLocation();
       List<LocalDeclaration> declarations = new List<LocalDeclaration>();
       for (; ; ) {
         NameDeclaration locName = this.ParseNameDeclaration();
@@ -2396,7 +2402,7 @@ namespace Microsoft.Cci.SpecSharp {
             locInitialValue = this.ParseExpression(followers|Token.Semicolon|Token.Comma);
         }
         locSctx.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
-        if (declarations.Count == 0) locSctx.UpdateToSpan(typeExpression.SourceLocation);
+        if (declarations.Count == 0) locSctx.UpdateToSpan(typeLocation);
         slb.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
         declarations.Add(new LocalDeclaration(false, false, locName, locInitialValue, locSctx));
 
@@ -2416,7 +2422,7 @@ namespace Microsoft.Cci.SpecSharp {
       }
       if (skipSemicolon) this.SkipSemiColon(followers);
       declarations.TrimExcess();
-      LocalDeclarationsStatement result = new LocalDeclarationsStatement(constant, initOnly, !constant, typeExpression, declarations, slb);
+      LocalDeclarationsStatement result = new LocalDeclarationsStatement(constant, initOnly, typeExpression == null, typeExpression, declarations, slb);
       this.SkipTo(followers);
       return result;
     }
