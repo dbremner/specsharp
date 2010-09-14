@@ -4417,15 +4417,19 @@ namespace Microsoft.Cci.SpecSharp {
       List<Expression> arguments = new List<Expression>();
       if (this.currentToken != Token.RightParenthesis) {
         Expression argument = this.ParseArgument(followersOrCommaOrRightParenthesis);
-        arguments.Add(argument);
-        while (this.currentToken == Token.Comma) {
-          this.GetNextToken();
-          argument = this.ParseArgument(followersOrCommaOrRightParenthesis);
+        if (!(argument is DummyExpression)) {
           arguments.Add(argument);
+          while (this.currentToken == Token.Comma) {
+            this.GetNextToken();
+            argument = this.ParseArgument(followersOrCommaOrRightParenthesis);
+            arguments.Add(argument);
+          }
         }
       }
       arguments.TrimExcess();
       slb.UpdateToSpan(this.scanner.SourceLocationOfLastScannedToken);
+      if (this.currentToken != Token.RightParenthesis)
+        arguments.Add(new DummyExpression(this.scanner.SourceLocationOfLastScannedToken));
       this.SkipOverTo(Token.RightParenthesis, followers);
       return arguments;
     }
