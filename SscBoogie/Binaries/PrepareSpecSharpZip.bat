@@ -4,11 +4,17 @@ setlocal
 set SSCBOOGIE_DIR=.
 set COMPILER_DIR=..\..\SpecSharp\Microsoft.SpecSharp\Registration
 set DEST_DIR=export
+set DEST_BIN_DIR=%DEST_DIR%\Binaries
 
-if exist %DEST_DIR%\1033 del /q %DEST_DIR%\1033\*
-if exist %DEST_DIR% del /q %DEST_DIR%\*
+if exist %DEST_BIN_DIR%\1033 del /q %DEST_BIN_DIR%\1033\*
+if exist %DEST_BIN_DIR% del /q %DEST_BIN_DIR%\*
+if exist %DEST_DIR%\Templates\ProjectItems del /q %DEST_DIR%\Templates\ProjectItems\*
+if exist %DEST_DIR%\Templates\Projects del /q %DEST_DIR%\Templates\Projects\*
+if exist %DEST_DIR%\Templates del /q %DEST_DIR%\Templates\*
+
 if not exist %DEST_DIR% mkdir %DEST_DIR%
-if not exist %DEST_DIR%\1033 mkdir %DEST_DIR%\1033
+if not exist %DEST_BIN_DIR% mkdir %DEST_BIN_DIR%
+if not exist %DEST_BIN_DIR%\1033 mkdir %DEST_BIN_DIR%\1033
 
 REM Copy the compiler stuff ----------------------
 for %%f in (
@@ -36,13 +42,13 @@ for %%f in (
   TaskManager.dll TaskManager.pdb
   ssc.exe ssc.pdb
 ) do (
-  copy %COMPILER_DIR%\%%f %DEST_DIR%
+  copy %COMPILER_DIR%\%%f %DEST_BIN_DIR%
 )
 REM ...and copy these to a different name --------------------
 for %%f in (
   Clean.cmd Register.cmd
 ) do (
-  copy %COMPILER_DIR%\Export%%f %DEST_DIR%\%%f
+  copy %COMPILER_DIR%\Export%%f %DEST_BIN_DIR%\%%f
 )
 REM ...and copy the 1033 directory and its contents --------------------
 for %%f in (
@@ -50,7 +56,7 @@ for %%f in (
   PropertyPageUI.dll
   TaskManagerUI.dll
 ) do (
-  copy %COMPILER_DIR%\1033\%%f %DEST_DIR%\1033
+  copy %COMPILER_DIR%\1033\%%f %DEST_BIN_DIR%\1033
 )
 
 rem Copy SscBoogie ---------------------------------------
@@ -70,7 +76,7 @@ for %%f in (
   FSharp.Core.dll
   Microsoft.Contracts.dll
 ) do (
-  copy %SSCBOOGIE_DIR%\%%f %DEST_DIR%
+  copy %SSCBOOGIE_DIR%\%%f %DEST_BIN_DIR%
 )
 rem Next, SscBoogie specific pieces ----------------------
 for %%f in (
@@ -81,7 +87,10 @@ for %%f in (
   Prelude.dll Prelude.pdb
   SscBoogie.exe SscBoogie.pdb
 ) do (
-  copy %SSCBOOGIE_DIR%\%%f %DEST_DIR%
+  copy %SSCBOOGIE_DIR%\%%f %DEST_BIN_DIR%
 )
+
+rem Finally, copy the Templates, which are needed to create new projects in VS 2008
+xcopy /I /S %COMPILER_DIR%\..\Templates %DEST_DIR%\Templates
 
 echo Done.  Now, manually put the contents of the %DEST_DIR% directory into SpecSharp.zip
