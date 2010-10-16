@@ -1,13 +1,13 @@
-# Aste started: 2010-10-15 07:00:08
+# Aste started: 2010-10-16 07:00:10
 # Host id: Boogiebox
-# [2010-10-15 07:02:14] SpecSharp revision: 55320
-# [2010-10-15 07:03:19] Boogie revision: 57953
-# [2010-10-15 07:03:44] SscBoogie revision: 57850
-[2010-10-15 07:04:21] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-10-16 07:02:21] SpecSharp revision: 55320
+# [2010-10-16 07:03:23] Boogie revision: 57957
+# [2010-10-16 07:03:47] SscBoogie revision: 57850
+[2010-10-16 07:04:24] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
 
     warning CS1668
     warning CS1668
-[2010-10-15 07:05:43] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
+[2010-10-16 07:05:44] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
 
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(825,16): warning CS0659: 'Microsoft.Boogie.BasicType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(2804,16): warning CS0659: 'Microsoft.Boogie.CtorType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
@@ -47,7 +47,7 @@
     warning CS0162
     warning CS0162
     warning CS0162
-[2010-10-15 07:05:47] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Dafny.sln /Build Debug
+[2010-10-16 07:05:48] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Dafny.sln /Build Debug
 
     D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(39,24): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\Dafny\bin\Debug\DafnyPipeline.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
     D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(187,73): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\Dafny\bin\Debug\DafnyPipeline.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
@@ -69,9 +69,9 @@
     warning CS0436
     warning CS0436
     warning CS0436
-[2010-10-15 07:23:34] 0 out of 29 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
-# [2010-10-15 07:25:10] Released nightly of Boogie
-[2010-10-15 07:25:51] [Error] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SscBoogie.sln /Build Debug
+[2010-10-16 07:23:52] 0 out of 29 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+# [2010-10-16 07:25:33] Released nightly of Boogie
+[2010-10-16 07:26:10] [Error] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SscBoogie.sln /Build Debug
 
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\MethodSignature.ssc(1129,29): error CS0115: 'Microsoft.Boogie.MethodSignature.UnresolvedDuplicator.VisitIdentifierExpr(Microsoft.Boogie.IdentifierExpr!)': no suitable method found to override
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\MethodSignature.ssc(1145,29): error CS0115: 'Microsoft.Boogie.MethodSignature.OldFinder.VisitOldExpr(Microsoft.Boogie.OldExpr!)': no suitable method found to override
@@ -105,13 +105,13 @@
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(202,70): error CS0029: Cannot implicitly convert type 'System.Collections.Generic.List<Microsoft.Boogie.Expr!>' to 'System.Collections.Generic.List<Microsoft.Boogie.Expr>'
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(294,135): error CS0029: Cannot implicitly convert type 'System.Collections.Generic.List<Microsoft.Boogie.Expr!>' to 'System.Collections.Generic.List<Microsoft.Boogie.Expr>'
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(438,98): error CS0029: Cannot implicitly convert type 'System.Collections.Generic.List<Microsoft.Boogie.Expr!>' to 'System.Collections.Generic.List<Microsoft.Boogie.Expr>'
-    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21015.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
+    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21016.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
     D:\Temp\aste\SscBoogie\Source\unknown file(1,1): error CS2005: File 'D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\bin\Debug\BytecodeTranslation.dll' does not exist
     D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(21,41): error CS0246: The type or namespace name 'TranslatedProgram' could not be found (are you missing a using directive or an assembly reference?)
     D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(105,61): error CS0246: The type or namespace name 'Translator' could not be found (are you missing a using directive or an assembly reference?)
     D:\Temp\aste\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(148,36): error CS0246: The type or namespace name 'Translator' could not be found (are you missing a using directive or an assembly reference?)
-    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21015.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
-    D:\Temp\aste\SscBoogie\Source\VCGeneration.dll(1,1): error 0: Assembly reference not resolved: Model, Version=2.2.21015.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
+    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21016.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
+    D:\Temp\aste\SscBoogie\Source\VCGeneration.dll(1,1): error 0: Assembly reference not resolved: Model, Version=2.2.21016.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
     D:\Temp\aste\SscBoogie\Source\unknown file(1,1): error CS2005: File 'D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\bin\Debug\BytecodeTranslation.dll' does not exist
     D:\Temp\aste\SscBoogie\Source\unknown file(1,1): error CS2005: File 'D:\Temp\aste\SscBoogie\Source\DriverHelper\bin\debug\DriverHelper.dll' does not exist
     D:\Temp\aste\SscBoogie\Source\CompilerPlugin\Plugin.ssc(133,13): error CS0246: The type or namespace name 'TranslatedProgram' could not be found (are you missing a using directive or an assembly reference?)
@@ -122,16 +122,16 @@
     D:\Temp\aste\SscBoogie\Source\CompilerPlugin\Plugin.ssc(133,42): error CS0246: The type or namespace name 'CilTranslator' could not be found (are you missing a using directive or an assembly reference?)
     D:\Temp\aste\SscBoogie\Source\CompilerPlugin\Plugin.ssc(198,41): error CS0246: The type or namespace name 'CilTranslator' could not be found (are you missing a using directive or an assembly reference?)
     D:\Temp\aste\SscBoogie\Source\CompilerPlugin\Plugin.ssc(279,42): error CS0246: The type or namespace name 'CilTranslator' could not be found (are you missing a using directive or an assembly reference?)
-    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21015.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
-    D:\Temp\aste\SscBoogie\Source\VCGeneration.dll(1,1): error 0: Assembly reference not resolved: Model, Version=2.2.21015.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
+    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21016.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
+    D:\Temp\aste\SscBoogie\Source\VCGeneration.dll(1,1): error 0: Assembly reference not resolved: Model, Version=2.2.21016.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
     D:\Temp\aste\SscBoogie\Source\unknown file(1,1): error CS2005: File 'D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\bin\Debug\BytecodeTranslation.dll' does not exist
     D:\Temp\aste\SscBoogie\Source\unknown file(1,1): error CS2005: File 'D:\Temp\aste\SscBoogie\Source\DriverHelper\bin\debug\DriverHelper.dll' does not exist
     D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(225,11): error CS0246: The type or namespace name 'TranslatedProgram' could not be found (are you missing a using directive or an assembly reference?)
     D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(601,17): error CS0246: The type or namespace name 'ErrorReporting' could not be found (are you missing a using directive or an assembly reference?)
     D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(100,20): error CS0029: Cannot implicitly convert type 'System.Collections.Generic.List<string>' to 'System.Collections.Generic.List<string!>!'
     D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(225,40): error CS0246: The type or namespace name 'CilTranslator' could not be found (are you missing a using directive or an assembly reference?)
-    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21015.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
-    D:\Temp\aste\SscBoogie\Source\VCGeneration.dll(1,1): error 0: Assembly reference not resolved: Model, Version=2.2.21015.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
+    D:\Temp\aste\SscBoogie\Source\Core.dll(1,1): error 0: Assembly reference not resolved: CodeContractsExtender, Version=2.2.21016.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
+    D:\Temp\aste\SscBoogie\Source\VCGeneration.dll(1,1): error 0: Assembly reference not resolved: Model, Version=2.2.21016.704, Culture=neutral, PublicKeyToken=736440c9b414ea16.
     warning CS10003
     warning CS10002
     warning CS10003
