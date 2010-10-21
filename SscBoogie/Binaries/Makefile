@@ -30,6 +30,10 @@ all:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.Core.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.PowerPack.dll"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.Contracts.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\CodeContractsExtender.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\CodeContractsExtender.pdb"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Model.dll"
+	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Model.pdb"
 	rem Things needed to build and run SscBoogie:
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ssc.exe"
 	copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.dll"
@@ -67,6 +71,8 @@ register:
 	copy /y FSharp.Core.dll "$(REG_DIR)"
 	copy /y FSharp.PowerPack.dll "$(REG_DIR)"
 	copy /y Microsoft.Contracts.dll "$(REG_DIR)"
+	copy /y CodeContractsExtender.dll "$(REG_DIR)"
+	copy /y CodeContractsExtender.pdb "$(REG_DIR)"
 	rem New things built here:
 	copy /y Prelude.dll "$(REG_DIR)"
 	copy /y Prelude.pdb "$(REG_DIR)"
