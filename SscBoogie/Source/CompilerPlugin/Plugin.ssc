@@ -56,8 +56,16 @@ namespace Microsoft.Boogie
             // base();
         }
         
-        public void Error(IToken! tok, string! msg)
+        public void Error(IToken /* ! */ tok, string /* ! */ msg)
         {
+            if (tok == null) {
+                throw new ArgumentNullException("tok");
+            }
+            assume tok != null;
+            if (msg == null) {
+                throw new ArgumentNullException("msg");
+            }
+            assume msg != null;
             Errors.Add(new BoogiePLErrorNode(document, tok.line, tok.col, msg));
         }
     }

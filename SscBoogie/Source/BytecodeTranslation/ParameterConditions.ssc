@@ -155,7 +155,7 @@ namespace Microsoft.Boogie
               object ido = vsa[0];
               if (ido != null) {
                 Bpl.IdentifierExpr id = new Bpl.IdentifierExpr(Token.NoToken, ido.ToString(), sink.RefType);
-                List<Bpl.Expr!>! l = new List<Bpl.Expr!>();
+                List<Bpl.Expr /* ! */>! l = new List<Bpl.Expr /* ! */>();
                 l.Add(id);
                 ms = new EEDTemplate("The object {0} is not valid.", l);
               }
@@ -197,7 +197,7 @@ namespace Microsoft.Boogie
               object ido = vsa[0];
               if (ido != null) {
                 Bpl.IdentifierExpr id = new Bpl.IdentifierExpr(Token.NoToken, ido.ToString(), sink.RefType);
-                List<Bpl.Expr!>! l = new List<Bpl.Expr!>();
+                List<Bpl.Expr /* ! */>! l = new List<Bpl.Expr /* ! */>();
                 l.Add(id);
                 ms = new EEDTemplate("The object {0} is not valid.", l);
               }
@@ -289,7 +289,7 @@ namespace Microsoft.Boogie
 
       // $Inv($Heap, param, type)
       Bpl.Expr cond = sink.Function(Sink.BuiltinFunction.TheInvariant, heap, param, sink.TypeNameExpression(paramType));
-      List<Bpl.Expr!>! l = new List<Bpl.Expr!>();
+      List<Bpl.Expr /* ! */>! l = new List<Bpl.Expr /* ! */>();
       l.Add(param);
       MiningStrategy ms = new EEDTemplate("The invariant declared in class " + paramType.FullName + " does not hold for object {0}.", l);
       
@@ -432,7 +432,7 @@ namespace Microsoft.Boogie
       Bpl.Trigger tr = new Bpl.Trigger(Token.NoToken, true, new ExprSeq(inv));
       Bpl.Expr q = new Bpl.ForallExpr(Token.NoToken, new VariableSeq(oVar, tVar), tr, Bpl.Expr.Imp(ante, inv));
 
-      List<Bpl.Expr!>! l = new List<Bpl.Expr!>();
+      List<Bpl.Expr /* ! */>! l = new List<Bpl.Expr /* ! */>();
       l.Add(t);
       l.Add(o);
       ede = new EEDTemplate("The invariant declared in class {0} does not hold for object {1}.", l);

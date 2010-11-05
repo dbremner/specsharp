@@ -709,7 +709,7 @@ namespace Microsoft.Boogie
     private Bpl.AssertCmd! AssertLowerBoundOkay (Bpl.Expr! index, Cci.Node! errorNode)
     {
       string extraInformation = "The used index {0} is below the lower bound.";
-      List<Bpl.Expr!> exprList = new List<Bpl.Expr!>();
+      List<Bpl.Expr /* ! */> exprList = new List<Bpl.Expr /* ! */>();
       exprList.Add(index);
       EEDTemplate enhancedErrorData = new EEDTemplate(extraInformation, exprList);
       return AssertEnhanced(Bpl.Expr.Le(Bpl.Expr.Literal(0), index), errorNode, "Array index possibly below lower bound", enhancedErrorData);
@@ -719,7 +719,7 @@ namespace Microsoft.Boogie
     private Bpl.AssertCmd! AssertUpperBoundOkay (Bpl.Expr! array, Bpl.Expr! index, Cci.Node! errorNode)
     {
       string extraInformation = "The index is {0} but the length of the array is {1}.";
-      List<Bpl.Expr!> exprList = new List<Bpl.Expr!>();
+      List<Bpl.Expr /* ! */> exprList = new List<Bpl.Expr /* ! */>();
       exprList.Add(index);
       exprList.Add(sink.ArrayLength(array));
       EEDTemplate enhancedErrorData = new EEDTemplate(extraInformation, exprList);
@@ -1141,7 +1141,7 @@ namespace Microsoft.Boogie
                     Bpl.Variable x = (Bpl.Variable) vars[i];
                     assert x != null;
                     string reason = "The value of the bound var "+ x + " is: {0}";
-                    List<Bpl.Expr!> l = new List<Bpl.Expr!>();
+                    List<Bpl.Expr /* ! */> l = new List<Bpl.Expr /* ! */>();
                     l.Add(new Bpl.IdentifierExpr(Token.NoToken, x.ToString(), sink.RefType));
                     EEDTemplate eed = new EEDTemplate(reason, l);
                     msList.Add(eed);
@@ -1688,8 +1688,12 @@ namespace Microsoft.Boogie
         this.mapping = mapping;
       }
 
-      public override Bpl.Expr! VisitIdentifierExpr(Bpl.IdentifierExpr! node)
+      public override Bpl.Expr! VisitIdentifierExpr(Bpl.IdentifierExpr /* ! */ node)
       {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         Bpl.Expr res;
         if (mapping.TryGetValue(node.Name, out res))
           return (!)res;
@@ -1698,8 +1702,12 @@ namespace Microsoft.Boogie
 
       // old-expressions are simply removed, because the pre-state of
       // the callee is the current state
-      public override Expr! VisitOldExpr(OldExpr! node) {
-        return VisitExpr(node.Expr);
+      public override Expr! VisitOldExpr(OldExpr /* ! */ node) {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
+        return VisitExpr(((!) node).Expr);
       }
     }
 
