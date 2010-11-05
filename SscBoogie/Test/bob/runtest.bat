@@ -22,5 +22,7 @@ for %%f in (loopinv0-nonnull) do (
 for %%f in (AbsInt.dll AIFramework.dll BoogiePlugin.dll BytecodeTranslation.dll VCGeneration.dll Core.dll DriverHelper.dll) do (
   echo.
   echo -------------------- %%f --------------------
-  "%BGEXE%" %* /noVerify "%BOOGIEDIR%/%%f"
+  REM TODO: Run SscBoogie on the current dlls again.
+  REM "%BGEXE%" %* /noVerify "%BOOGIEDIR%/%%f"
+  "%BGEXE%" %* /noVerify "..\..\..\SpecSharp\Microsoft.SpecSharp\LastKnownGood9/%%f"
 )

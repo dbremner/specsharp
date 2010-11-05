@@ -1126,7 +1126,11 @@ namespace Microsoft.Boogie
     private class UnresolvedDuplicator : Duplicator {            
       public IDictionary<string, Expr>! ReplaceDict = new Dictionary<string, Expr>(); //Replace identifierExpr with a name that is a key with the corresponding value            
            
-      public override Expr! VisitIdentifierExpr(IdentifierExpr! node) {                                  
+      public override Expr! VisitIdentifierExpr(IdentifierExpr /* ! */ node) {   
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         Expr resultExpr = null;
         ReplaceDict.TryGetValue(node.Name, out resultExpr);
         if (resultExpr != null) 
@@ -1142,12 +1146,20 @@ namespace Microsoft.Boogie
     private class OldFinder : StandardVisitor {
       public bool ContainsOld = false;
       
-      public override Expr! VisitOldExpr(OldExpr! node) {
+      public override Expr! VisitOldExpr(OldExpr /* ! */ node) {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         this.ContainsOld = true;
         return node;
       }
       
-      public override Expr! VisitIdentifierExpr(IdentifierExpr! node) {                                  
+      public override Expr! VisitIdentifierExpr(IdentifierExpr /* ! */ node) {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         return node; //As node has not been resolved, do not attempt to go into it's Decl (which will be null).     
       }
     }
@@ -1431,7 +1443,7 @@ namespace Microsoft.Boogie
       ensNode.ErrorData = string.Format("Method {0}, unsatisfied frame condition", sink.errorHandler.GetMethodSignature(method, false, true));
       // add enhanced error data for o, f
       string extraInformation = "You modified the {1} field of object {0}.";
-      List<Bpl.Expr!> exprList = new List<Bpl.Expr!>();
+      List<Bpl.Expr /* ! */> exprList = new List<Bpl.Expr /* ! */>();
       Bpl.IdentifierExpr! o = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$o", sink.RefType);
       exprList.Add(o);
       Bpl.IdentifierExpr! f = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$f", sink.RefType); 
@@ -1446,7 +1458,7 @@ namespace Microsoft.Boogie
         ensNode.ErrorData = string.Format("Method {0}, unsatisfied frame condition", sink.errorHandler.GetMethodSignature(method, false, true));
         // add enhanced error data for o, ind
         extraInformation = "You modified index {1} of array {0}.";
-        exprList = new List<Bpl.Expr!>();
+        exprList = new List<Bpl.Expr /* ! */>();
         o = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$o", sink.RefType);
         exprList.Add(o);
         Bpl.IdentifierExpr! ind = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$i", sink.RefType);
@@ -1952,8 +1964,12 @@ namespace Microsoft.Boogie
         this.unifiableTypeVars = unifiableTypeVars;
       }
 
-      public override Bpl.Expr! VisitIdentifierExpr(Bpl.IdentifierExpr! node)
+      public override Bpl.Expr! VisitIdentifierExpr(Bpl.IdentifierExpr /* ! */ node)
       {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         Bpl.Expr res;
         if (mapping.TryGetValue(node.Name, out res))
           // we do not introduce the old-operation in this case,
@@ -1968,8 +1984,12 @@ namespace Microsoft.Boogie
 
       // we need special treatment for equations, because otherwise
       // the type checker will complain about incomparable types
-      public override Bpl.Expr! VisitNAryExpr(NAryExpr! node)
+      public override Bpl.Expr! VisitNAryExpr(NAryExpr /* ! */ node)
       {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         Bpl.Expr! newExpr = base.VisitNAryExpr(node);
         Bpl.NAryExpr newNode = newExpr as NAryExpr;
         if (newNode == null)
@@ -2011,8 +2031,12 @@ namespace Microsoft.Boogie
 
       // we also push down old-expressions as far as possible, to avoid
       // injecting state-dependent expressions in old
-      public override Expr! VisitOldExpr(OldExpr! node)
+      public override Expr! VisitOldExpr(OldExpr /* ! */ node)
       {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         bool previouslyInOld = insideOldExpr;
         insideOldExpr = true;
         Expr! e = (Expr!)this.Visit(node.Expr);
@@ -2052,7 +2076,7 @@ namespace Microsoft.Boogie
             InParameters,
             OutParameters,
             new Bpl.VariableSeq(),
-            new List<Bpl.Block!>()
+            new List<Bpl.Block /* ! */>()
             );
         if (CommandLineOptions.Clo.UserWantsToTranslateRoutine(method, Sink.UniqueProcedureName(method)))
         {

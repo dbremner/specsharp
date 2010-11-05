@@ -399,7 +399,7 @@ namespace Microsoft.Boogie
         Bpl.Expr cond = sink.Function(Sink.BuiltinFunction.InRange, rhs, sink.TypeNameExpression(lhsType));
 
         string extraInformation = "The value {0} is not a legal enum " + lhsType.FullName + " value.";
-        List<Bpl.Expr!> exprList = new List<Bpl.Expr!>();
+        List<Bpl.Expr /* ! */> exprList = new List<Bpl.Expr /* ! */>();
         exprList.Add(rhs);
         EEDTemplate enhancedErrorData = new EEDTemplate(extraInformation, exprList);
 

@@ -97,7 +97,15 @@ namespace Microsoft.Boogie
       }
       
       CommandLineOptions.Clo.RunningBoogieOnSsc = true;
-      ProcessFiles(CommandLineOptions.Clo.Files);
+      
+      List<string!> files = new List<string!>();
+      foreach (string a in CommandLineOptions.Clo.Files) {
+        if (a != null) {
+          files.Add(a);
+        }
+      }
+	  
+      ProcessFiles(files);
 
       END:
         if (CommandLineOptions.Clo.XmlSink != null) {
@@ -222,7 +230,15 @@ namespace Microsoft.Boogie
           }
           ErrorReporter! errorReporter = new ErrorReporter();
           Cci.ErrorHandler! errorHandler = new Microsoft.SpecSharp.ErrorHandler(errorReporter.errors);
-          TranslatedProgram! program = CilTranslator.TranslateCilToBoogie(file, CommandLineOptions.Clo.ContractAssemblies, errorHandler);
+
+          List<string!> assemblies = new List<string!>();
+          foreach (string a in CommandLineOptions.Clo.ContractAssemblies) {
+            if (a != null) {
+              assemblies.Add(a);
+            }
+          }
+
+          TranslatedProgram! program = CilTranslator.TranslateCilToBoogie(file, assemblies, errorHandler);
           errorReporter.ReportErrors();
 
           if (CommandLineOptions.Clo.PrintFile != null) {

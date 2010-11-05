@@ -2031,7 +2031,11 @@ namespace Microsoft.Boogie
     private class ActivityFinder : StandardVisitor {
       public bool MentionsActivityIndicator = false;
       
-      public override Expr! VisitIdentifierExpr(IdentifierExpr! node) {
+      public override Expr! VisitIdentifierExpr(IdentifierExpr /* ! */ node) {
+        if (node == null) {
+          throw new ArgumentNullException("node");
+        }
+        assume node != null;
         if (node.Name == ActivityIndicatorName) {
           MentionsActivityIndicator = true;
         }
@@ -2251,7 +2255,7 @@ namespace Microsoft.Boogie
           ins,
           outs,
           new Bpl.VariableSeq(),
-          new List<Bpl.Block!>()
+          new List<Bpl.Block /* ! */>()
         );
 
         this.toplevelDeclarations.Add(checkerImpl);

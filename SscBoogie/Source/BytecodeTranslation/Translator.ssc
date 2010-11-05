@@ -175,7 +175,7 @@ namespace Microsoft.Boogie
         cfgWorld = cfg;
         IDictionary<Cci.CfgBlock!,LoopPreheader!> loopPreheaders = new Dictionary<Cci.CfgBlock!,LoopPreheader!>();
         IDictionary<LoopPreheader!,IList<Cci.CfgBlock!>!>! loopPreheaderPreds = new Dictionary<LoopPreheader!,IList<Cci.CfgBlock!>!>();
-        ComputeLoopPreheaders(sig, (!)cfg.Blocks(), new Adjacency<Cci.CfgBlock!>(AllPredecessors), new Adjacency<Cci.CfgBlock!>(AllSuccessors), loopPreheaders, loopPreheaderPreds);
+        ComputeLoopPreheaders(sig, (!)cfg.Blocks(), new Adjacency<Cci.CfgBlock /* ! */>(delegate (Cci.CfgBlock b) { return AllPredecessors(b); }), new Adjacency<Cci.CfgBlock /* ! */>(delegate (Cci.CfgBlock b) { return AllSuccessors(b); }), loopPreheaders, loopPreheaderPreds);
 
         Cci.HashSet/*<Cci.CfgBlock>*/! translatedBlocks = new Cci.HashSet();
         Queue/*<Cci.CfgBlock>*/ workItems = new Queue();
@@ -369,11 +369,11 @@ namespace Microsoft.Boogie
             if (2 <= scc.Count) {
               IEnumerable! empty = new Cci.CfgBlock[0];
               ComputeLoopPreheaders(sig, scc,
-                                  delegate (Cci.CfgBlock! b) {
+                                  delegate (Cci.CfgBlock /* ! */ b) {
                                     if (loopPreheaders.ContainsKey(b)) { return empty; }
                                     else { return AllPredecessors(b); }
                                   },
-                                  delegate (Cci.CfgBlock! b) {
+                                  delegate (Cci.CfgBlock /* ! */ b) {
                                     IList<Cci.CfgBlock!>! newsuccs = new List<Cci.CfgBlock!>();
                                     foreach (Cci.CfgBlock! s in AllSuccessors(b))
                                     {
@@ -675,7 +675,7 @@ namespace Microsoft.Boogie
                 if (i == 0) {
                   // add enhanced error data for o, f
                   string extraInformation = "The iteration modified the {1} field of object {0}.";
-                  List<Bpl.Expr!> exprList = new List<Bpl.Expr!>();
+                  List<Bpl.Expr /* ! */> exprList = new List<Bpl.Expr /* ! */>();
                   Bpl.IdentifierExpr! o = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$o", sink.RefType);
                   exprList.Add(o);
                   Bpl.IdentifierExpr! f = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$f", sink.RefType); 
@@ -684,7 +684,7 @@ namespace Microsoft.Boogie
                 } else {
                   // add enhanced error data for o, ind
                   string extraInformation = "The iteration modified index {1} of array {0}.";
-                  List<Bpl.Expr!> exprList = new List<Bpl.Expr!>();
+                  List<Bpl.Expr /* ! */> exprList = new List<Bpl.Expr /* ! */>();
                   Bpl.Expr o = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$o", sink.RefType);
                   exprList.Add(o);
                   Bpl.IdentifierExpr! ind = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$i", sink.RefType);
@@ -768,7 +768,7 @@ namespace Microsoft.Boogie
         string! codebase = (!) System.IO.Path.GetDirectoryName((!)System.Reflection.Assembly.GetExecutingAssembly().Location);
         // initialized with the standard prelude case, overwritten below if an alternative OwnershipModelEncoding is chosen.
         string! preludePath = System.IO.Path.Combine(codebase, "PRELUDE.bpl");
-        List<string!> defines = new List<string!>();
+        List<string /* ! */> defines = new List<string /* ! */>();
         switch (CommandLineOptions.Clo.OwnershipModelEncoding) {
           case CommandLineOptions.OwnershipModelOption.Standard:
             break;
