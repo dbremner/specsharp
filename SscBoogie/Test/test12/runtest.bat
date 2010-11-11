@@ -22,4 +22,4 @@ for %%f in (List2) do (
 )
 
 REM remove the times that are included in the /trace output
-type Output.trace | %SystemRoot%\system32\find /v "  [" | %SystemRoot%\system32\find /v " ..."
+type Output.trace | %SystemRoot%\system32\find /v "  [" | %SystemRoot%\system32\find /v " ..." | %SystemRoot%\system32\find /v "[TRACE] "

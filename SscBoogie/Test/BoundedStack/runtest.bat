@@ -16,4 +16,4 @@ echo ------------------------------ BoundedStack.ssc --------------------- >> Ou
 
 
 REM remove the times that are included in the /trace output
-%SystemRoot%\system32\find /v "  [" < Output.trace
+type Output.trace | %SystemRoot%\system32\find /v "  [" | %SystemRoot%\system32\find /v "[TRACE] "
