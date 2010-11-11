@@ -1,6 +1,6 @@
 class Chunker
 {
-  string src;
+  string! src;
   int ChunkSize;
   invariant 0 <= ChunkSize;
   int n;  // the number of characters returned so far
@@ -19,7 +19,7 @@ class Chunker
     return s;
   }
     
-  public Chunker(string source, int chunkSize)
+  public Chunker(string! source, int chunkSize)
     requires 0 <= chunkSize;
   {
     src = source;

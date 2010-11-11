@@ -142,7 +142,7 @@ Spec# program verifier finished with 8 verified, 1 error
 -------------------- CheckingConsistency --------------------
 Error: Could not establish consistency of pure method contract. Method Wrong.m(int i), unsatisfied postcondition: result > 4
 CheckingConsistency.ssc(105,24): Error: The type of witness candidate "(D2)this" is not (a subtype of) the return type
-Error: Type cast might fail
+CheckingConsistency.ssc(104,11): Error: Type cast might fail
 Error: Could not establish consistency of pure method contract. Method WontFindWitness.m(), unsatisfied postcondition: result.i == 4
 Error: Could not establish consistency of pure method contract. Method BadButYouAreAllowedToTry.m(), unsatisfied postcondition: result == result + 1
 Error: Could not establish consistency of pure method contract. Method BadProp.get_M(), unsatisfied postcondition: result > 4

@@ -13,8 +13,8 @@ IntArrayRanges.ssc(30,7): Related information:     (trace position)
 Spec# program verifier finished with 3 verified, 3 errors
 
 -------------------- LoopInvariantForQuantifiers --------------------
-Error: Array index possibly below lower bound
-Error: Array index possibly below lower bound
+LoopInvariantForQuantifiers.ssc(25,10): Error: Array index possibly below lower bound
+LoopInvariantForQuantifiers.ssc(42,10): Error: Array index possibly below lower bound
 
 Spec# program verifier finished with 13 verified, 2 errors
 
@@ -180,7 +180,7 @@ Enums.ssc(30,5): Error: Assignment to enum may be outside its range
 Enums.ssc(39,5): Error: Assignment to enum may be outside its range
 Enums.ssc(42,7): Error: Assignment to enum may be outside its range
 Enums.ssc(58,5): Error: Assignment to enum may be outside its range
-Error: Assignment to enum may be outside its range
+Enums.ssc(70,14): Error: Assignment to enum may be outside its range
 Enums.ssc(84,7): Error: Type cast might fail
 Enums.ssc(89,14): Error: Type cast might fail
 

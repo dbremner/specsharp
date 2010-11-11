@@ -65,4 +65,4 @@ echo End: > con
 %TIME_COMMAND% > con
 
 REM remove the times that are included in the /trace output
-%SystemRoot%\system32\find /v "  [" < Output.trace | %SystemRoot%\system32\find /v "checking split"
+type Output.trace | %SystemRoot%\system32\find /v "  [" | %SystemRoot%\system32\find /v "checking split" | %SystemRoot%\system32\find /v "[TRACE] "
