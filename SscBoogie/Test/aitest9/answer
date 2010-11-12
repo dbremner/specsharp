@@ -21,7 +21,7 @@ SimpleAssignments4.ssc(24,3): Error: Assertion might not hold: 0 <= y
 SimpleAssignments4.ssc(24,3): Error: Assertion might not hold: y <= 20
 SimpleAssignments4.ssc(29,3): Error: Possible null dereference
 
-Spec# program verifier finished with 0 verified, 2 errors
+Spec# program verifier finished with 0 verified, 3 errors
  
 -------------------- SimpleWhile0.dll -------------------- 
 
