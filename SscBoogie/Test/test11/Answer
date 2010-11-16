@@ -83,7 +83,7 @@ AdditiveMethods.ssc(97,5): Error: The call to AdditiveMethods.M() requires targe
 AdditiveMethods.ssc(104,5): Error: The call to AdditiveMethods.Y() requires target object to be peer consistent
 Error: Could not establish consistency of pure method contract. Postcondition violation: Result value of method OwnedResults.Pw() is specified to be owned by the receiver
 Error: Postcondition violation: Result value of method OwnedResults.Pw() is specified to be owned by the receiver
-Error: Postcondition violation: Result value of method OwnedResults.F4() is specified to have the same owner as the receiver
+Error: On exit from OwnedResults.F4(), return value must be peer consistent (owner must not be valid)
 Error: Could not establish consistency of pure method contract. On exit from OwnedResults.Static0(), return value must be peer valid
 Error: Could not establish consistency of pure method contract. On exit from OwnedResults.Static1(), return value must be peer valid
 Error: Could not establish consistency of pure method contract. On exit from OwnedResults.Static2(), return value must be peer valid
