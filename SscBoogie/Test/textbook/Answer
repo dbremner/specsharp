@@ -547,13 +547,3 @@ Verifying C.Coincidence$System.Int32.array$notnull$System.Int32.array$notnull ..
 Verifying C..ctor ...
 
 Spec# program verifier finished with 2 verified, 0 errors
- 
------------------------------- MinimalSegmentSum --------------------- 
-
-Running abstract interpretation...
-
-Verifying C.MinSum$System.Int32.array$notnull ...
-
-Verifying C..ctor ...
-
-Spec# program verifier finished with 2 verified, 0 errors
