@@ -68,13 +68,15 @@ for %%f in (SegmentSum Sum_x_values SumClass SumEven SumEvenClassPure SumEvenCla
 
 REM ======================
 REM ====================== Examples that need /inductiveMinMax:4
+REM ====================== 
+REM ====================== This test used to verify with an earlier version of Z3, but does not verify with the latest version (2.14).
 REM ======================
-for %%f in (MinimalSegmentSum) do (
-  echo. >> Output.trace
-  echo ------------------------------ %%f --------------------- >> Output.trace
-  %SSCEXE% /target:library /debug %%f.ssc >> Output.trace
-  %BGEXE% /trace %* /inductiveMinMax:4 %%f.dll >> Output.trace
-)
+REM for %%f in (MinimalSegmentSum) do (
+REM   echo. >> Output.trace
+REM   echo ------------------------------ %%f --------------------- >> Output.trace
+REM   %SSCEXE% /target:library /debug %%f.ssc >> Output.trace
+REM   %BGEXE% /trace %* /inductiveMinMax:4 %%f.dll >> Output.trace
+REM )
 
 REM remove the times that are included in the /trace output
 type Output.trace | %SystemRoot%\system32\find /v "  [" | %SystemRoot%\system32\find /v "[TRACE] "
