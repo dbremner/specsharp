@@ -37,7 +37,6 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG;WHIDBEY</DefineConstants>
-    <DocumentationFile>System.Compiler.Framework.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <IncrementalBuild>false</IncrementalBuild>
@@ -75,7 +74,6 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE;WHIDBEY</DefineConstants>
-    <DocumentationFile>System.Compiler.Framework.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <IncrementalBuild>false</IncrementalBuild>
@@ -92,7 +90,6 @@
     <DefineConstants>TRACE;DEBUG;WHIDBEY;NoData;NoRuntimeXml</DefineConstants>
     <BaseAddress>0</BaseAddress>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>System.Compiler.Framework.xml</DocumentationFile>
     <NoWarn>1595;1591;1587;1572;1573;1699</NoWarn>
     <NoStdLib>true</NoStdLib>
     <PlatformTarget>AnyCPU</PlatformTarget>
