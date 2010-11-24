@@ -1,13 +1,9 @@
-# Aste started: 2010-11-24 07:00:08
+# Aste started: 2010-11-24 10:27:47
 # Host id: Boogiebox
-# [2010-11-24 07:02:18] SpecSharp revision: 55320
-# [2010-11-24 07:03:23] Boogie revision: 60001
-# [2010-11-24 07:03:48] SscBoogie revision: 59965
-[2010-11-24 07:04:30] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-11-24 10:29:57] SpecSharp revision: 55320
+# [2010-11-24 10:31:00] Boogie revision: 60001
+# [2010-11-24 10:31:29] SscBoogie revision: 59965
+[2010-11-24 10:31:57] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
 
     warning CS1668
     warning CS1668
-[2010-11-24 07:04:54] [Error] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build Debug
-
-    1 error
-    1 failed
