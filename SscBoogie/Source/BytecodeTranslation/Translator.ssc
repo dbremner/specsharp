@@ -13,7 +13,7 @@ namespace Microsoft.Boogie
   using Microsoft.Contracts;
   using Cci = System.Compiler;
   using Bpl = Microsoft.Boogie;
-  
+
   /// <summary>
   /// This is the class that contains the public API for translating IL to BPL.
   /// It contains references to the instruction translator and expression translator
@@ -24,20 +24,20 @@ namespace Microsoft.Boogie
 
     private Cci.TypeNode notNullModifier = null;
     private bool lookedForNotNullModifier = false;
-    
+
     private Cci.Analyzer analyzer = null;
     private TypeAssignment typeAnalysis;
-    
+
     private Cci.ControlFlowGraph cfg;
-    
+
     public Sink! sink;
     private readonly MethodRepository! MethodRep;
 
     private InstructionTranslator instructionTranslator;
 
     // just an abbreviation
-    private static Bpl.IToken! NoToken = Bpl.Token.NoToken; 
-    
+    private static Bpl.IToken! NoToken = Bpl.Token.NoToken;
+
 
 
     public Cci.ErrorHandler! ErrorHandler { get { return this.sink.errorHandler; } }
@@ -45,7 +45,7 @@ namespace Microsoft.Boogie
     [NotDelayed]
     public Translator (Cci.ErrorHandler! errorHandler, Cci.Analyzer analyzer, IAssemblyInformation ai)
     {
-        
+
 
       IAssemblyInformation assemblyInfo;
       if (ai == null) {
@@ -55,7 +55,7 @@ namespace Microsoft.Boogie
       }
       //sink.currentProcedure = null;
       this.analyzer = analyzer;
-      
+
       Bpl.Program! prelude;
       Bpl.ResolutionContext! rc;
       LoadStandardPrelude(out prelude, out rc);
@@ -88,20 +88,20 @@ namespace Microsoft.Boogie
         {
             return;
         }
-        
+
         #region Here we fix up any unwarranted expectations we have about the AST.
-        
+
         if (method.Parameters == null) { method.Parameters = new Cci.ParameterList(); }
-        
+
         // force contract info to be deserialized to avoid inappropriate sharing of their conditions with the checks in the method body
         /*
         method.Contract.Requires = null;
         method.Contract.Ensures = null;
         method.Contract.Modifies = null;
         */
-        
+
         #endregion
-        
+
         sink.currentMethod = method;
 
         // Transform the IL to replace the evaluation stack with local variables.  At the same time,
@@ -109,7 +109,7 @@ namespace Microsoft.Boogie
         try
         {
             Cci.ControlFlowGraph cfg;
-            
+
             // use the cached CFG, if possible
             if (this.analyzer == null)
                 cfg = Cci.ControlFlowGraph.For(method);
@@ -123,10 +123,10 @@ namespace Microsoft.Boogie
 
             if (CommandLineOptions.Clo.UserWantsMethodLogging(Sink.UniqueProcedureName(method)))
             {
-                Console.WriteLine(); Console.WriteLine(); 
+                Console.WriteLine(); Console.WriteLine();
                 this.cfg.Display(Console.Out);
             }
-        } 
+        }
         catch (Cci.ControlFlowGraph.NoCodeException) { }
         catch (Cci.ControlFlowGraph.UnavailableCodeException) { }
 
@@ -136,7 +136,7 @@ namespace Microsoft.Boogie
 
         MethodSignature! sig = MethodRep[method];
         sink.AddProcedure(method, sig);
-        
+
         Cci.CfgBlock! entry = (!) this.cfg.Entry;
         Cci.CfgBlock! exit = (!) this.cfg.NormalExit;
         //sig.GenerateMethodPrelude(method, sig, entry);
@@ -145,9 +145,9 @@ namespace Microsoft.Boogie
 
         this.instructionTranslator = new InstructionTranslator(this.sink, sig, this.typeAnalysis);
         this.sink.InstructionTranslator = this.instructionTranslator;
-        
+
         sig.GenerateMethodPrelude(method, sig, entry);
-        
+
         RunLoopAnalysis(method, cfg, sig, entry, exit);
 
 #if DEBUG_PRINT
@@ -183,19 +183,19 @@ namespace Microsoft.Boogie
         Cci.CfgBlock currentCfgBlock;
         while (workItems.Count > 0)
         {
-            currentCfgBlock = (Cci.CfgBlock!) workItems.Dequeue(); 
+            currentCfgBlock = (Cci.CfgBlock!) workItems.Dequeue();
             if (translatedBlocks.Contains(currentCfgBlock)) {
                 continue;
             }
             translatedBlocks.Add(currentCfgBlock);
-            
+
             if (currentCfgBlock.Length > 0 &&
                 (currentCfgBlock[0] is Cci.Catch || currentCfgBlock[0] is Cci.Unwind))
             {
                 continue;
             }
 
-            // Although we don't want to translate this block, we need it to 
+            // Although we don't want to translate this block, we need it to
             // appear so that there are no dangling gotos. This command
             // has the side effect of adding a translated block (ending
             // in an appropriate goto) to the current implementation.
@@ -205,16 +205,16 @@ namespace Microsoft.Boogie
             // are used to encode instrumentation code are
             // never represented in the BPL program.
             assert ! Sink.IsInstrumentationCode(currentCfgBlock);
-            
+
             instructionTranslator.CurrentCfgBlock = currentCfgBlock;
-            
+
             // Translate the statements within this block
             for (int i = 0; i < currentCfgBlock.Length; i ++)
             {
                Cci.Statement statement = (Cci.Statement) currentCfgBlock[i];
                this.instructionTranslator.Visit(statement, null);
             }
-            
+
             // Add a pack ``command'' to the end of a non-deferring constructor of a non-guarded class, unless it carries a [NoDefaultContract] attribute.
             if (instructionTranslator.currentBlock.TransferCmd is ReturnCmd &&
                 method is Cci.InstanceInitializer && !((Cci.InstanceInitializer)method).IsDeferringConstructor &&
@@ -233,7 +233,7 @@ namespace Microsoft.Boogie
                 }
             }
         }
-        
+
         // Add loop preheaders
         foreach (KeyValuePair<Cci.CfgBlock!,LoopPreheader!> entry in loopPreheaders)
         {
@@ -243,7 +243,7 @@ namespace Microsoft.Boogie
               // TODO: When we start handling exceptional successors, then MakeBlock will have been called on this block, too, so then we should remove this if statement
               continue;  // ignore this block (I think it's a loop header in a duplicated finally block)
             }
-            
+
             // Connect non-back edges to preheader
             foreach (Cci.CfgBlock! cciPred in loopPreheaderPreds[preheader])
             {
@@ -261,7 +261,7 @@ namespace Microsoft.Boogie
                                 // Connect preheader to loop header
                                 preheader.Connect(blk);
                                 assert preheader.Block != null;  // postcondition of Connect says so, but type checker doesn't look there
-                                
+
                                 // Insert default loop invariants into loop header
                                 CmdSeq loopinv = preheader.DefaultLoopInv;
                                 assert loopinv != null;
@@ -293,13 +293,13 @@ namespace Microsoft.Boogie
                                   cmds.Add(blk.Cmds[i]);
                                 }
                                 blk.Cmds = cmds;
-                                
+
                                 // Add preheader to the implementation
                                 assume sink.InstructionTranslator != null;
                                 assume sink.InstructionTranslator.currentProcedure != null;
                                 sink.InstructionTranslator.currentProcedure.Blocks.Add(preheader.Block);
                             }
-                            
+
                             assume gotoCmd.labelNames != null;
                             for (int i = 0; i < gotoCmd.labelNames.Length; i++)
                             {
@@ -308,7 +308,7 @@ namespace Microsoft.Boogie
                                     Block preheadBlock = preheader.Block;
                                     assert preheadBlock != null;
                                     gotoCmd.labelNames[i] = preheadBlock.Label;
-                                    
+
                                     if (gotoCmd.labelTargets != null)
                                         gotoCmd.labelTargets[i] = preheader.Block;
                                 }
@@ -325,7 +325,7 @@ namespace Microsoft.Boogie
     {
         Bpl.StronglyConnectedComponents<Cci.CfgBlock> findSCCs = new Bpl.StronglyConnectedComponents<Cci.CfgBlock>(blocks, preds, succs);
         findSCCs.Compute();
-    
+
         foreach (Bpl.SCC<Cci.CfgBlock>! scc in findSCCs)
         {
             // Skip if scc is of size 1, unless the block has a self loop
@@ -354,7 +354,7 @@ namespace Microsoft.Boogie
                     {
                         // Predecessor not in SCC, create a loop preheader
                         if (!loopPreheaders.ContainsKey(cciBlk))
-                        { 
+                        {
                             assume sink.InstructionTranslator != null;
                             LoopPreheader lph = new LoopPreheader(this.sink, sig, (!)sink.InstructionTranslator.currentProcedure, cciBlk);
                             loopPreheaders.Add(cciBlk,lph);
@@ -364,7 +364,7 @@ namespace Microsoft.Boogie
                     }
                 }
             }
-            
+
             // Recurse on this SCC, unless it's a self loop
             if (2 <= scc.Count) {
               IEnumerable! empty = new Cci.CfgBlock[0];
@@ -387,12 +387,12 @@ namespace Microsoft.Boogie
     }
     private void RunTypeAnalysis (Cci.Method! method, Cci.ControlFlowGraph! cfg)
       modifies this.typeAnalysis;
-    {    
+    {
         string fullName = method.FullName;
         if (fullName != null && CommandLineOptions.Clo.UserWantsMethodLogging(fullName))
         {
-            TypeDataflowState.LogWriter = Console.Out; 
-            Console.WriteLine(); 
+            TypeDataflowState.LogWriter = Console.Out;
+            Console.WriteLine();
             Console.WriteLine();
         }
 #if ROB_DEBUG
@@ -401,7 +401,7 @@ namespace Microsoft.Boogie
 
         this.typeAnalysis = new TypeAssignment(method,cfg);
         this.typeAnalysis.Run();
-        
+
         if (TypeDataflowState.LogWriter != null)
         {
             TypeDataflowState.LogWriter.Close();
@@ -425,7 +425,7 @@ namespace Microsoft.Boogie
         }
       }
       while (workItems.Count > 0){
-        Cci.CfgBlock currBlock = (Cci.CfgBlock!) workItems.Dequeue(); 
+        Cci.CfgBlock currBlock = (Cci.CfgBlock!) workItems.Dequeue();
         if (!Sink.IsInstrumentationCode(currBlock)){
           nonContractSuccessors.Add(currBlock);
           continue;
@@ -451,7 +451,7 @@ namespace Microsoft.Boogie
             Bpl.Program result = new Bpl.Program();
             result.TopLevelDeclarations.AddRange(this.StandardPrelude.TopLevelDeclarations);
             result.TopLevelDeclarations.AddRange(sink.NameConsts);
-            
+
             // Add string literals
             List<Bpl.Constant!>! stringLitConsts;
             List<string!>! stringLitContents;
@@ -460,7 +460,7 @@ namespace Microsoft.Boogie
             for (int i = 0; i < stringLitConsts.Count; i++) {
               Bpl.Constant c = stringLitConsts[i];
               sink.toplevelDeclarations.Add(c);
-              
+
               // axiom IsNotNull($stringLiteralN) &&
               //       $StringLength($stringLiteralN) == K &&
               //       (forall heap :: { heap[$stringLiteralN, $allocated] }
@@ -479,18 +479,18 @@ namespace Microsoft.Boogie
                     Bpl.Expr.Imp(isHeap, isAllocated));
 
               Bpl.Expr isInterned = sink.Function(Sink.BuiltinFunction.StringIsInterned, Sink.Ident(heap), ie);
-              Bpl.Expr q1 = 
+              Bpl.Expr q1 =
                 new ForallExpr(NoToken, new VariableSeq(heap),
                   new Trigger(NoToken, true, new ExprSeq(isInterned)),
                     Bpl.Expr.Imp(isHeap, Bpl.Expr.Eq(isInterned, ie)));
 
-              Bpl.Axiom ax = 
+              Bpl.Axiom ax =
                 new Bpl.Axiom(NoToken,
                   Sink.And(Sink.And(c0, c1), q0, q1),
                   string.Format("{0} is allocated, interned, and has the appropriate type and length", c.Name));
               sink.toplevelDeclarations.Add(ax);
             }
-            
+
             if (CommandLineOptions.Clo.MethodologySelection == CommandLineOptions.Methodology.VisibleState) {
               // axiom (forall $CT :: { KnownClass($CT) } KnownClass($CT) <==> $CT == T0 || $CT == T1 || ...);
               Bpl.BoundVariable tVar = new Bpl.BoundVariable(Token.NoToken, new Bpl.TypedIdent(Token.NoToken, "$CT", sink.TypeType));
@@ -528,19 +528,19 @@ namespace Microsoft.Boogie
         private Sink! sink;
         private Bpl.Implementation! bplImpl;
         private Cci.CfgBlock! cciBlk;
-        
+
         private Bpl.Block block;
         private Bpl.IdentifierExpr loopEntryHeap;
         private Bpl.CmdSeq defaultLoopInv;
-        
+
         public Bpl.Block/*?*/ Block { [Pure][Reads(ReadsAttribute.Reads.Owned)] get { return block; } }
         public Bpl.CmdSeq/*?*/ DefaultLoopInv { [Pure][Reads(ReadsAttribute.Reads.Owned)] get { return defaultLoopInv; } }
-        
+
         private bool connected = false;
         public bool Connected { [Pure][Reads(ReadsAttribute.Reads.Owned)] get { return connected; } }
 
         invariant connected ==> block != null && defaultLoopInv != null;
-        
+
         [NotDelayed]
         internal LoopPreheader(Sink! sink, MethodSignature! sig, Bpl.Implementation! bplImpl, Cci.CfgBlock! cciBlk)
           ensures !Connected;
@@ -551,7 +551,7 @@ namespace Microsoft.Boogie
             this.cciBlk = cciBlk;
             base();
         }
-        
+
         // Connect preheader to the loop header
         public void Connect (Bpl.Block! loopHeader)
           requires !Connected;
@@ -566,23 +566,23 @@ namespace Microsoft.Boogie
             }
             connected = true;
         }
-        
+
         private const string! loopEntryTag = "$LoopPreheader";
         private static string! TagLoopEntry(string! s) { return s + loopEntryTag; }
-          
+
         // Creates a BPL block for the loop pre-header.  Does not connect it to anything.
         private void CreateBlock(Bpl.Block! loopHeader)
           ensures this.loopEntryHeap != null;
           ensures this.block != null;
         {
             string! loopEntryBlkLabel = TagLoopEntry(loopHeader.Label);
-            
+
             // Create new locals
             Bpl.LocalVariable! loopEntryHeapVar = new Bpl.LocalVariable(Bpl.Token.NoToken, new Bpl.TypedIdent(Bpl.Token.NoToken, Prelude.HeapName + "$" + loopEntryBlkLabel, sink.HeapType));
             bplImpl.LocVars.Add(loopEntryHeapVar);
-            
+
             this.loopEntryHeap = Sink.Ident(loopEntryHeapVar);
-                 
+
             // Create a block to save values before the loop
             Bpl.CmdSeq! entrySeq = new Bpl.CmdSeq(
                 Cmd.SimpleAssign(Bpl.Token.NoToken, loopEntryHeap, sink.HeapExpr())
@@ -590,24 +590,24 @@ namespace Microsoft.Boogie
             GotoCmd! preheaderToHeader = new GotoCmd(Bpl.Token.NoToken, new StringSeq(loopHeader.Label), new BlockSeq(loopHeader));
             this.block = new Bpl.Block(Bpl.Token.NoToken, loopEntryBlkLabel, entrySeq, preheaderToHeader);
         }
-        
+
         // Creates default loop invariant
-        private void CreateDefaultLoopInvariant () 
+        private void CreateDefaultLoopInvariant ()
           requires this.loopEntryHeap != null;
-          ensures this.defaultLoopInv != null;      
+          ensures this.defaultLoopInv != null;
         {
           Cci.Statement! s = cciBlk.Length > 0 ? (!) cciBlk[0] : cciBlk;
           Bpl.CmdSeq! loopinv = new Bpl.CmdSeq();
-      
+
           // --------------- loop invariants for $allocated ---------------
-          
+
           loopinv.Add(Sink.MakeComment(s, "default loop invariant: allocation and ownership are stable"));
-          
-          // alloc only grows, and ownership once assignment doesn't change
+
+          // alloc only grows, and ownership once assigned doesn't change
           loopinv.Add(Sink.Assume(sig.GenerateAllocationAndOwnershipStable(loopEntryHeap)));
 
           // --------------- loop invariants for $inv ---------------
-         
+
           loopinv.Add(Sink.MakeComment(s, "default loop invariant: exposure"));
 
           // objects already allocated on entry to the loop maintain their $inv values
@@ -622,7 +622,7 @@ namespace Microsoft.Boogie
             Bpl.Expr cond = new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(oVar), Bpl.Expr.Imp(Bpl.Expr.And(c0, c1), sink.om.IsFullyValid(o)));
             loopinv.Add(Sink.Assume(cond));
           }
-          
+
           // for every in-parameter p (ideally, for every object of interest), say that $inv has not changed since the beginning of the loop
           //   free loop invariant:  $Heap[p, $inv] == $Heap$block9911$LoopPreheader[p, $inv];
           if (CommandLineOptions.Clo.OwnershipModelEncoding != CommandLineOptions.OwnershipModelOption.Trivial) {  // the $inv field does not exist in the trivial ownership model
@@ -637,7 +637,7 @@ namespace Microsoft.Boogie
           }
 
           // --------------- loop invariants for maintaining object invariants ---------------
-          
+
           if (CommandLineOptions.Clo.MethodologySelection == CommandLineOptions.Methodology.VisibleState) {
             loopinv.Add(Sink.MakeComment(s, "default loop invariant: object invariants are maintained"));
 
@@ -654,7 +654,7 @@ namespace Microsoft.Boogie
           if (CommandLineOptions.Clo.LoopFrameConditions > 0)
           {
             loopinv.Add(Sink.MakeComment(s, "default loop invariant: modifies"));
-            
+
             Bpl.ExprSeq! eSeq = sig.GenerateObjectsFrameCondition(loopEntryHeap);
 
             Bpl.Expr freeLoopInvariant = null;
@@ -663,22 +663,22 @@ namespace Microsoft.Boogie
 
             Bpl.Expr[] eArr = (Bpl.Expr[]) eSeq.elems;
             assert eArr != null;
-            
+
             // loop iterations are subject to the same frame condition as the enclosing method
             for (int i = 0; i < eArr.Length; i++) {
               Bpl.Expr cond = eArr[i];
               assert cond != null;
-              
+
               if (CommandLineOptions.Clo.LoopFrameConditions == 2) {
                 Bpl.AssertCmd a = Sink.Assert(cond, s, "Modifies clause of the method is required to hold on each loop iteration.");
-                
+
                 if (i == 0) {
                   // add enhanced error data for o, f
                   string extraInformation = "The iteration modified the {1} field of object {0}.";
                   List<Bpl.Expr /* ! */> exprList = new List<Bpl.Expr /* ! */>();
                   Bpl.IdentifierExpr! o = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$o", sink.RefType);
                   exprList.Add(o);
-                  Bpl.IdentifierExpr! f = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$f", sink.RefType); 
+                  Bpl.IdentifierExpr! f = new Bpl.IdentifierExpr(Bpl.Token.NoToken, "$f", sink.RefType);
                   exprList.Add(f);
                   a.ErrorDataEnhanced = new EEDTemplate(extraInformation, exprList);
                 } else {
@@ -697,7 +697,7 @@ namespace Microsoft.Boogie
                 loopinv.Add(a);
               }
             }
-            
+
             if (freeLoopInvariant != null) {
               loopinv.Add(new Bpl.AssumeCmd(Token.NoToken, freeLoopInvariant));
             }
@@ -706,26 +706,25 @@ namespace Microsoft.Boogie
           // add Heap Succession info for use in the z3 model output
           Bpl.AssumeCmd assumeCmd = new Bpl.AssumeCmd(Bpl.Token.NoToken, sink.Function(Sink.BuiltinFunction.HeapSucc, loopEntryHeap, sink.HeapExpr()));
           loopinv.Add(assumeCmd);
-      
+
           // --------------- loop invariants for $ownerRef and $ownerFrame ---------------
-          // This is needed for loops in addition to the regular frame condition, because it is useful to know the
-          // unchangedness of the owners of objects allocated by the method before the loop starts.
-          
-          if (CommandLineOptions.Clo.LoopFrameConditions > 0)
+          // This is needed for loops in addition to the regular frame condition
+          // (regardless of whether /modifiesOnLoop is used), because it is useful to know
+          // the unchangedness of the owners of objects allocated by the method before the
+          // loop starts.
+
+          loopinv.Add(Sink.MakeComment(s, "default loop invariant: owner fields"));
+
+          // If the owner of an object $o changes to [ow,OT], then check: either $o or ow is newly allocated or $o is a captured parameter
           {
-            loopinv.Add(Sink.MakeComment(s, "default loop invariant: owner fields"));
-            
-            // If the owner of an object $o changes to [ow,OT], then check: either $o or ow is newly allocated or $o is a captured parameter
-            {
-              Bpl.Expr cond = sig.GenerateOwnerChangeCondition(loopEntryHeap);
-              Bpl.Cmd a;
-              if (CommandLineOptions.Clo.CheckingLevel < 1) {
-                a = Sink.Assume(cond);
-              } else {
-                a = Sink.Assert(cond, s, "In a loop, an owner is allowed to be changed only for captured parameters and objects allocated during the loop iteration");
-              }
-              loopinv.Add(a);
+            Bpl.Expr cond = sig.GenerateOwnerChangeCondition(loopEntryHeap);
+            Bpl.Cmd a;
+            if (CommandLineOptions.Clo.CheckingLevel < 1) {
+              a = Sink.Assume(cond);
+            } else {
+              a = Sink.Assert(cond, s, "In a loop, an owner is allowed to be changed only for captured parameters and objects allocated during the loop iteration");
             }
+            loopinv.Add(a);
           }
 
           this.defaultLoopInv = loopinv;
@@ -740,7 +739,7 @@ namespace Microsoft.Boogie
         return new List<Cci.CfgBlock!>();
       }
     }
-    
+
     IEnumerable! AllPredecessors(Cci.CfgBlock! b) {
       IEnumerable ie = ((!)cfgWorld).Pred(b);
       if (ie != null) {
@@ -749,7 +748,7 @@ namespace Microsoft.Boogie
         return new List<Cci.CfgBlock!>();
       }
     }
-    
+
 
     private Bpl.Variable! Formal (string! name, Bpl.Type! ty, bool incoming)
     {
@@ -819,9 +818,9 @@ namespace Microsoft.Boogie
         reason = s;
         // base();
       }
-    }    
+    }
 
-    
+
   } // end class Translator
 #if UNUSED
     Cci.CfgBlock! GetCanonicalReturnBlock (Cci.CfgBlock! cfgExit)
@@ -866,5 +865,5 @@ namespace Microsoft.Boogie
         bad.Document = null;
         return bad;
     }
-#endif  
+#endif
 }
