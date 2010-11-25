@@ -8,7 +8,7 @@
 //       - main program
 //---------------------------------------------------------------------------------------------
 
-namespace Microsoft.Boogie 
+namespace Microsoft.Boogie
 {
   using System;
   using System.IO;
@@ -23,7 +23,7 @@ namespace Microsoft.Boogie
   using Dafny = Microsoft.Dafny;
   using AI = Microsoft.AbstractInterpretationFramework;
 
-/* 
+/*
   The following assemblies are referenced because they are needed at runtime, not at compile time:
     Graph
     Provers.Simplify
@@ -32,12 +32,12 @@ namespace Microsoft.Boogie
     VCExpr
 */
 
-  public class BoogiePLMain 
+  public class BoogiePLMain
   {
     // ------------------------------------------------------------------------
     // Main
-    
-    public static void Main (string[]! args) 
+
+    public static void Main (string[]! args)
     {
       assert forall{int i in (0:args.Length); args[i] != null};
       CommandLineOptions.Clo.RunningBoogieFromCommandLine = true;
@@ -61,10 +61,10 @@ namespace Microsoft.Boogie
       {
         Console.WriteLine(CommandLineOptions.Clo.Version);
       }
-      if (CommandLineOptions.Clo.ShowEnv == CommandLineOptions.ShowEnvironment.Always) 
+      if (CommandLineOptions.Clo.ShowEnv == CommandLineOptions.ShowEnvironment.Always)
       {
         Console.WriteLine("---Command arguments");
-        foreach (string! arg in args) 
+        foreach (string! arg in args)
         {
           Console.WriteLine(arg);
         }
@@ -84,7 +84,7 @@ namespace Microsoft.Boogie
         assert a != null;
       }
 
-      foreach (string! file in CommandLineOptions.Clo.Files) 
+      foreach (string! file in CommandLineOptions.Clo.Files)
       {
         string extension = Path.GetExtension(file);
         if (extension != null) { extension = extension.ToLower(); }
@@ -95,23 +95,23 @@ namespace Microsoft.Boogie
             goto END;
         }
       }
-      
+
       CommandLineOptions.Clo.RunningBoogieOnSsc = true;
-      
+
       List<string!> files = new List<string!>();
       foreach (string a in CommandLineOptions.Clo.Files) {
         if (a != null) {
           files.Add(a);
         }
       }
-	  
+
       ProcessFiles(files);
 
       END:
         if (CommandLineOptions.Clo.XmlSink != null) {
           CommandLineOptions.Clo.XmlSink.Close();
         }
-        if (CommandLineOptions.Clo.Wait) 
+        if (CommandLineOptions.Clo.Wait)
         {
           Console.WriteLine("Press Enter to exit.");
           Console.ReadLine();
@@ -123,7 +123,7 @@ namespace Microsoft.Boogie
         Console.WriteLine(s);
         return;
       }
-      
+
       // split the string up into its first line and the remaining lines
       string remaining = null;
       int i = s.IndexOf('\r');
@@ -134,12 +134,12 @@ namespace Microsoft.Boogie
         }
         s = s.Substring(0, i);
       }
-      
+
       ConsoleColor col = Console.ForegroundColor;
       Console.ForegroundColor = ConsoleColor.Red;
       Console.WriteLine(s);
       Console.ForegroundColor = col;
-      
+
       if (remaining != null) {
         Console.WriteLine(remaining);
       }
@@ -169,16 +169,16 @@ namespace Microsoft.Boogie
         case CommandLineOptions.PlatformType.v2: Microsoft.SpecSharp.TargetPlatform.SetToV2(options.TargetPlatformLocation); break;
         case CommandLineOptions.PlatformType.cli1: Microsoft.SpecSharp.TargetPlatform.SetToPostV1_1(options.TargetPlatformLocation); break;
         }
-        
+
         if (options.StandardLibraryLocation != null && options.StandardLibraryLocation.Length > 0){
           System.Compiler.SystemAssemblyLocation.Location = options.StandardLibraryLocation;
         }
         System.Compiler.SystemCompilerRuntimeAssemblyLocation.Location = options.TargetPlatformLocation + @"\System.Compiler.Runtime.dll";
-                
+
         System.Compiler.SystemTypes.Initialize(true, true);
       }
     }
-  
+
     static string! GetErrorLine(Cci.ErrorNode! node)
         requires node.SourceContext.Document != null ==> node.SourceContext.Document.Name != null;
     {
@@ -200,7 +200,7 @@ namespace Microsoft.Boogie
     {
         public Cci.ErrorNodeList! errors = new Cci.ErrorNodeList();
         public int errorsReported;
-        
+
         public void ReportErrors()
         {
             //sort the portion of the array that will be reported to make output more deterministic
@@ -209,7 +209,7 @@ namespace Microsoft.Boogie
                 Cci.ErrorNode error = errors[errorsReported];
                 if (error != null)
                     ErrorWriteLine(GetErrorLine(error));
-            } 
+            }
         }
     }
 
@@ -244,7 +244,7 @@ namespace Microsoft.Boogie
           if (CommandLineOptions.Clo.PrintFile != null) {
             PrintBplFile(CommandLineOptions.Clo.PrintFile, program.Program, false);
           }
-          
+
           string! bplFilename;
           if (CommandLineOptions.Clo.PrintFile != null) {
             bplFilename = CommandLineOptions.Clo.PrintFile;
@@ -253,7 +253,7 @@ namespace Microsoft.Boogie
             baseName = (!)Path.ChangeExtension(baseName, "bpl");
             bplFilename = Path.Combine(Path.GetTempPath(), baseName);
           }
-          
+
           int errorCount, verified, inconclusives, timeOuts, outOfMemories;
           PipelineOutcome oc = BoogiePipelineWithRerun(program.Program, bplFilename, program, errorReporter, out errorCount, out verified, out inconclusives, out timeOuts, out outOfMemories);
           switch (oc) {
@@ -263,9 +263,10 @@ namespace Microsoft.Boogie
               // and check if they are only trace positions; if so do not count that error as an error
               errorCount = 0;
               foreach (Cci.ErrorNode err in errorReporter.errors) {
-                if (err!= null && err.GetMessage() != "    (trace position)") {
-                  errorCount++;
-                }
+                  if (err != null &&
+                      (err.GetMessage() == null || !(((!) err.GetMessage()).Contains("(trace position)")))) {
+                    errorCount++;
+                  }
               }
               WriteTrailer(verified, errorCount, inconclusives, timeOuts, outOfMemories);
               break;
@@ -277,8 +278,8 @@ namespace Microsoft.Boogie
       }
 
     }
-    
-    
+
+
     static void PrintBplFile (string! filename, Program! program, bool allowPrintDesugaring)
     {
         bool oldPrintDesugaring = CommandLineOptions.Clo.PrintDesugarings;
@@ -296,16 +297,16 @@ namespace Microsoft.Boogie
         }
         CommandLineOptions.Clo.PrintDesugarings = oldPrintDesugaring;
     }
-    
-    
+
+
     static bool ProgramHasDebugInfo (Program! program)
     {
         // We inspect the last declaration because the first comes from the prelude and therefore always has source context.
-        return program.TopLevelDeclarations.Count > 0 && 
+        return program.TopLevelDeclarations.Count > 0 &&
             ((!)program.TopLevelDeclarations[program.TopLevelDeclarations.Count - 1]).tok.IsValid;
     }
-    
-    
+
+
     /// <summary>
     /// Inform the user about something and proceed with translation normally.
     /// Print newline after the message.
@@ -333,7 +334,7 @@ namespace Microsoft.Boogie
       Console.Out.Flush();
     }
 
-    
+
 
     static void ReportBplError(Absy! node, string! message, bool error)
     {
@@ -397,7 +398,7 @@ namespace Microsoft.Boogie
         return program;
       }
     }
-    
+
     /// <summary>
     /// Resolve, type check, infer invariants for, and verify the given Boogie program.
     /// The intention is that this Boogie program has been produced by translation from something
@@ -417,7 +418,7 @@ namespace Microsoft.Boogie
       switch (oc) {
         case PipelineOutcome.Done:
           return oc;
-          
+
         case PipelineOutcome.ResolutionError:
         case PipelineOutcome.TypeCheckingError:
           {
@@ -425,7 +426,7 @@ namespace Microsoft.Boogie
             Console.WriteLine();
             Console.WriteLine("*** Encountered internal translation error - re-running Boogie to get better debug information");
             Console.WriteLine();
-            
+
             List<string!>! fileNames = new List<string!> ();
             fileNames.Add(bplFileName);
             Program reparsedProgram = ParseBoogieProgram(fileNames, true);
@@ -437,14 +438,14 @@ namespace Microsoft.Boogie
 
         case PipelineOutcome.ResolvedAndTypeChecked:
           return InferAndVerify(program, translatedProgram, errorReporter, out errorCount, out verified, out inconclusives, out timeOuts, out outOfMemories);
-          
+
         default:
           assert false;  // unexpected outcome
       }
     }
 
     enum PipelineOutcome { Done, ResolutionError, TypeCheckingError, ResolvedAndTypeChecked, FatalError, VerificationCompleted }
-    
+
     /// <summary>
     /// Resolves and type checks the given Boogie program.  Any errors are reported to the
     /// console.  Returns:
@@ -466,16 +467,16 @@ namespace Microsoft.Boogie
       }
 
       // ---------- Type check ------------------------------------------------------------
-      
+
       if (CommandLineOptions.Clo.NoTypecheck) { return PipelineOutcome.Done; }
-      
+
       errorCount = program.Typecheck();
       if (errorCount != 0) {
         Console.WriteLine("{0} type checking errors detected in {1}", errorCount, bplFileName);
         return PipelineOutcome.TypeCheckingError;
       }
-    
-      if (CommandLineOptions.Clo.PrintFile != null && CommandLineOptions.Clo.PrintDesugarings) 
+
+      if (CommandLineOptions.Clo.PrintFile != null && CommandLineOptions.Clo.PrintDesugarings)
       {
         // if PrintDesugaring option is engaged, print the file here, after resolution and type checking
         PrintBplFile(CommandLineOptions.Clo.PrintFile, program, true);
@@ -483,7 +484,7 @@ namespace Microsoft.Boogie
 
       return PipelineOutcome.ResolvedAndTypeChecked;
     }
-    
+
     /// <summary>
     /// Given a resolved and type checked Boogie program, infers invariants for the program
     /// and then attempts to verify it.  Returns:
@@ -500,12 +501,12 @@ namespace Microsoft.Boogie
       ensures 0 <= inconclusives && 0 <= timeOuts;
     {
       errorCount = verified = inconclusives = timeOuts = outOfMemories = 0;
-  
+
       // ---------- Infer invariants --------------------------------------------------------
-      
+
       // Abstract interpretation -> Always use (at least) intervals, if not specified otherwise (e.g. with the "/noinfer" switch)
       Microsoft.Boogie.AbstractInterpretation.AbstractInterpretation.RunAbstractInterpretation(program);
-       
+
       if (CommandLineOptions.Clo.LoopUnrollCount != -1) {
         program.UnrollLoops(CommandLineOptions.Clo.LoopUnrollCount);
       }
@@ -517,9 +518,9 @@ namespace Microsoft.Boogie
       // ---------- Verify ------------------------------------------------------------
 
       if (!CommandLineOptions.Clo.Verify) { return PipelineOutcome.Done; }
-            
+
       #region Verify each implementation
-      
+
 #if ROB_DEBUG
       string now = DateTime.Now.ToString().Replace(' ','-').Replace('/','-').Replace(':','-');
       System.IO.StreamWriter w = new System.IO.StreamWriter(@"\temp\batch_"+now+".bpl");
@@ -536,14 +537,14 @@ namespace Microsoft.Boogie
         } else
         {
           vcgen = new VCGen(program, CommandLineOptions.Clo.SimplifyLogFilePath, CommandLineOptions.Clo.SimplifyLogFileAppend);
-        }         
+        }
       }
       catch (ProverException e)
       {
         ErrorWriteLine("Fatal Error: ProverException: {0}", e);
         return PipelineOutcome.FatalError;
       }
-      
+
       foreach ( Declaration! decl in program.TopLevelDeclarations )
       {
         Implementation impl = decl as Implementation;
@@ -588,7 +589,7 @@ namespace Microsoft.Boogie
               timeIndication = string.Format("  [{0} s]  ", elapsed.TotalSeconds);
             }
           }
-          
+
 
           switch (outcome) {
             default:
@@ -616,7 +617,7 @@ namespace Microsoft.Boogie
                 assert translatedProgram != null;
                 ErrorReporting h = new ErrorReporting();
                 h.errorReportingWithTrace(translatedProgram, errors, impl);
-                
+
                 errorReporter.ReportErrors();
               }
               else
@@ -626,7 +627,7 @@ namespace Microsoft.Boogie
                 // BP3xxx: Typechecking errors
                 // BP4xxx: Abstract interpretation errors (Is there such a thing?)
                 // BP5xxx: Verification errors
-                
+
                 errors.Sort(new CounterexampleComparer());
                 foreach (Counterexample error in errors)
                 {
@@ -674,10 +675,10 @@ namespace Microsoft.Boogie
                       }
                     }
                   }
-                  if (CommandLineOptions.Clo.EnhancedErrorMessages == 1) { 
+                  if (CommandLineOptions.Clo.EnhancedErrorMessages == 1) {
                     foreach (string! info in (!)error.relatedInformation) {
                       Console.WriteLine("       " + info);
-                    } 
+                    }
                   }
                   if (CommandLineOptions.Clo.ErrorTrace > 0) {
                     Console.WriteLine("Execution trace:");
@@ -685,8 +686,8 @@ namespace Microsoft.Boogie
                       if (b.tok == null) {
                         Console.WriteLine("    <intermediate block>");
                       } else {
-                        // for ErrorTrace == 1 restrict the output; 
-                        // do not print tokens with -17:-4 as their location because they have been 
+                        // for ErrorTrace == 1 restrict the output;
+                        // do not print tokens with -17:-4 as their location because they have been
                         // introduced in the translation and do not give any useful feedback to the user
                         if (!(CommandLineOptions.Clo.ErrorTrace == 1 && b.tok.line == -17 && b.tok.col == -4)) {
                           Console.WriteLine("    {0}({1},{2}): {3}", b.tok.filename, b.tok.line, b.tok.col, b.Label);
@@ -712,9 +713,9 @@ namespace Microsoft.Boogie
       ((!)CommandLineOptions.Clo.TheProverFactory).Close();
 
       #endregion
-      
+
       return PipelineOutcome.VerificationCompleted;
     }
-   
+
   }
 }
