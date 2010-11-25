@@ -64,7 +64,7 @@ namespace System.Compiler.Metadata{
   }
   [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("809c652e-7396-11d2-9771-00A0C9B4D50C")]
   interface IMetaDataDispenser{
-    void DefineScope (ref Guid clsid, uint createFlags, [In] ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object retval);    
+    void DefineScope (ref Guid clsid, uint createFlags, [In] ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object retval);
     [PreserveSig]
     int OpenScope (string scope, uint openFlags, [In] ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object import);
     void OpenScopeOnMemory (IntPtr data, uint dataSize, uint openFlags, [In] ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object retval);
@@ -84,7 +84,7 @@ namespace System.Compiler.Metadata{
 //    void GetReaderForFile3(IntPtr importer, [MarshalAs(UnmanagedType.LPWStr)] String fileName, [MarshalAs(UnmanagedType.LPWStr)] String searchPath, int searchPolicy, IntPtr callback, [MarshalAs(UnmanagedType.Interface)] out ISymUnmanagedReader pRetVal);
   }
   [ComImport, Guid("AA544D41-28CB-11d3-BD22-0000F80849BD")]
-  class CorSymBinder{ 
+  class CorSymBinder{
   }
   [ComImport, Guid("0A29FF9E-7F9C-4437-8B11-F424491E3931")]
   class CorSymBinder2{
@@ -121,7 +121,7 @@ namespace System.Compiler.Metadata{
     void GetParameters(uint size, out uint length, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ISymUnmanagedVariable[] parms);
     IntPtr GetNamespace();
     bool GetSourceStartEnd([MarshalAs(UnmanagedType.LPArray,SizeConst=2)] ISymUnmanagedDocument[] docs, [MarshalAs(UnmanagedType.LPArray)] uint[] lines, [MarshalAs(UnmanagedType.LPArray)] uint[] columns);
-    void GetSequencePoints(uint size, out uint length, 
+    void GetSequencePoints(uint size, out uint length,
       [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] uint[] offsets,
       [MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.IUnknown, SizeParamIndex=0)] IntPtr[] documents,
       [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] uint[] lines,
@@ -180,7 +180,7 @@ namespace System.Compiler.Metadata{
     ~UnmanagedBuffer(){
       this.Dispose();
     }
-  } 
+  }
   internal unsafe class Reader : IDisposable{
     private string directory;
     private string fileName;
@@ -266,7 +266,7 @@ namespace System.Compiler.Metadata{
 #if !ROTOR
       if (this.doNotLockFile){
 #endif
-        using (System.IO.FileStream inputStream = new System.IO.FileStream(this.fileName, 
+        using (System.IO.FileStream inputStream = new System.IO.FileStream(this.fileName,
                  System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read)){
           this.ReadFileIntoUnmanagedBuffer(inputStream);
         }
@@ -334,7 +334,7 @@ namespace System.Compiler.Metadata{
         try{
           binderObj2 = new CorSymBinder2();
           ISymUnmanagedBinder2 binder2 = (ISymUnmanagedBinder2)binderObj2;
-#if !NoWriter          
+#if !NoWriter
             importer = new Ir2md(new Module());
 #else
             importer = new EmptyImporter();
@@ -352,22 +352,22 @@ namespace System.Compiler.Metadata{
           }
         }
         switch ((uint)hresult){
-          case 0x0: break; 
+          case 0x0: break;
           case 0x806d0005:  // EC_NOT_FOUND
           case 0x806d0014 : // EC_INVALID_EXE_TIMESTAMP
 #if FxCop
             this.getDebugSymbols = false;
             this.getDebugSymbolsFailed = true;
 #else
-            // Sometimes GetReaderForFile erroneously reports missing pdb files as being "out of date", 
+            // Sometimes GetReaderForFile erroneously reports missing pdb files as being "out of date",
             // so we check if the file actually exists before reporting the error.
             // The mere absence of a pdb file is not an error. If not present, do not report.
             if (System.IO.File.Exists(System.IO.Path.ChangeExtension(filename, ".pdb")))
               throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, ExceptionStrings.PdbAssociatedWithFileIsOutOfDate, filename));
-#endif            
+#endif
             break;
           default:
-            throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, 
+            throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
               ExceptionStrings.GetReaderForFileReturnedUnexpectedHResult, hresult.ToString("X")));
         }
 #if !FxCop
@@ -393,7 +393,7 @@ namespace System.Compiler.Metadata{
     private AssemblyNode ReadAssembly(){
 #endif
       try{
-        AssemblyNode assembly = new AssemblyNode(new Module.TypeNodeProvider(this.GetTypeFromName), 
+        AssemblyNode assembly = new AssemblyNode(new Module.TypeNodeProvider(this.GetTypeFromName),
           new Module.TypeNodeListProvider(this.GetTypeList), new Module.CustomAttributeProvider(this.GetCustomAttributesFor),
           new Module.ResourceProvider(this.GetResources), this.directory);
         assembly.reader = this;
@@ -571,7 +571,7 @@ namespace System.Compiler.Metadata{
 #else
           return this.ReadAssembly();
 #endif
-        Module module = this.module = new Module(new Module.TypeNodeProvider(this.GetTypeFromName), 
+        Module module = this.module = new Module(new Module.TypeNodeProvider(this.GetTypeFromName),
           new Module.TypeNodeListProvider(this.GetTypeList), new Module.CustomAttributeProvider(this.GetCustomAttributesFor),
           new Module.ResourceProvider(this.GetResources));
         module.reader = this;
@@ -637,7 +637,7 @@ namespace System.Compiler.Metadata{
         assemRef.Flags = (AssemblyFlags)arr.Flags;
         assemRef.PublicKeyOrToken = this.tables.GetBlob(arr.PublicKeyOrToken);
         assemRef.Name = this.tables.GetString(arr.Name);
-        //if (CoreSystemTypes.SystemAssembly != null && CoreSystemTypes.SystemAssembly.Name == assemRef.Name && 
+        //if (CoreSystemTypes.SystemAssembly != null && CoreSystemTypes.SystemAssembly.Name == assemRef.Name &&
         //  assemRef.Version > CoreSystemTypes.SystemAssembly.Version){
         //  HandleError(module, ExceptionStrings.ModuleOrAssemblyDependsOnMoreRecentVersionOfCoreLibrary);
         //}
@@ -677,7 +677,7 @@ namespace System.Compiler.Metadata{
           modRefs[i].Module = mod;
           modules.Add(new ModuleReference(name, mod));
           goto nextModRef;
-        }        
+        }
         mod = new Module();
         mod.Name = name;
         mod.Kind = ModuleKindFlags.UnmanagedDynamicallyLinkedLibrary;
@@ -714,7 +714,7 @@ namespace System.Compiler.Metadata{
         FieldFlags fieldFlags = (FieldFlags)fld.Flags;
         if ((fieldFlags & FieldFlags.Static) == 0){
           this.tables.GetSignatureLength(fld.Signature);
-          MemoryCursor sigReader = this.tables.GetNewCursor();          
+          MemoryCursor sigReader = this.tables.GetNewCursor();
           GetAndCheckSignatureToken(6, sigReader);
           underlyingType = this.ParseTypeSignature(sigReader);
           break;
@@ -743,7 +743,7 @@ namespace System.Compiler.Metadata{
           method.ReturnAttributes = this.GetCustomAttributesFor((i << 5)|4);
           if ((pr.Flags & (int)ParameterFlags.HasFieldMarshal) != 0)
             method.ReturnTypeMarshallingInformation = this.GetMarshallingInformation((i << 1)|1);
-          this.AddMoreStuffToParameters(null, parameters, start+1, end); 
+          this.AddMoreStuffToParameters(null, parameters, start+1, end);
           return;
         }
         int j = pr.Sequence;
@@ -752,12 +752,12 @@ namespace System.Compiler.Metadata{
         Parameter par = parameters[j-1];
         par.Attributes = this.GetCustomAttributesFor((i << 5)|4);
         par.Flags = (ParameterFlags)pr.Flags;
-        if ((par.Flags & ParameterFlags.HasDefault) != 0) 
+        if ((par.Flags & ParameterFlags.HasDefault) != 0)
           par.DefaultValue = this.GetLiteral((i << 2)|1, par.Type);
         if ((par.Flags & ParameterFlags.HasFieldMarshal) != 0)
           par.MarshallingInformation = this.GetMarshallingInformation((i << 1)|1);
         par.Name = tables.GetIdentifier(pr.Name);
-#if ExtendedRuntime        
+#if ExtendedRuntime
         for (int k = 0, al = par.Attributes == null ? 0 : par.Attributes.Count; k < al; k++) {
           if (par.Attributes[k].Type == ExtendedRuntimeTypes.NotNullAttribute) {
             Reference r = par.Type as Reference;
@@ -815,7 +815,7 @@ namespace System.Compiler.Metadata{
 #endif
       }
     }
-    private void AddPropertiesToType(TypeNode/*!*/ type, PropertyRow[]/*!*/ propertyDefs, PropertyPtrRow[]/*!*/ propertyPtrs, int start, int end) 
+    private void AddPropertiesToType(TypeNode/*!*/ type, PropertyRow[]/*!*/ propertyDefs, PropertyPtrRow[]/*!*/ propertyPtrs, int start, int end)
       //requires type.members != null;
     {
       MetadataReader tables = this.tables;
@@ -937,8 +937,8 @@ namespace System.Compiler.Metadata{
       if (codedIndex == 0) return false;
       switch (codedIndex & 0x3) {
         case 0x00: return this.TypeDefIsClassButNotValueTypeBaseClass(codedIndex >> 2);
-        case 0x01: 
-          TypeNode t = this.GetTypeFromRef(codedIndex >> 2); 
+        case 0x01:
+          TypeNode t = this.GetTypeFromRef(codedIndex >> 2);
           return t != CoreSystemTypes.ValueType && t != CoreSystemTypes.Enum && t is Class;
         case 0x02: return this.TypeSpecIsClass(codedIndex >> 2);
       }
@@ -983,7 +983,7 @@ namespace System.Compiler.Metadata{
     internal AssemblyNode/*!*/ GetAssemblyFromReference(AssemblyReference/*!*/ assemblyReference) {
       lock(this){
         if (SystemAssemblyLocation.ParsedAssembly != null && (assemblyReference.Name == "mscorlib" || assemblyReference.Name == "basetypes" || assemblyReference.Name == "ioconfig"
-          || assemblyReference.Name == "singularity.v1" )) 
+          || assemblyReference.Name == "singularity.v1" ))
           return SystemAssemblyLocation.ParsedAssembly;
         if (CoreSystemTypes.SystemAssembly != null && CoreSystemTypes.SystemAssembly.Name == assemblyReference.Name) return CoreSystemTypes.SystemAssembly;
         string strongName = null;
@@ -1035,7 +1035,7 @@ namespace System.Compiler.Metadata{
         }
         AssemblyNode assembly = cachedValue as AssemblyNode;
         if (assembly != null) goto done;
-      
+
         //No cached assembly and no cached reader for this assembly. Look for a resolver.
         if (this.module != null){
           assembly = this.module.Resolve(assemblyReference);
@@ -1074,7 +1074,7 @@ namespace System.Compiler.Metadata{
               if (strongName == null) goto cacheIt; //found something
               //return assembly only if it matches the strong name of the reference
               if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
-            }            
+            }
           }
           fileName = System.IO.Path.Combine(this.directory, assemblyReference.Name+".exe");
           if (System.IO.File.Exists(fileName)){
@@ -1088,7 +1088,7 @@ namespace System.Compiler.Metadata{
               if (strongName == null) goto cacheIt; //found something
               //return assembly only if it matches the strong name of the reference
               if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
-            }            
+            }
           }
           fileName = System.IO.Path.Combine(this.directory, assemblyReference.Name+".ill");
           if (System.IO.File.Exists(fileName)) {
@@ -1118,7 +1118,7 @@ namespace System.Compiler.Metadata{
               if (strongName == null) goto cacheIt; //found something
               //return assembly only if it matches the strong name of the reference
               if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
-            }            
+            }
           }
           fileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyReference.Name+".exe");
           if (System.IO.File.Exists(fileName)){
@@ -1132,7 +1132,7 @@ namespace System.Compiler.Metadata{
               if (strongName == null) goto cacheIt; //found something
               //return assembly only if it matches the strong name of the reference
               if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
-            }            
+            }
           }
         }
         assembly = null;
@@ -1224,14 +1224,14 @@ namespace System.Compiler.Metadata{
     private Method GetConstructorDefOrRef(int codedIndex, out TypeNodeList varArgTypes) {
       varArgTypes = null;
       switch(codedIndex & 0x7){
-        case 0x02 : return this.GetMethodFromDef(codedIndex >> 3); 
+        case 0x02 : return this.GetMethodFromDef(codedIndex >> 3);
         case 0x03 : return (Method)this.GetMemberFromRef(codedIndex >> 3, out varArgTypes);
       }
       throw new InvalidMetadataException(ExceptionStrings.BadCustomAttributeTypeEncodedToken);
     }
     private void GetResources(Module/*!*/ module) {
       ManifestResourceRow[] manifestResourceTable = this.tables.ManifestResourceTable;
-      int n = manifestResourceTable.Length; 
+      int n = manifestResourceTable.Length;
       ResourceList resources = new ResourceList(n);
       for (int i = 0; i < n; i++){
         ManifestResourceRow mrr = manifestResourceTable[i];
@@ -1241,7 +1241,7 @@ namespace System.Compiler.Metadata{
         int impl = mrr.Implementation;
         if (impl != 0){
           switch(impl & 0x3){
-            case 0x0: 
+            case 0x0:
               string modName = this.tables.GetString(this.tables.FileTable[(impl >> 2)-1].Name);
               if ((this.tables.FileTable[(impl >> 2)-1].Flags & (int)FileFlags.ContainsNoMetaData) != 0){
                 r.DefiningModule = new Module();
@@ -1256,7 +1256,7 @@ namespace System.Compiler.Metadata{
                 r.DefiningModule = GetNestedModule(module, modName, ref modLocation);
               }
               break;
-            case 0x1: 
+            case 0x1:
               r.DefiningModule = this.tables.AssemblyRefTable[(impl >> 2)-1].AssemblyReference.Assembly;
               break;
           }
@@ -1341,7 +1341,7 @@ namespace System.Compiler.Metadata{
       }
       InstanceInitializer cons = attrType.GetConstructor(CoreSystemTypes.SecurityAction);
       if (cons == null){
-        HandleError(this.module, String.Format(CultureInfo.CurrentCulture, 
+        HandleError(this.module, String.Format(CultureInfo.CurrentCulture,
         ExceptionStrings.SecurityAttributeTypeDoesNotHaveADefaultConstructor, serializedTypeName));
         return null;
       }
@@ -1385,8 +1385,8 @@ namespace System.Compiler.Metadata{
         object val = null;
         try{
           val = this.GetCustomAttributeLiteralValue(sigReader, ref pt);
-#if !FxCop        
-        }catch (Exception e){ 
+#if !FxCop
+        }catch (Exception e){
           if (this.module.MetadataImportErrors == null) this.module.MetadataImportErrors = new ArrayList();
           this.module.MetadataImportErrors.Add(e);
         }
@@ -1432,7 +1432,7 @@ namespace System.Compiler.Metadata{
         case ElementType.Boolean: return sigReader.ReadBoolean();
         case ElementType.Char: return sigReader.ReadChar();
         case ElementType.Double: return sigReader.ReadDouble();
-        case ElementType.Single: return sigReader.ReadSingle(); 
+        case ElementType.Single: return sigReader.ReadSingle();
         case ElementType.Int16: return sigReader.ReadInt16();
         case ElementType.Int32: return sigReader.ReadInt32();
         case ElementType.Int64: return sigReader.ReadInt64();
@@ -1487,7 +1487,7 @@ namespace System.Compiler.Metadata{
         case ElementType.Boolean: return new Boolean[numElems];
         case ElementType.Char: return new Char[numElems];
         case ElementType.Double: return new Double[numElems];
-        case ElementType.Single: return new Single[numElems]; 
+        case ElementType.Single: return new Single[numElems];
         case ElementType.Int16: return new Int16[numElems];
         case ElementType.Int32: return new Int32[numElems];
         case ElementType.Int64: return new Int64[numElems];
@@ -1613,7 +1613,7 @@ namespace System.Compiler.Metadata{
       }
       //Generic type instance
       int offset = 0;
-      if (typeName[0] == '[') offset = 1; //Assembly qualified type name forming part of a generic parameter list        
+      if (typeName[0] == '[') offset = 1; //Assembly qualified type name forming part of a generic parameter list
       TypeNodeList arguments = new TypeNodeList();
       int commaPos = FindFirstCommaOutsideBrackets(typeName);
       while (commaPos > 1){
@@ -1678,7 +1678,7 @@ namespace System.Compiler.Metadata{
         if (i < n && source[i] == '.'){i++; continue;}
         if (start != 0) nspace = source.Substring(0, start-1);
         return;
-      }      
+      }
     }
     private TypeNode LookupType(string/*!*/ nameSpace, string/*!*/ name, string assemblyName, out Module module) {
       Identifier namespaceId = Identifier.For(nameSpace);
@@ -1928,7 +1928,7 @@ namespace System.Compiler.Metadata{
       }
       ClassParameter cp = parameter as ClassParameter;
       if (cp == null && baseClass != null) {
-        cp = ((ITypeParameter)parameter).DeclaringMember is Method ? new MethodClassParameter() : new ClassParameter();        
+        cp = ((ITypeParameter)parameter).DeclaringMember is Method ? new MethodClassParameter() : new ClassParameter();
         cp.Name = parameter.Name;
         cp.DeclaringMember = ((ITypeParameter)parameter).DeclaringMember;
         cp.ParameterListIndex = ((ITypeParameter)parameter).ParameterListIndex;
@@ -1982,7 +1982,7 @@ namespace System.Compiler.Metadata{
         field.IsVolatile = true;
         field.Type = reqMod.ModifiedType;
       }
-      if ((field.Flags & FieldFlags.HasDefault) != 0) 
+      if ((field.Flags & FieldFlags.HasDefault) != 0)
         field.DefaultValue = this.GetLiteral(i << 2, field.Type);
       if ((field.Flags & FieldFlags.HasFieldMarshal) != 0)
         field.MarshallingInformation = this.GetMarshallingInformation((i << 1)|0);
@@ -2117,7 +2117,7 @@ namespace System.Compiler.Metadata{
     }
     internal FunctionPointer GetCalliSignature(int ssigToken){
 #if !FxCop
-      StandAloneSigRow ssr = this.tables.StandAloneSigTable[(ssigToken&0xFFFFFF)-1];      
+      StandAloneSigRow ssr = this.tables.StandAloneSigTable[(ssigToken&0xFFFFFF)-1];
 #else
       int index = (ssigToken & 0xFFFFFF) - 1;
       if (index < 0 || index >= this.tables.StandAloneSigTable.Length)
@@ -2173,7 +2173,7 @@ namespace System.Compiler.Metadata{
       uint numScopes;
       scope.GetChildren((uint)subscopes.Length, out numScopes, subscopes);
       for (int i=0; i<numScopes; i++){
-        ISymUnmanagedScope subscope = 
+        ISymUnmanagedScope subscope =
           (ISymUnmanagedScope)System.Runtime.InteropServices.Marshal.GetTypedObjectForIUnknown(subscopes[i], typeof(ISymUnmanagedScope));
         if (subscope != null){
           this.GetLocalSourceNames(subscope, localSourceNames);
@@ -2236,7 +2236,7 @@ namespace System.Compiler.Metadata{
         } else {
           result.Size = c.ReadCompressedInt();
           if (result.NativeType == NativeType.ByValArray) {
-            if (c.Position < initialPosition + blobSize) 
+            if (c.Position < initialPosition + blobSize)
               result.ElementType = (NativeType)c.ReadByte();
             else
               result.ElementType = NativeType.NotSpecified;
@@ -2352,7 +2352,7 @@ namespace System.Compiler.Metadata{
     }
     private Method GetMethodDefOrRef(int codedIndex){
       switch(codedIndex & 0x1){
-        case 0x00 : return this.GetMethodFromDef(codedIndex >> 1); 
+        case 0x00 : return this.GetMethodFromDef(codedIndex >> 1);
         case 0x01 :
           TypeNodeList varArgTypes;
           return (Method)this.GetMemberFromRef(codedIndex >> 1, out varArgTypes);
@@ -2361,7 +2361,7 @@ namespace System.Compiler.Metadata{
     }
     private Method GetMethodDefOrRef(int codedIndex, int numberOfGenericArguments) {
       switch(codedIndex & 0x1){
-        case 0x00 : return this.GetMethodFromDef(codedIndex >> 1); 
+        case 0x00 : return this.GetMethodFromDef(codedIndex >> 1);
         case 0x01 :
           TypeNodeList varArgTypes;
           return (Method)this.GetMemberFromRef(codedIndex >> 1, out varArgTypes, numberOfGenericArguments);
@@ -2468,7 +2468,7 @@ namespace System.Compiler.Metadata{
         else
           this.currentTypeParameters = declaringType.ConsolidatedTemplateParameters;
       }
-      
+
       tables.GetSignatureLength(meth.Signature);
       MemoryCursor sigReader = this.tables.GetNewCursor();
       method.CallingConvention = (CallingConventionFlags)sigReader.ReadByte();
@@ -2576,7 +2576,7 @@ namespace System.Compiler.Metadata{
           }
           while (i > 0 && (implMaps[i-1].MemberForwarded>>1) == index) i--;
         }
-        for (; i < n; i++){          
+        for (; i < n; i++){
           ImplMapRow imr = implMaps[i];
           if (imr.MemberForwarded >> 1 == index){
             method.PInvokeFlags = (PInvokeFlags)imr.MappingFlags;
@@ -2603,7 +2603,7 @@ namespace System.Compiler.Metadata{
           throw new System.ArgumentOutOfRangeException("handle", ExceptionStrings.InvalidTypeTableIndex);
         MethodRow md = methodDefs[index-1];
         if (method != md.Method) throw new System.ArgumentOutOfRangeException("handle", ExceptionStrings.InvalidTypeTableIndex);
-        //Get custom attributes   
+        //Get custom attributes
         method.Attributes = this.GetCustomAttributesFor((index << 5)|0);
         this.currentTypeParameters = savedCurrentTypeParameters;
         this.currentMethodTypeParameters = savedCurrentMethodTypeParameters;
@@ -2676,7 +2676,7 @@ namespace System.Compiler.Metadata{
         case 0x00 : parent = this.GetTypeFromDef(codedIndex >> 3); break;
         case 0x01 : parent = this.GetTypeFromRef(codedIndex >> 3); break;
         case 0x02 : parent = this.GetTypeGlobalMemberContainerTypeFromModule(codedIndex >> 3); break;
-        case 0x03 : result = this.GetMethodFromDef(codedIndex >> 3); 
+        case 0x03 : result = this.GetMethodFromDef(codedIndex >> 3);
           if ((((Method)result).CallingConvention & CallingConventionFlags.VarArg) != 0){
             MemoryCursor sRdr = this.tables.GetBlobCursor(mref.Signature);
             sRdr.ReadByte(); //hdr
@@ -2705,7 +2705,7 @@ namespace System.Compiler.Metadata{
         TypeNode fType = TypeNode.StripModifiers(fieldType);
         TypeNode parnt = parent;
         while (parnt != null){
-          MemberList members = parnt.GetMembersNamed(memberName);        
+          MemberList members = parnt.GetMembersNamed(memberName);
           for (int j = 0, n = members.Count; j < n; j++){
             Field f = members[j] as Field;
             if (f == null) continue;
@@ -2743,7 +2743,7 @@ namespace System.Compiler.Metadata{
       if (numGenericArgs > 0){
         bool skip = methodToSkipPastWhenLookingForMethodParameters != null;
         while (pnt != null){
-          MemberList members = pnt.GetMembersNamed(memberName);        
+          MemberList members = pnt.GetMembersNamed(memberName);
           for (int k = 0, n = members.Count; k < n; k++){
             Method m = members[k] as Method;
             if (m == null) continue;
@@ -2772,7 +2772,7 @@ namespace System.Compiler.Metadata{
       this.currentTypeParameters = savedCurrentTypeParameters;
       pnt = parent;
       while (pnt != null){
-        MemberList members = pnt.GetMembersNamed(memberName);        
+        MemberList members = pnt.GetMembersNamed(memberName);
         for (int k = 0, n = members.Count; k < n; k++){
           Method m = members[k] as Method;
           if (m == null) continue;
@@ -2905,7 +2905,7 @@ namespace System.Compiler.Metadata{
       }
     }
     internal TypeNode/*!*/ GetTypeFromDefHelper(int i) {
-      // This is added to prevent loops. 
+      // This is added to prevent loops.
       //  Check the code in GetTypeFromDef which checks != null before callig this function
       this.tables.TypeDefTable[i - 1].Type = Class.Dummy;
       TypeDefRow typeDef = this.tables.TypeDefTable[i - 1];
@@ -2915,8 +2915,8 @@ namespace System.Compiler.Metadata{
       int lastInterfaceIndex;
       this.GetInterfaceIndices(i, out firstInterfaceIndex, out lastInterfaceIndex);
       InterfaceList interfaces = new InterfaceList();
-      TypeNode result = this.ConstructCorrectTypeNodeSubclass(i, namesp, firstInterfaceIndex, lastInterfaceIndex, 
-        (TypeFlags)typeDef.Flags, interfaces, typeDef.Extends, 
+      TypeNode result = this.ConstructCorrectTypeNodeSubclass(i, namesp, firstInterfaceIndex, lastInterfaceIndex,
+        (TypeFlags)typeDef.Flags, interfaces, typeDef.Extends,
         name.UniqueIdKey == StandardIds.Enum.UniqueIdKey && namesp.UniqueIdKey == StandardIds.System.UniqueIdKey);
       result.DeclaringModule = this.module;
       result.Name = name;
@@ -3036,7 +3036,7 @@ namespace System.Compiler.Metadata{
           lastInterface = this.GetInterfaceIfNotGenericInstance(intfaces[lastInterfaceIndex].Interface);
           isTemplateParameter = CoreSystemTypes.IsInitialized && lastInterface != null && lastInterface == ExtendedRuntimeTypes.ITemplateParameter;
         }
-      }        
+      }
 #endif
       if ((flags & TypeFlags.Interface) != 0){
         if (isTemplateParameter)
@@ -3123,7 +3123,7 @@ namespace System.Compiler.Metadata{
               HandleError(this.module, string.Format(CultureInfo.CurrentCulture, ExceptionStrings.CannotLoadTypeExtension, lastInterface.FullName, compilerDllName));
               goto ExtensionNotFound;
             }
-            if (rassem == null) goto ExtensionNotFound;  
+            if (rassem == null) goto ExtensionNotFound;
             System.Type tprov = rassem.GetType(StandardIds.CciTypeExtensions.Name+"."+lastInterface.Name.Name+"Provider");
             if (tprov == null) goto ExtensionNotFound;
             System.Reflection.MethodInfo providerMethod = tprov.GetMethod("For");
@@ -3263,11 +3263,11 @@ namespace System.Compiler.Metadata{
           result = declaringModule.GetType(namesp, name);
           //REVIEW: deal with case where ref is in same (multi-module) assembly, but not the current module? index == 0
           break;
-        case 1: 
+        case 1:
           declaringModule = this.tables.ModuleRefTable[index-1].Module;
           if (declaringModule != null)
             result = declaringModule.GetType(namesp, name);
-          break; 
+          break;
         case 2:
           if (index > 0)
           {
@@ -3276,7 +3276,7 @@ namespace System.Compiler.Metadata{
           if (declaringModule != null)
             result = declaringModule.GetType(namesp, name);
           break;
-        case 3: 
+        case 3:
           declaringType = this.GetTypeFromRef(index);
           declaringModule = declaringType.DeclaringModule;
           if (namesp == null || namesp.length == 0)
@@ -3284,7 +3284,7 @@ namespace System.Compiler.Metadata{
           else
             result = (TypeNode)declaringType.GetMembersNamed(Identifier.For(namesp.Name+"."+name.Name))[0];
           break;
-        default: 
+        default:
           declaringModule = this.module;
           break;
       }
@@ -3451,7 +3451,7 @@ namespace System.Compiler.Metadata{
             if (a == null){Debug.Assert(false); continue;}
             exportedType = a.GetType(nameSpace, typeName);
             if (exportedType == null){
-              HandleError(assem, String.Format(CultureInfo.CurrentCulture, 
+              HandleError(assem, String.Format(CultureInfo.CurrentCulture,
                 ExceptionStrings.CouldNotFindExportedTypeInAssembly, nameSpace+"."+typeName, a.StrongName));
               exportedType = new Class();
               exportedType.Name = typeName;
@@ -3658,11 +3658,11 @@ namespace System.Compiler.Metadata{
         int typeTableIndex = (int)handle;
         TypeDefRow[] typeDefs = tables.TypeDefTable;
         int n = typeDefs.Length;
-        if (typeTableIndex < 1 || typeTableIndex > n) 
+        if (typeTableIndex < 1 || typeTableIndex > n)
           throw new System.ArgumentOutOfRangeException("handle", ExceptionStrings.InvalidTypeTableIndex);
         TypeDefRow td = typeDefs[typeTableIndex-1];
         if (type != td.Type) throw new System.ArgumentOutOfRangeException("handle", ExceptionStrings.InvalidTypeTableIndex);
-        //Get custom attributes   
+        //Get custom attributes
         type.Attributes = this.GetCustomAttributesFor((typeTableIndex << 5)|3);
         this.currentTypeParameters = savedCurrentTypeParameters;
         //Get security attributes
@@ -3691,7 +3691,7 @@ namespace System.Compiler.Metadata{
         if (genericParamIndex < 1 || genericParamIndex > n)
           throw new System.ArgumentOutOfRangeException("handle", ExceptionStrings.InvalidTypeTableIndex);
         GenericParamRow td = genParDefs[genericParamIndex-1];
-        //Get custom attributes   
+        //Get custom attributes
         type.Attributes = this.GetCustomAttributesFor((genericParamIndex << 5)|19);
         this.currentTypeParameters = savedCurrentTypeParameters;
 #if !FxCop
@@ -3732,16 +3732,16 @@ namespace System.Compiler.Metadata{
       ElementType tok = (ElementType)sigReader.ReadCompressedInt();
       switch(tok){
         case ElementType.Pinned:
-        case ElementType.Pointer: 
-        case ElementType.Reference: 
+        case ElementType.Pointer:
+        case ElementType.Reference:
           return this.TypeSignatureIsClass(sigReader);
         case ElementType.OptionalModifier:
         case ElementType.RequiredModifier:
           sigReader.ReadCompressedInt();
           return this.TypeSignatureIsClass(sigReader);
-        case ElementType.Class: 
+        case ElementType.Class:
           return true;
-        case ElementType.GenericTypeInstance: 
+        case ElementType.GenericTypeInstance:
           return this.TypeSignatureIsClass(sigReader);
         case ElementType.TypeParameter: {
             int pnum = sigReader.ReadCompressedInt();
@@ -3972,7 +3972,7 @@ namespace System.Compiler.Metadata{
         this.size = header >> 2;
         this.bodyReader = this.reader.tables.GetNewCursor();
         this.reader.tables.Skip(size);
-      }else{    
+      }else{
         method.InitLocals = (header & 0x10) != 0;
         byte header2 = this.reader.tables.GetByte();
         int fatHeaderSize = header2 >> 4;
@@ -4018,7 +4018,7 @@ namespace System.Compiler.Metadata{
             }
             catch (InvalidCastException){
             }
-            catch (System.Runtime.InteropServices.InvalidComObjectException){}            
+            catch (System.Runtime.InteropServices.InvalidComObjectException){}
           }
           finally{
             if (methodInfo != null)
@@ -4128,14 +4128,14 @@ namespace System.Compiler.Metadata{
         tokenOrOffset = this.reader.tables.GetInt32();
         ExceptionHandler eh = new ExceptionHandler();
         switch(flags){
-          case 0x00: 
+          case 0x00:
             eh.HandlerType = NodeType.Catch;
             int pos = this.reader.tables.GetCurrentPosition();
             eh.FilterType = (TypeNode)this.reader.GetMemberFromToken(tokenOrOffset);
             this.reader.tables.SetCurrentPosition(pos);
             break;
-          case 0x01: 
-            eh.HandlerType = NodeType.Filter; 
+          case 0x01:
+            eh.HandlerType = NodeType.Filter;
             eh.FilterExpression = Reader.GetOrCreateBlock(blockMap, tokenOrOffset);
             break;
           case 0x02: eh.HandlerType = NodeType.Finally; break;
@@ -4250,7 +4250,7 @@ namespace System.Compiler.Metadata{
       Method meth = (Method)this.GetMemberFromToken(out varArgTypes);
       int numVarArgs = varArgTypes == null ? 0 : varArgTypes.Count;
       isStatement = BodyParser.TypeIsVoid(meth.ReturnType);
-      int n = meth.Parameters == null ? 0 : meth.Parameters.Count; 
+      int n = meth.Parameters == null ? 0 : meth.Parameters.Count;
       if (typeOfCall == NodeType.Jmp) n = 0;
       else n += numVarArgs;
       Expression[] args = new Expression[n];
@@ -4292,7 +4292,7 @@ namespace System.Compiler.Metadata{
       FunctionPointer fp = this.reader.GetCalliSignature(this.GetInt32());
       if (fp == null) throw new InvalidMetadataException(ExceptionStrings.BaddCalliSignature);
       isStatement = BodyParser.TypeIsVoid(fp.ReturnType);
-      int n = fp.ParameterTypes.Count; 
+      int n = fp.ParameterTypes.Count;
       Expression[] args = new Expression[n+1];
       ExpressionList arguments = new ExpressionList(n+1);
       for (int i = n; i >= 0; i--) args[i] = PopOperand();
@@ -4392,7 +4392,9 @@ namespace System.Compiler.Metadata{
 #if !ROTOR
       if (this.method.contextForOffset != null){
         object sctx = this.method.contextForOffset[this.counter+1];
-        if (sctx != null) sourceContext = (SourceContext)sctx;
+        if (sctx != null) {
+          sourceContext = (SourceContext)sctx;
+        }
 #if ILOFFSETS
         else
         {
@@ -4461,7 +4463,7 @@ namespace System.Compiler.Metadata{
           case OpCode.Calli: expr = this.ParseCalli(out isStatement); if (isStatement) goto done; break;
           case OpCode.Ret:
             Expression retVal = BodyParser.TypeIsVoid(this.method.ReturnType) ? null : PopOperand();
-            statement = new Return(retVal); 
+            statement = new Return(retVal);
             transferStatement = true; goto done;
           case OpCode.Br_S: statement = this.ParseBranch(NodeType.Nop, 0, true, false); transferStatement = true; goto done;
           case OpCode.Brfalse_S: statement = this.ParseBranch(NodeType.LogicalNot, 1, true, false); transferStatement = true; goto done;
@@ -4541,11 +4543,11 @@ namespace System.Compiler.Metadata{
           case OpCode.Conv_R_Un: expr = new UnaryExpression(PopOperand(), NodeType.Conv_R_Un, CoreSystemTypes.Double); break;
           case OpCode.Unbox: expr = ParseTypeCheck(PopOperand(), (TypeNode)this.GetMemberFromToken(), NodeType.Unbox); break;
           case OpCode.Throw: statement = new Throw(PopOperand()); transferStatement = true; goto done;
-          case OpCode.Ldfld: 
+          case OpCode.Ldfld:
             expr = new MemberBinding(PopOperand(), this.GetMemberFromToken(), this.isVolatile, this.alignment);
             break;
-          case OpCode.Ldflda: 
-            expr = SetType(new UnaryExpression(new MemberBinding(PopOperand(), this.GetMemberFromToken(), this.isVolatile, this.alignment), NodeType.AddressOf)); 
+          case OpCode.Ldflda:
+            expr = SetType(new UnaryExpression(new MemberBinding(PopOperand(), this.GetMemberFromToken(), this.isVolatile, this.alignment), NodeType.AddressOf));
             break;
           case OpCode.Stfld: statement = this.ParseStoreField(); goto done;
           case OpCode.Ldsfld: expr = new MemberBinding(null, this.GetMemberFromToken(), this.isVolatile, this.alignment); break;
@@ -4562,23 +4564,23 @@ namespace System.Compiler.Metadata{
           case OpCode.Conv_Ovf_U8_Un: expr = new UnaryExpression(PopOperand(), NodeType.Conv_Ovf_U8_Un, CoreSystemTypes.UInt64); break;
           case OpCode.Conv_Ovf_I_Un: expr = new UnaryExpression(PopOperand(), NodeType.Conv_Ovf_I_Un, CoreSystemTypes.IntPtr); break;
           case OpCode.Conv_Ovf_U_Un: expr = new UnaryExpression(PopOperand(), NodeType.Conv_Ovf_U_Un, CoreSystemTypes.UIntPtr); break;
-          case OpCode.Box: 
+          case OpCode.Box:
             TypeNode t = (TypeNode)this.GetMemberFromToken();
             TypeNode bt = t is EnumNode ? CoreSystemTypes.Enum : CoreSystemTypes.ValueType;
             expr = new BinaryExpression(PopOperand(), new Literal(t, CoreSystemTypes.Type), NodeType.Box, bt); break;
           case OpCode.Newarr: expr = this.ParseNewArray(); break;
           case OpCode.Ldlen: expr = new UnaryExpression(PopOperand(), NodeType.Ldlen, CoreSystemTypes.UIntPtr); break;
           case OpCode.Ldelema: expr = this.ParseArrayElementLoadAddress(); break;
-          case OpCode.Ldelem_I1: 
-          case OpCode.Ldelem_U1: 
-          case OpCode.Ldelem_I2: 
-          case OpCode.Ldelem_U2: 
-          case OpCode.Ldelem_I4: 
-          case OpCode.Ldelem_U4: 
-          case OpCode.Ldelem_I8: 
-          case OpCode.Ldelem_I: 
-          case OpCode.Ldelem_R4: 
-          case OpCode.Ldelem_R8: 
+          case OpCode.Ldelem_I1:
+          case OpCode.Ldelem_U1:
+          case OpCode.Ldelem_I2:
+          case OpCode.Ldelem_U2:
+          case OpCode.Ldelem_I4:
+          case OpCode.Ldelem_U4:
+          case OpCode.Ldelem_I8:
+          case OpCode.Ldelem_I:
+          case OpCode.Ldelem_R4:
+          case OpCode.Ldelem_R8:
           case OpCode.Ldelem_Ref: expr = this.ParseArrayElementLoad(opCode, null); break;
           case OpCode.Stelem_I:
           case OpCode.Stelem_I1:
@@ -4662,7 +4664,7 @@ namespace System.Compiler.Metadata{
         this.operandStack.Push(expr);
         this.isReadOnly = false;
         this.isVolatile = false;
-        this.isTailCall = false;        
+        this.isTailCall = false;
         this.alignment = -1;
       }
     done:
@@ -4696,8 +4698,7 @@ namespace System.Compiler.Metadata{
       this.lastSourceContext = sourceContext;
 #endif
       statementList.Add(statement);
-      if (transferStatement) return true;
-      return this.blockMap[this.counter+1] != null;
+      return transferStatement || (this.blockMap[this.counter+1] != null);
     }
     private AssignmentStatement ParseStoreField(){
       Expression rhvalue = PopOperand();
@@ -4770,43 +4771,43 @@ namespace System.Compiler.Metadata{
         case OpCode.Stelem:
         case OpCode.Unbox_Any:
         case OpCode.Refanyval:
-        case OpCode.Mkrefany: 
+        case OpCode.Mkrefany:
         case OpCode.Ldtoken:
           this.GetInt32(); return;
         case OpCode.Ldc_I8:
           this.GetInt64(); return;
-        case OpCode.Ldc_R4: 
+        case OpCode.Ldc_R4:
           this.GetSingle(); return;
         case OpCode.Ldc_R8:
           this.GetDouble(); return;
-        case OpCode.Br_S: 
-        case OpCode.Brfalse_S: 
-        case OpCode.Brtrue_S: 
-        case OpCode.Beq_S: 
-        case OpCode.Bge_S: 
-        case OpCode.Bgt_S: 
-        case OpCode.Ble_S: 
-        case OpCode.Blt_S: 
-        case OpCode.Bne_Un_S: 
-        case OpCode.Bge_Un_S: 
-        case OpCode.Bgt_Un_S: 
-        case OpCode.Ble_Un_S: 
-        case OpCode.Blt_Un_S: 
+        case OpCode.Br_S:
+        case OpCode.Brfalse_S:
+        case OpCode.Brtrue_S:
+        case OpCode.Beq_S:
+        case OpCode.Bge_S:
+        case OpCode.Bgt_S:
+        case OpCode.Ble_S:
+        case OpCode.Blt_S:
+        case OpCode.Bne_Un_S:
+        case OpCode.Bge_Un_S:
+        case OpCode.Bgt_Un_S:
+        case OpCode.Ble_Un_S:
+        case OpCode.Blt_Un_S:
         case OpCode.Leave_S:
           this.SkipBranch(true); return;
-        case OpCode.Br: 
-        case OpCode.Brfalse: 
-        case OpCode.Brtrue: 
-        case OpCode.Beq: 
-        case OpCode.Bge: 
-        case OpCode.Bgt: 
-        case OpCode.Ble: 
-        case OpCode.Blt: 
-        case OpCode.Bne_Un: 
-        case OpCode.Bge_Un: 
-        case OpCode.Bgt_Un: 
-        case OpCode.Ble_Un: 
-        case OpCode.Blt_Un: 
+        case OpCode.Br:
+        case OpCode.Brfalse:
+        case OpCode.Brtrue:
+        case OpCode.Beq:
+        case OpCode.Bge:
+        case OpCode.Bgt:
+        case OpCode.Ble:
+        case OpCode.Blt:
+        case OpCode.Bne_Un:
+        case OpCode.Bge_Un:
+        case OpCode.Bgt_Un:
+        case OpCode.Ble_Un:
+        case OpCode.Blt_Un:
         case OpCode.Leave:
           this.SkipBranch(false); return;
         case OpCode.Switch:
@@ -4840,7 +4841,7 @@ namespace System.Compiler.Metadata{
       for (int i = 0; i < numCases; i++){
         int targetAddress = this.GetInt32() + offset;
         Reader.GetOrCreateBlock(this.blockMap, targetAddress);
-      }    
+      }
     }
     private Expression PopOperand()
     {
@@ -4983,16 +4984,18 @@ namespace System.Compiler.Metadata{
         Block block = GetNextBlock(ref counter);
         if (block == null || block.ILOffset >= blockEnd) {
           counter = lastCounter;
-          if (blockNode != null)
+          if (blockNode != null) {
             blockNode.SourceContext = currentBlock.Statements[0].SourceContext;
+          }
           return;
         }
         if (this.tryMap.ContainsKey(block)) {
           ProcessTryBlock(currentBlock, block, ref counter);
         }
         else {
-          if (currentBlock.Statements.Count == 0)
+          if (currentBlock.Statements.Count == 0) {
             currentBlock.SourceContext = block.SourceContext;
+          }
           currentBlock.Statements.Add(block);
         }
       }
@@ -5075,7 +5078,7 @@ namespace System.Compiler.Metadata{
       if (smallSection)
         n = dataSize / 12;
       else
-        n = (dataSize + (n << 8)) / 24;      
+        n = (dataSize + (n << 8)) / 24;
       for (int i = 0; i < n; i++){
         Instruction matchingInstruction;
         int flags, tryOffset, tryLength, handlerOffset, handlerLength, tokenOrOffset;
@@ -5099,7 +5102,7 @@ namespace System.Compiler.Metadata{
           tryMap[tryOffset+tryLength] = String.Empty;
         }
         switch(flags){
-          case 0x00: 
+          case 0x00:
             int pos = this.reader.tables.GetCurrentPosition();
             TypeNode catchType = (TypeNode)this.reader.GetMemberFromToken(tokenOrOffset);
             this.reader.tables.SetCurrentPosition(pos);
@@ -5135,7 +5138,9 @@ namespace System.Compiler.Metadata{
 #if !ROTOR
       if (this.method.contextForOffset != null){
         object sctx = this.method.contextForOffset[offset + 1];
-        if (sctx != null) instruction.SourceContext = (SourceContext)sctx;
+        if (sctx != null) {
+          instruction.SourceContext = (SourceContext)sctx;
+        }
       }
 #endif
       return instruction;
@@ -5163,31 +5168,33 @@ namespace System.Compiler.Metadata{
         }
         if (this.counter < size)
           result.Add(this.ParseInstruction());
-        else 
+        else
           break;
       }
-      return result;    
+      return result;
     }
     private SourceContext sourceContext = new SourceContext();
     internal Instruction ParseInstruction(){
-      if (this.counter >= this.size) 
+      if (this.counter >= this.size)
         return null;
       int offset = this.counter;
 #if !ROTOR
       if (this.method.contextForOffset != null){
         object sctx = this.method.contextForOffset[offset+1];
-        if (sctx != null) this.sourceContext = (SourceContext)sctx;
+        if (sctx != null) {
+          this.sourceContext = (SourceContext)sctx;
+        }
       }
 #endif
       object value = null;
-      OpCode opCode = this.GetOpCode();    
+      OpCode opCode = this.GetOpCode();
       switch(opCode){
         case OpCode.Nop:
-        case OpCode.Break: 
+        case OpCode.Break:
           break;
         case OpCode.Ldarg_0: value = this.Parameters(0); break;
         case OpCode.Ldarg_1: value = this.Parameters(1); break;
-        case OpCode.Ldarg_2: value = this.Parameters(2); break; 
+        case OpCode.Ldarg_2: value = this.Parameters(2); break;
         case OpCode.Ldarg_3: value = this.Parameters(3); break;
         case OpCode.Ldloc_0: value = this.locals[0]; break;
         case OpCode.Ldloc_1: value = this.locals[1]; break;
@@ -5197,7 +5204,7 @@ namespace System.Compiler.Metadata{
         case OpCode.Stloc_1: value = this.locals[1]; break;
         case OpCode.Stloc_2: value = this.locals[2]; break;
         case OpCode.Stloc_3: value = this.locals[3]; break;
-        case OpCode.Ldarg_S:  
+        case OpCode.Ldarg_S:
         case OpCode.Ldarga_S:
         case OpCode.Starg_S:
           value = this.Parameters(this.GetByte()); break;
@@ -5205,7 +5212,7 @@ namespace System.Compiler.Metadata{
         case OpCode.Ldloca_S:
         case OpCode.Stloc_S:
           value = this.locals[this.GetByte()]; break;
-        case OpCode.Ldnull: 
+        case OpCode.Ldnull:
           break;
         case OpCode.Ldc_I4_M1: value = (Int32)(-1); break;
         case OpCode.Ldc_I4_0: value = (Int32)0; break;
@@ -5223,12 +5230,12 @@ namespace System.Compiler.Metadata{
         case OpCode.Ldc_R4: value = this.GetSingle(); break;
         case OpCode.Ldc_R8: value = this.GetDouble(); break;
         case OpCode.Dup:
-        case OpCode.Pop: 
+        case OpCode.Pop:
           break;
-        case OpCode.Jmp: 
+        case OpCode.Jmp:
         case OpCode.Call:
           value = (Method)this.GetMemberFromToken(); break;
-        case OpCode.Calli: 
+        case OpCode.Calli:
           value = (FunctionPointer)this.reader.GetCalliSignature(this.GetInt32()); break;
         case OpCode.Ret: break;
         case OpCode.Br_S:
@@ -5259,8 +5266,8 @@ namespace System.Compiler.Metadata{
         case OpCode.Ble_Un:
         case OpCode.Blt_Un:
           value = this.counter + 4 + this.GetInt32(); break;
-        case OpCode.Switch: value = this.ParseSwitchInstruction(); break;        
-        case OpCode.Ldind_I1: 
+        case OpCode.Switch: value = this.ParseSwitchInstruction(); break;
+        case OpCode.Ldind_I1:
         case OpCode.Ldind_U1:
         case OpCode.Ldind_I2:
         case OpCode.Ldind_U2:
@@ -5304,17 +5311,17 @@ namespace System.Compiler.Metadata{
           break;
         case OpCode.Callvirt: value = (Method)this.GetMemberFromToken(); break;
         case OpCode.Cpobj:
-        case OpCode.Ldobj: 
+        case OpCode.Ldobj:
           value = (TypeNode)this.GetMemberFromToken(); break;
-        case OpCode.Ldstr: value = this.GetStringFromToken(); break;          
+        case OpCode.Ldstr: value = this.GetStringFromToken(); break;
         case OpCode.Newobj: value = (Method)this.GetMemberFromToken();break;
         case OpCode.Castclass:
-        case OpCode.Isinst: 
+        case OpCode.Isinst:
           value = (TypeNode)this.GetMemberFromToken(); break;
-        case OpCode.Conv_R_Un: break;       
+        case OpCode.Conv_R_Un: break;
         case OpCode.Unbox: value = (TypeNode)this.GetMemberFromToken(); break;
         case OpCode.Throw: break;
-        case OpCode.Ldfld: 
+        case OpCode.Ldfld:
         case OpCode.Ldflda:
         case OpCode.Stfld:
         case OpCode.Ldsfld:
@@ -5347,7 +5354,7 @@ namespace System.Compiler.Metadata{
         case OpCode.Ldelem_I:
         case OpCode.Ldelem_R4:
         case OpCode.Ldelem_R8:
-        case OpCode.Ldelem_Ref: 
+        case OpCode.Ldelem_Ref:
         case OpCode.Stelem_I:
         case OpCode.Stelem_I1:
         case OpCode.Stelem_I2:
@@ -5357,7 +5364,7 @@ namespace System.Compiler.Metadata{
         case OpCode.Stelem_R8:
         case OpCode.Stelem_Ref:
           break;
-        case OpCode.Ldelem: 
+        case OpCode.Ldelem:
           value = (TypeNode)this.GetMemberFromToken();
           break;
         case OpCode.Stelem: value = (TypeNode)this.GetMemberFromToken(); break;
@@ -5386,9 +5393,9 @@ namespace System.Compiler.Metadata{
         case OpCode.Mul_Ovf_Un:
         case OpCode.Sub_Ovf:
         case OpCode.Sub_Ovf_Un:
-        case OpCode.Endfinally: 
+        case OpCode.Endfinally:
           break;
-        case OpCode.Leave:   value = this.counter + 4 + this.GetInt32(); break; 
+        case OpCode.Leave:   value = this.counter + 4 + this.GetInt32(); break;
         case OpCode.Leave_S: value = this.counter + 1 + this.GetSByte(); break;
         case OpCode.Stind_I:
         case OpCode.Conv_U:
@@ -5426,7 +5433,7 @@ namespace System.Compiler.Metadata{
           break;
         case OpCode.Initobj: value = (TypeNode)this.GetMemberFromToken(); break;
         case OpCode.Constrained_: value = this.GetMemberFromToken() as TypeNode; break;
-        case OpCode.Cpblk: 
+        case OpCode.Cpblk:
         case OpCode.Initblk:
           break;
         case OpCode.Rethrow:
@@ -5435,7 +5442,7 @@ namespace System.Compiler.Metadata{
         case OpCode.Refanytype:
         case OpCode.Readonly_:
           break;
-        default: throw new InvalidMetadataException(String.Format(CultureInfo.CurrentCulture, 
+        default: throw new InvalidMetadataException(String.Format(CultureInfo.CurrentCulture,
           ExceptionStrings.UnknownOpCodeEncountered, opCode.ToString("x")));
       }
       Instruction instruction = new Instruction(opCode, offset, value);
