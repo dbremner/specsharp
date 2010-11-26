@@ -1,13 +1,13 @@
-# Aste started: 2010-11-25 07:00:05
+# Aste started: 2010-11-26 07:00:08
 # Host id: Boogiebox
-# [2010-11-25 07:02:14] SpecSharp revision: 60123
-# [2010-11-25 07:03:26] Boogie revision: 60124
-# [2010-11-25 07:03:55] SscBoogie revision: 60104
-[2010-11-25 07:04:37] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-11-26 07:02:17] SpecSharp revision: 60238
+# [2010-11-26 07:03:25] Boogie revision: 60248
+# [2010-11-26 07:03:52] SscBoogie revision: 60238
+[2010-11-26 07:04:33] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
 
     warning CS1668
     warning CS1668
-[2010-11-25 07:06:03] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
+[2010-11-26 07:05:56] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
 
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(825,16): warning CS0659: 'Microsoft.Boogie.BasicType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(2804,16): warning CS0659: 'Microsoft.Boogie.CtorType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
@@ -47,7 +47,7 @@
     warning CS0162
     warning CS0162
     warning CS0162
-[2010-11-25 07:06:07] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Dafny.sln /Build Debug
+[2010-11-26 07:05:59] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Dafny.sln /Build Debug
 
     D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(39,24): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\Dafny\bin\Debug\DafnyPipeline.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
     D:\Temp\aste\Boogie\Source\DafnyDriver\DafnyDriver.cs(187,73): warning CS0436: The type 'cce' in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs' conflicts with the imported type 'cce' in 'd:\temp\aste\Boogie\Source\Dafny\bin\Debug\DafnyPipeline.dll'. Using the type defined in 'D:\Temp\aste\Boogie\Source\DafnyDriver\cce.cs'.
@@ -69,9 +69,9 @@
     warning CS0436
     warning CS0436
     warning CS0436
-[2010-11-25 07:24:15] 0 out of 29 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
-# [2010-11-25 07:25:54] Released nightly of Boogie
-[2010-11-25 07:26:52] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SscBoogie.sln /Build Debug
+[2010-11-26 07:24:42] 0 out of 29 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+# [2010-11-26 07:26:19] Released nightly of Boogie
+[2010-11-26 07:27:18] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SscBoogie.sln /Build Debug
 
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(422,25): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(420,27): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
@@ -787,17 +787,17 @@
     D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(48,11): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<string>')
     D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(220,51): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(235,32): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<string>')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(284,35): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(304,16): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(305,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.IToken')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(314,14): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(322,69): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(364,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(389,49): warning CS2613: Conversion to 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>!' fails if the value is null
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(389,11): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(460,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(509,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(547,38): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(285,35): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(305,16): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(306,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.IToken')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(315,14): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(323,69): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(365,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(390,49): warning CS2613: Conversion to 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>!' fails if the value is null
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(390,11): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(461,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(510,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SscBoogie\Source\SscBoogie\Main.ssc(548,38): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
     warning CS2614
     warning CS2614
     warning CS2614
@@ -1523,6 +1523,6 @@
     warning CS2614
     warning CS2614
     warning CS2614
-[2010-11-25 08:23:44] 13 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
+[2010-11-26 08:24:18] 13 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
 ['test3', 'test5', 'test6', 'test10', 'test11', 'aitest9', 'objinv', 'Bag', 'chunker', 'bob', 'iterators', 'test13', 'test16']
-# [2010-11-25 08:27:04] Released nightly of SscBoogie
+# [2010-11-26 08:27:36] Released nightly of SscBoogie
