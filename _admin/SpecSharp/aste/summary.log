@@ -1,15 +1,9 @@
-# Aste started: 2010-11-29 07:00:08
+# Aste started: 2010-11-29 10:27:08
 # Host id: Boogiebox
-# [2010-11-29 07:02:12] SpecSharp revision: 60238
-# [2010-11-29 07:03:18] Boogie revision: 60337
-# [2010-11-29 07:03:45] SscBoogie revision: 60238
-[2010-11-29 07:04:31] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-11-29 10:29:10] SpecSharp revision: 60238
+# [2010-11-29 10:30:11] Boogie revision: 60359
+# [2010-11-29 10:30:34] SscBoogie revision: 60238
+[2010-11-29 10:30:58] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
 
     warning CS1668
     warning CS1668
-[2010-11-29 07:04:54] [Error] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build Debug
-
-    22>Project : error PRJ0019: A tool returned an error code from "Performing Makefile project actions"
-    NMAKE : fatal error U1077: '.\CopyBits.CMD' : return code '0x1'
-    2 error
-    1 failed
