@@ -17,8 +17,10 @@
 //
 //-------------------------------------------------------------------------------------------*/
 
-using System;
 using System.Collections;
+using Microsoft.Boogie;
+using System.IO;
+using System.Text;
 
 /* Need to use this form of the conditional compiliation commands because
  * Coco's grammar is limited. TODO: Fix Coco's grammar.
@@ -203,18 +205,27 @@ internal static int ParseContract (Module assem, string text, out Expression exp
   Debug.Assert(assem != null);
   currentAssembly = assem;
 
-  Scanner.Init(text);
+  System.IO.MemoryStream ms = new System.IO.MemoryStream(Encoding.UTF8.GetBytes(text), false);
+  Errors errors = new Errors();
+  Scanner scanner = new Scanner(ms, errors, "");
 
-  Errors.SynErr = new ErrorProc(SynErr);
-  t = new Token();
-  Get();
-  Expr(out expression);
+  Parser parser = new Parser(scanner, errors);
+  parser.Get();
+  parser.Expr(out expression);
 
   currentMethodContract = null;
   currentMethod = null;
   currentAssembly = null;
-  
-  return Errors.count;
+
+  if (parser.errors.count == 0)
+  {
+     return 0;
+  }
+  else
+  {
+     expression = null;
+     return parser.errors.count;
+  }
 }
 
 
@@ -247,11 +258,10 @@ TOKENS
   char = (single allchars single) | (single backsl 'u' digit {digit} single).
   backslash = backsl.
 
-IGNORE cr + lf + tab
-
 COMMENTS FROM "/*" TO "*/" NESTED
 COMMENTS FROM "//" TO lf
 
+IGNORE cr + lf + tab
 
 
 PRODUCTIONS
@@ -343,7 +353,7 @@ PTypeRef<out TypeNode tn>
 #endif                      
                       tn = assem.GetType(Identifier.For(ns),Identifier.For(tname));
                       if (tn == null) {
-                        Errors.SemErr(token.filename, token.line, token.col,
+                        this.errors.SemErr(t.filename, t.line, t.col,
                                       String.Format("could not resolve namespace {0}, type {1}", ns, tname));
                         throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
                       }
@@ -352,7 +362,7 @@ PTypeRef<out TypeNode tn>
                         tn = tn.GetNestedType(Identifier.For((string)typeNames[i]));
                       }
                       if (tn == null) {
-                        Errors.SemErr(token.filename, token.line, token.col,
+                        this.errors.SemErr(t.filename, t.line, t.col,
                                       String.Format("could not resolve namespace {0} type {1} nesting {2}", ns, tname, nestedname));
                         throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
                       }
@@ -393,12 +403,12 @@ QualName<out string bname, out string name >
 Ident<out string name>
 = (. name = null; .)
   (
-  ident (. name = token.val; .)
+  ident (. name = t.val; .)
   { ":" number     /* special case for compiler generated closure names "closure:nnnn" */
-                   (. name += (":" + token.val); .)
+                   (. name += (":" + t.val); .)
   }
   |
-  "$weirdIdent" string (. name = token.val.Substring(1, token.val.Length - 2); .)
+  "$weirdIdent" string (. name = t.val.Substring(1, t.val.Length - 2); .)
   
   )
 .
@@ -436,7 +446,7 @@ Expr <out Expression e>
 = Term<out e>
                    (.
                      if (e == null){
-                       Errors.SemErr(token.filename, token.line, token.col,
+                       this.errors.SemErr(t.filename, t.line, t.col,
                                      "unable to parse expression");
                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
                      }
@@ -633,14 +643,14 @@ OperatorNode<out Expression p>
   ArgExprs<out es>
                    (.
                      if (es.Count!= arity) {
-                       Errors.SemErr(token.filename, token.line, token.col,
+                       this.errors.SemErr(t.filename, t.line, t.col,
                                      String.Format("operator {0} expects {1} arguments, not {2}",
                                      opKind, arity, es.Count));
                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
                      }
                      if (tns != null) {
                        if (tns.Count != arity) {
-                         Errors.SemErr(token.filename, token.line, token.col,
+                         this.errors.SemErr(t.filename, t.line, t.col,
                                        String.Format("operator {0} expects {1} type arguments, not {2}",
                                        p.NodeType, arity, tns.Count));
                          throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
@@ -729,7 +739,7 @@ Parameter<out Expression p>
 =
      number
                    (.
-                     Token x = token;
+                     IToken x = t;
                      int index = Convert.ToInt32(x.val);
                      bool nonStatic = ! currentMethod.IsStatic;
                      if ( nonStatic && index == 0){
@@ -742,7 +752,7 @@ Parameter<out Expression p>
                          pa.ArgumentListIndex = nonStatic ? index + 1 : index;
                          p = pa;
                        }else{
-                         Errors.SemErr(x.filename, x.line, x.col,
+                         this.errors.SemErr(x.filename, x.line, x.col,
                                        String.Format("current method does not have parameter position {0}",
                                                      index));
                          p = null; 
@@ -759,7 +769,7 @@ SpecialName<out Expression p>
                    (. TypeNode typ=null; .)
      PType<out typ>
      ","
-     string        (. string idname = token.val; .)
+     string        (. string idname = t.val; .)
      "}"           (.
                      idname = idname.Substring(1,idname.Length-2);
                      if (idname.Equals("return value")){
@@ -793,7 +803,7 @@ MemberRef<out Member  m>
   [ArgPTypes<out argumentTypes>]
                    (.
                      if (mems.Count == 0){
-                       Errors.SemErr(token.filename, token.line, token.col,
+                       this.errors.SemErr(t.filename, t.line, t.col,
                                      String.Format("could not find member: {0} in type {1}", mname, dec.FullName));
                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
                      }
@@ -1062,9 +1072,9 @@ Display<out Expression e>
 
 /*------------------------------------------------------------------------*/
 Num<out Expression e>
-                  (. Token x; int neg = 1; Token decimalPart = null; .)
+                  (. IToken x; int neg = 1; IToken decimalPart = null; .)
 =
-  [ "-"  (. neg = -1; .) ] number (. x = token; .) [ "." number (. decimalPart = token; .) ]
+  [ "-"  (. neg = -1; .) ] number (. x = t; .) [ "." number (. decimalPart = t; .) ]
                   (.
                      try {
                        if (neg == -1){
@@ -1096,7 +1106,7 @@ Num<out Expression e>
                          }
                        }
                      }catch (OverflowException) {
-                       Errors.SemErr(x.filename, x.line, x.col,"Omni: Overflow in tokenizing a number.");
+                       this.errors.SemErr(x.filename, x.line, x.col,"Omni: Overflow in tokenizing a number.");
                        e = new Literal(0,SystemTypes.Int32); 
                      }
                   .)
@@ -1122,9 +1132,9 @@ Literal<out Expression e>
                                 .)
   | Num<out e>
 
-  | string                      (. string s = token.val.Substring(1,token.val.Length-2);
+  | string                      (. string s = t.val.Substring(1,t.val.Length-2);
                                    e = new Literal(s,SystemTypes.String); .)
-  | char                        (. string s = token.val;
+  | char                        (. string s = t.val;
                                    if (s.Length == 3 && s[0] == '\'' && s[2] == '\''){
                                      e = new Literal(s[1], SystemTypes.Char);
                                    }else if (s.StartsWith("'\\u")){

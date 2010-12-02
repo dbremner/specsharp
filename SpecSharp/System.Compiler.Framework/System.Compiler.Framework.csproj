@@ -97,8 +97,16 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="Mscorlib">
       <Name>Mscorlib</Name>
+    </Reference>
+    <Reference Include="ParserHelper, Version=0.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ParserHelper.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>

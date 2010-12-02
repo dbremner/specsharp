@@ -73,6 +73,11 @@
              Private="true"
              HintPath="../../../System.Compiler.Runtime/bin/System.Compiler.Runtime.dll"
              />
+        <Reference Name="ParserHelper"
+             AssemblyName="ParserHelper"
+             Private="true"
+             HintPath="../../../Binaries/ParserHelper.dll"
+             />
       </References>
     </Build>
     <Files>

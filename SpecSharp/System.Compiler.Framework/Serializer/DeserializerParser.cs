@@ -1,5 +1,7 @@
-using System;
 using System.Collections;
+using Microsoft.Boogie;
+using System.IO;
+using System.Text;
 
 /* Need to use this form of the conditional compiliation commands because
  * Coco's grammar is limited. TODO: Fix Coco's grammar.
@@ -23,20 +25,37 @@ System.Compiler
 
 using System.Diagnostics;
 
+
+
+
+using System;
+using System.Diagnostics.Contracts;
+
 namespace Omni {
 
+
+
 public class Parser {
-	const int maxT = 108;
+	public const int _EOF = 0;
+	public const int _ident = 1;
+	public const int _number = 2;
+	public const int _string = 3;
+	public const int _char = 4;
+	public const int _backslash = 5;
+	public const int maxT = 108;
 
 	const bool T = true;
 	const bool x = false;
 	const int minErrDist = 2;
-	
-	static Token token;			// last recognized token
-	static Token t;				// lookahead token
-	static int errDist = minErrDist;
 
-	public class ContractDeserializer : IContractDeserializer 
+	public Scanner/*!*/ scanner;
+	public Errors/*!*/  errors;
+
+	public Token/*!*/ t;    // last recognized token
+	public Token/*!*/ la;   // lookahead token
+	int errDist = minErrDist;
+
+public class ContractDeserializer : IContractDeserializer 
 {
   private Module assembly;
   private ErrorNodeList errorList;
@@ -193,18 +212,27 @@ internal static int ParseContract (Module assem, string text, out Expression exp
   Debug.Assert(assem != null);
   currentAssembly = assem;
 
-  Scanner.Init(text);
+  System.IO.MemoryStream ms = new System.IO.MemoryStream(Encoding.UTF8.GetBytes(text), false);
+  Errors errors = new Errors();
+  Scanner scanner = new Scanner(ms, errors, "");
 
-  Errors.SynErr = new ErrorProc(SynErr);
-  t = new Token();
-  Get();
-  Expr(out expression);
+  Parser parser = new Parser(scanner, errors);
+  parser.Get();
+  parser.Expr(out expression);
 
   currentMethodContract = null;
   currentMethod = null;
   currentAssembly = null;
-  
-  return Errors.count;
+
+  if (parser.errors.count == 0)
+  {
+     return 0;
+  }
+  else
+  {
+     expression = null;
+     return parser.errors.count;
+  }
 }
 
 
@@ -213,74 +241,92 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 /*--------------------------------------------------------------------------*/
 
 
-	static void Error(int n) {
-		if (errDist >= minErrDist) Errors.SynErr(n, t.filename, t.line, t.col);
-		errDist = 0;
+	public Parser(Scanner/*!*/ scanner, Errors/*!*/ errors) {
+		this.scanner = scanner;
+		this.errors = errors;
+		Token/*!*/ tok = new Token();
+		tok.val = "";
+		this.la = tok;
+		this.t = new Token(); // just to satisfy its non-null constraint
 	}
-	
-	public static void SemErr(string msg) {
-		if (errDist >= minErrDist) Errors.SemErr(token.filename, token.line, token.col, msg);
+
+	void SynErr (int n) {
+		if (errDist >= minErrDist) errors.SynErr(la.filename, la.line, la.col, n);
 		errDist = 0;
 	}
 
-	static void Get() {
+	public void SemErr (string/*!*/ msg) {
+		Contract.Requires(msg != null);
+		if (errDist >= minErrDist) errors.SemErr(t, msg);
+		errDist = 0;
+	}
+
+	public void SemErr(IToken/*!*/ tok, string/*!*/ msg) {
+	  Contract.Requires(tok != null);
+	  Contract.Requires(msg != null);
+	  errors.SemErr(tok, msg);
+	}
+
+	void Get () {
 		for (;;) {
-			token = t;
-			t = Scanner.Scan();
-			if (t.kind<=maxT) {errDist++; return;}
+			t = la;
+			la = scanner.Scan();
+			if (la.kind <= maxT) { ++errDist; break; }
 
-			t = token;
+			la = t;
 		}
 	}
-	
-	static void Expect(int n) {
-		if (t.kind==n) Get(); else Error(n);
+
+	void Expect (int n) {
+		if (la.kind==n) Get(); else { SynErr(n); }
 	}
-	
-	static bool StartOf(int s) {
-		return set[s, t.kind];
+
+	bool StartOf (int s) {
+		return set[s, la.kind];
 	}
-	
-	static void ExpectWeak(int n, int follow) {
-		if (t.kind == n) Get();
+
+	void ExpectWeak (int n, int follow) {
+		if (la.kind == n) Get();
 		else {
-			Error(n);
+			SynErr(n);
 			while (!StartOf(follow)) Get();
 		}
 	}
-	
-	static bool WeakSeparator(int n, int syFol, int repFol) {
-		bool[] s = new bool[maxT+1];
-		if (t.kind == n) {Get(); return true;}
-		else if (StartOf(repFol)) return false;
+
+
+	bool WeakSeparator(int n, int syFol, int repFol) {
+		int kind = la.kind;
+		if (kind == n) {Get(); return true;}
+		else if (StartOf(repFol)) {return false;}
 		else {
-			for (int i=0; i <= maxT; i++) {
-				s[i] = set[syFol, i] || set[repFol, i] || set[0, i];
+			SynErr(n);
+			while (!(set[syFol, kind] || set[repFol, kind] || set[0, kind])) {
+				Get();
+				kind = la.kind;
 			}
-			Error(n);
-			while (!s[t.kind]) Get();
 			return StartOf(syFol);
 		}
 	}
-	
-	static void Omni() {
+
+
+	void Omni() {
 		Expression e; 
 		Expr(out e );
 	}
 
-	static void Expr(out Expression e) {
+	void Expr(out Expression e) {
 		Term(out e);
 		if (e == null){
-		 Errors.SemErr(token.filename, token.line, token.col,
+		 this.errors.SemErr(t.filename, t.line, t.col,
 		               "unable to parse expression");
 		 throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
 		}
 		
 	}
 
-	static void PType(out TypeNode c) {
+	void PType(out TypeNode c) {
 		c = null; TypeNode modifier=null, modified=null; 
-		switch (t.kind) {
+		switch (la.kind) {
 		case 6: {
 			Get();
 			c = SystemTypes.Object; 
@@ -388,25 +434,25 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			PTypeRef(out c);
 			break;
 		}
-		default: Error(109); break;
+		default: SynErr(109); break;
 		}
 		if (StartOf(1)) {
-			if (t.kind == 27) {
+			if (la.kind == 27) {
 				Get();
 				c = c.GetReferenceType(); 
-			} else if (t.kind == 28) {
+			} else if (la.kind == 28) {
 				Get();
 				Expect(29);
 				c = c.GetArrayType(1); 
-				while (t.kind == 28) {
+				while (la.kind == 28) {
 					Get();
 					Expect(29);
 					c = c.GetArrayType(1); 
 				}
-			} else if (t.kind == 22) {
+			} else if (la.kind == 22) {
 				Get();
 				PType(out c);
-				while (t.kind == 23) {
+				while (la.kind == 23) {
 					Get();
 					PType(out c);
 				}
@@ -418,40 +464,40 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		}
 	}
 
-	static void Ident(out string name) {
+	void Ident(out string name) {
 		name = null; 
-		if (t.kind == 1) {
+		if (la.kind == 1) {
 			Get();
-			name = token.val; 
-			while (t.kind == 34) {
+			name = t.val; 
+			while (la.kind == 34) {
 				Get();
 				Expect(2);
-				name += (":" + token.val); 
+				name += (":" + t.val); 
 			}
-		} else if (t.kind == 35) {
+		} else if (la.kind == 35) {
 			Get();
 			Expect(3);
-			name = token.val.Substring(1, token.val.Length - 2); 
-		} else Error(110);
+			name = t.val.Substring(1, t.val.Length - 2); 
+		} else SynErr(110);
 	}
 
-	static void PTypeRef(out TypeNode tn) {
+	void PTypeRef(out TypeNode tn) {
 		Module assem = null;
 		string ns, tname, nestedname;
 		ArrayList/*<string>*/ typeNames;
 		TypeNodeList templateArgs = null;
 		
-		if (t.kind == 28) {
+		if (la.kind == 28) {
 			Assembly(out assem);
 		}
 		QualName(out ns, out tname);
 		NestedTypeName(out typeNames, out nestedname);
-		if (t.kind == 31) {
+		if (la.kind == 31) {
 			Get();
 			TypeNode arg; 
 			PType(out arg);
 			templateArgs = new TypeNodeList(); templateArgs.Add(arg); 
-			while (t.kind == 23) {
+			while (la.kind == 23) {
 				Get();
 				PType(out arg);
 				templateArgs.Add(arg); 
@@ -479,7 +525,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		#endif                      
 		                      tn = assem.GetType(Identifier.For(ns),Identifier.For(tname));
 		                      if (tn == null) {
-		                        Errors.SemErr(token.filename, token.line, token.col,
+		                        this.errors.SemErr(t.filename, t.line, t.col,
 		                                      String.Format("could not resolve namespace {0}, type {1}", ns, tname));
 		                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
 		                      }
@@ -488,7 +534,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		                        tn = tn.GetNestedType(Identifier.For((string)typeNames[i]));
 		                      }
 		                      if (tn == null) {
-		                        Errors.SemErr(token.filename, token.line, token.col,
+		                        this.errors.SemErr(t.filename, t.line, t.col,
 		                                      String.Format("could not resolve namespace {0} type {1} nesting {2}", ns, tname, nestedname));
 		                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
 		                      }
@@ -502,7 +548,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		                   
 	}
 
-	static void Assembly(out Module assem) {
+	void Assembly(out Module assem) {
 		string name; 
 		Expect(28);
 		FullName(out name);
@@ -510,12 +556,12 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		assem = LookupAssembly(name); 
 	}
 
-	static void QualName(out string bname, out string name ) {
+	void QualName(out string bname, out string name ) {
 		string tmp; bname = ""; name = ""; 
 		string identName; 
 		Ident(out identName);
 		tmp = identName; 
-		while (t.kind == 33) {
+		while (la.kind == 33) {
 			Get();
 			Ident(out identName);
 			if (bname.Length > 0){
@@ -529,9 +575,9 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		name = tmp; 
 	}
 
-	static void NestedTypeName(out ArrayList/*<string>*/ nestedPath, out string tname) {
+	void NestedTypeName(out ArrayList/*<string>*/ nestedPath, out string tname) {
 		nestedPath = new ArrayList(); tname = ""; 
-		while (t.kind == 36) {
+		while (la.kind == 36) {
 			Get();
 			string name; 
 			Ident(out name);
@@ -540,29 +586,29 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		}
 	}
 
-	static void FullName(out string full) {
+	void FullName(out string full) {
 		string name; 
 		QualName(out full, out name);
 		if ( full != "" ) full+="."+name; else full = name;  
 	}
 
-	static void DottedName(out string name) {
+	void DottedName(out string name) {
 		name = ""; 
 		string x; 
 		Ident(out x);
 		name = x; 
-		while (t.kind == 33) {
+		while (la.kind == 33) {
 			Get();
 			Ident(out x);
 			name += x; 
 		}
 	}
 
-	static void Term(out Expression e) {
+	void Term(out Expression e) {
 		TypeNode typ; 
 		Factor(null, out e);
-		while (t.kind == 28 || t.kind == 37) {
-			if (t.kind == 37) {
+		while (la.kind == 28 || la.kind == 37) {
+			if (la.kind == 37) {
 				Get();
 				Factor(e, out e);
 			} else {
@@ -570,7 +616,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 				ExpressionList es = new ExpressionList(); Expression a; 
 				Expr(out a);
 				es.Add(a); 
-				while (t.kind == 23) {
+				while (la.kind == 23) {
 					Get();
 					Expr(out a);
 					es.Add(a); 
@@ -581,9 +627,8 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 				PType(out typ);
 				idx.Type = typ; idx.ElementType = typ; 
 				Expect(24);
-				// special case to normalizer pointer indexing here.
 				if (TypeNode.StripModifiers(e.Type).IsPointerType) {
-				  e = new AddressDereference(new BinaryExpression(e, es[0], NodeType.Add, e.Type), typ);
+				 e = new AddressDereference(new BinaryExpression(e, es[0], NodeType.Add, e.Type), typ);
 				}
 				else {
 				  e = idx; 
@@ -593,7 +638,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		}
 	}
 
-	static void Factor(Expression target, out Expression e) {
+	void Factor(Expression target, out Expression e) {
 		e = null;
 		Member  m;
 		ExpressionList es; Expression p;
@@ -602,7 +647,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		/*Identifier blockVarId;*/
 		MemberBinding mb;
 		
-		switch (t.kind) {
+		switch (la.kind) {
 		case 2: case 3: case 4: case 70: case 71: case 72: case 73: case 74: case 75: {
 			Literal(out e);
 			break;
@@ -615,7 +660,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		case 1: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 25: case 26: case 28: case 35: {
 			MemberRef(out m);
 			Debug.Assert(m != null); e = new MemberBinding(target,m); 
-			if (t.kind == 49) {
+			if (la.kind == 49) {
 				ArgExprs(out es);
 				Method meth = (Method)m;
 				if ( ! meth.IsVirtual){
@@ -757,8 +802,8 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		}
 		case 47: {
 			Get();
-			if (t.kind == 48 || t.kind == 51 || t.kind == 52) {
-				if (t.kind == 48) {
+			if (la.kind == 48 || la.kind == 51 || la.kind == 52) {
+				if (la.kind == 48) {
 					Get();
 					Expect(22);
 					PType(out t1);
@@ -769,28 +814,17 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 					TypeNode newType = p.Type.GetReferenceType();
 					e = new UnaryExpression(p,NodeType.AddressOf,newType);
 					
-				} else if (t.kind == 51) {
+				} else if (la.kind == 51) {
 					Get();
 					Expect(49);
 					Expr(out p);
 					Expect(50);
-					Reference r = p.Type as Reference;
-                    if (r != null)
-                        e = new AddressDereference(p, r.ElementType);
-                    else
-                    {
-                        TypeNode realType = TypeNode.StripModifiers(p.Type);
-                        if (realType is Class) e = p; // This can never happen ... delete this line before check-in.
-                        else 
-                        {
-                          Pointer pointerType = realType as Pointer;
-                          if (pointerType != null) {
-                            e = new AddressDereference(p, pointerType.ElementType);
-                          } else {
-                            e = new AddressDereference(p, SystemTypes.UInt8);
-                          }
-                        }
-                    }
+					Reference r = (Reference) p.Type;
+					if (r != null)
+					  e = new AddressDereference(p,r.ElementType);
+					else
+					  e = new AddressDereference(p, SystemTypes.UInt8);
+					
 				} else {
 					TypeNode tt1 = null, tt2 = null, tt3 = null; 
 					Get();
@@ -806,7 +840,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 					Expect(50);
 					e = new BinaryExpression(p, new Literal(tt3, SystemTypes.Type), NodeType.Isinst); e.Type = tt3; 
 				}
-			} else if (t.kind == 53) {
+			} else if (la.kind == 53) {
 				TypeNode tt1 = null, tt2 = null, tt3 = null; 
 				Get();
 				Expect(22);
@@ -823,16 +857,16 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			} else if (StartOf(2)) {
 				OperatorNode(out p);
 				e = p; 
-			} else Error(111);
+			} else SynErr(111);
 			break;
 		}
-		default: Error(112); break;
+		default: SynErr(112); break;
 		}
 	}
 
-	static void Literal(out Expression e) {
+	void Literal(out Expression e) {
 		e =null; 
-		switch (t.kind) {
+		switch (la.kind) {
 		case 71: {
 			Get();
 			e = Cci.Literal.True; 
@@ -871,13 +905,13 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		}
 		case 3: {
 			Get();
-			string s = token.val.Substring(1,token.val.Length-2);
+			string s = t.val.Substring(1,t.val.Length-2);
 			e = new Literal(s,SystemTypes.String); 
 			break;
 		}
 		case 4: {
 			Get();
-			string s = token.val;
+			string s = t.val;
 			if (s.Length == 3 && s[0] == '\'' && s[2] == '\''){
 			  e = new Literal(s[1], SystemTypes.Char);
 			}else if (s.StartsWith("'\\u")){
@@ -899,16 +933,16 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			NewObj(out e);
 			break;
 		}
-		default: Error(113); break;
+		default: SynErr(113); break;
 		}
 	}
 
-	static void Local(out Expression p) {
+	void Local(out Expression p) {
 		p  = null;
 		int modifier = 0; /* 0 == none, 1 == address dereference, 2 == address of */
 		
-		if (t.kind == 27 || t.kind == 30) {
-			if (t.kind == 30) {
+		if (la.kind == 27 || la.kind == 30) {
+			if (la.kind == 30) {
 				Get();
 				modifier = 1; 
 			} else {
@@ -917,11 +951,11 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			}
 		}
 		Expect(55);
-		if (t.kind == 2) {
+		if (la.kind == 2) {
 			Parameter(out p);
-		} else if (t.kind == 49) {
+		} else if (la.kind == 49) {
 			SpecialName(out p);
-		} else Error(114);
+		} else SynErr(114);
 		switch (modifier){
 		 case 1:
 		   Debug.Assert(p.Type is Reference);
@@ -939,7 +973,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void MemberRef(out Member  m) {
+	void MemberRef(out Member  m) {
 		TypeNode dec;
 		string mname = null;
 		MemberList mems = null;
@@ -949,21 +983,21 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 		PType(out dec);
 		Expect(47);
-		if (t.kind == 1 || t.kind == 35) {
+		if (la.kind == 1 || la.kind == 35) {
 			DottedName(out mname);
 			mems = dec.GetMembersNamed(Identifier.For(mname)); 
-		} else if (t.kind == 56) {
+		} else if (la.kind == 56) {
 			Get();
 			mems = dec.GetConstructors(); 
-		} else Error(115);
-		if (t.kind == 31) {
+		} else SynErr(115);
+		if (la.kind == 31) {
 			InstPTypes(out genericInstantiations);
 		}
-		if (t.kind == 22) {
+		if (la.kind == 22) {
 			ArgPTypes(out argumentTypes);
 		}
 		if (mems.Count == 0){
-		 Errors.SemErr(token.filename, token.line, token.col,
+		 this.errors.SemErr(t.filename, t.line, t.col,
 		               String.Format("could not find member: {0} in type {1}", mname, dec.FullName));
 		 throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
 		}
@@ -1006,13 +1040,13 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void ArgExprs(out ExpressionList es) {
+	void ArgExprs(out ExpressionList es) {
 		Expression e; es = new  ExpressionList(); 
 		Expect(49);
 		if (StartOf(3)) {
 			Expr(out e);
 			es.Add(e); 
-			while (t.kind == 23) {
+			while (la.kind == 23) {
 				Get();
 				Expr(out e);
 				es.Add(e); 
@@ -1021,7 +1055,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		Expect(50);
 	}
 
-	static void BlockVar(out MemberBinding mb) {
+	void BlockVar(out MemberBinding mb) {
 		mb = null; TypeNode type = null; 
 		Expect(54);
 		Expect(22);
@@ -1050,7 +1084,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		Expect(50);
 	}
 
-	static void Quantifier(out Expression e) {
+	void Quantifier(out Expression e) {
 		Quantifier q = new Quantifier();
 		NodeType n;
 		Expression cexpr;
@@ -1071,7 +1105,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void TrueComprehension(out Expression e) {
+	void TrueComprehension(out Expression e) {
 		Expression body;
 		ExpressionList elist;
 		BlockScope oldBlock = currentBlock;
@@ -1090,7 +1124,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void OperatorNode(out Expression p) {
+	void OperatorNode(out Expression p) {
 		p = null; 
 		int arity;
 		NodeType opKind; 
@@ -1099,19 +1133,19 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		TypeNode resultType;
 		
 		Operator(out opKind, out arity, out resultType);
-		if (t.kind == 22) {
+		if (la.kind == 22) {
 			ArgPTypes(out tns);
 		}
 		ArgExprs(out es);
 		if (es.Count!= arity) {
-		 Errors.SemErr(token.filename, token.line, token.col,
+		 this.errors.SemErr(t.filename, t.line, t.col,
 		               String.Format("operator {0} expects {1} arguments, not {2}",
 		               opKind, arity, es.Count));
 		 throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
 		}
 		if (tns != null) {
 		  if (tns.Count != arity) {
-		    Errors.SemErr(token.filename, token.line, token.col,
+		    this.errors.SemErr(t.filename, t.line, t.col,
 		                  String.Format("operator {0} expects {1} type arguments, not {2}",
 		                  p.NodeType, arity, tns.Count));
 		    throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
@@ -1160,9 +1194,9 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		                   
 	}
 
-	static void Operator(out NodeType nt, out int arity, out TypeNode resultType) {
+	void Operator(out NodeType nt, out int arity, out TypeNode resultType) {
 		nt = NodeType.Nop; arity = 0; resultType = null; 
-		switch (t.kind) {
+		switch (la.kind) {
 		case 31: {
 			Get();
 			nt = NodeType.Lt; arity = 2; resultType = SystemTypes.Boolean; 
@@ -1358,11 +1392,11 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			nt = NodeType.Ldlen;   arity = 1; resultType = SystemTypes.Int32;  
 			break;
 		}
-		default: Error(116); break;
+		default: SynErr(116); break;
 		}
 	}
 
-	static void ArgPTypes(out TypeNodeList tns) {
+	void ArgPTypes(out TypeNodeList tns) {
 		tns = new TypeNodeList();
 		TypeNode tn;
 		
@@ -1370,7 +1404,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		if (StartOf(4)) {
 			PTypedRef(out tn);
 			tns.Add(tn); 
-			while (t.kind == 23) {
+			while (la.kind == 23) {
 				Get();
 				PTypedRef(out tn);
 				tns.Add(tn); 
@@ -1379,10 +1413,10 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		Expect(24);
 	}
 
-	static void Parameter(out Expression p) {
+	void Parameter(out Expression p) {
 		p  = null; 
 		Expect(2);
-		Token x = token;
+		IToken x = t;
 		int index = Convert.ToInt32(x.val);
 		bool nonStatic = ! currentMethod.IsStatic;
 		if ( nonStatic && index == 0){
@@ -1395,7 +1429,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		    pa.ArgumentListIndex = nonStatic ? index + 1 : index;
 		    p = pa;
 		  }else{
-		    Errors.SemErr(x.filename, x.line, x.col,
+		    this.errors.SemErr(x.filename, x.line, x.col,
 		                  String.Format("current method does not have parameter position {0}",
 		                                index));
 		    p = null; 
@@ -1404,14 +1438,14 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void SpecialName(out Expression p) {
+	void SpecialName(out Expression p) {
 		p  = null; 
 		Expect(49);
 		TypeNode typ=null; 
 		PType(out typ);
 		Expect(23);
 		Expect(3);
-		string idname = token.val; 
+		string idname = t.val; 
 		Expect(50);
 		idname = idname.Substring(1,idname.Length-2);
 		if (idname.Equals("return value")){
@@ -1422,7 +1456,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void InstPTypes(out TypeNodeList tns) {
+	void InstPTypes(out TypeNodeList tns) {
 		tns = new TypeNodeList();
 		TypeNode tn;
 		
@@ -1430,7 +1464,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		if (StartOf(5)) {
 			PType(out tn);
 			tns.Add(tn); 
-			while (t.kind == 23) {
+			while (la.kind == 23) {
 				Get();
 				PType(out tn);
 				tns.Add(tn); 
@@ -1439,16 +1473,16 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		Expect(32);
 	}
 
-	static void PTypedRef(out TypeNode tn) {
+	void PTypedRef(out TypeNode tn) {
 		tn = null; 
 		if (StartOf(5)) {
 			PType(out tn);
-		} else if (t.kind == 55) {
+		} else if (la.kind == 55) {
 			TRef(out tn);
-		} else Error(117);
+		} else SynErr(117);
 	}
 
-	static void TRef(out TypeNode tn ) {
+	void TRef(out TypeNode tn ) {
 		tn = null; 
 		Expect(55);
 		Expect(2);
@@ -1456,9 +1490,9 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void Quant(out NodeType n) {
+	void Quant(out NodeType n) {
 		n = NodeType.Undefined; 
-		switch (t.kind) {
+		switch (la.kind) {
 		case 57: {
 			Get();
 			n = NodeType.Forall; 
@@ -1499,20 +1533,20 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			n = NodeType.Sum; 
 			break;
 		}
-		default: Error(118); break;
+		default: SynErr(118); break;
 		}
 	}
 
-	static void Comprehension(out Expression e) {
+	void Comprehension(out Expression e) {
 		e = null; 
-		if (t.kind == 65) {
+		if (la.kind == 65) {
 			TrueComprehension(out e);
-		} else if (t.kind == 68) {
+		} else if (la.kind == 68) {
 			Display(out e);
-		} else Error(119);
+		} else SynErr(119);
 	}
 
-	static void Display(out Expression e) {
+	void Display(out Expression e) {
 		Comprehension ch = new Comprehension();
 		ExpressionList es = new ExpressionList();
 		TypeNode tn = null;
@@ -1525,7 +1559,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		if (StartOf(3)) {
 			Expr(out e);
 			es.Add(e); 
-			while (t.kind == 23) {
+			while (la.kind == 23) {
 				Get();
 				Expr(out e);
 				es.Add(e); 
@@ -1537,13 +1571,13 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void FiltersAndBindings(out ExpressionList elist) {
+	void FiltersAndBindings(out ExpressionList elist) {
 		elist = new ExpressionList();
 		ComprehensionBinding binding;
 		Expression filter;
 		
-		while (t.kind == 22 || t.kind == 49) {
-			if (t.kind == 49) {
+		while (la.kind == 22 || la.kind == 49) {
+			if (la.kind == 49) {
 				Get();
 				Binding(out binding);
 				Expect(50);
@@ -1557,7 +1591,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		}
 	}
 
-	static void Binding(out ComprehensionBinding binding) {
+	void Binding(out ComprehensionBinding binding) {
 		binding = new ComprehensionBinding();
 		TypeNode tn, dummy;
 		Expression source;
@@ -1594,18 +1628,18 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		
 	}
 
-	static void Num(out Expression e) {
-		Token x; int neg = 1; Token decimalPart = null; 
-		if (t.kind == 70) {
+	void Num(out Expression e) {
+		IToken x; int neg = 1; IToken decimalPart = null; 
+		if (la.kind == 70) {
 			Get();
 			neg = -1; 
 		}
 		Expect(2);
-		x = token; 
-		if (t.kind == 33) {
+		x = t; 
+		if (la.kind == 33) {
 			Get();
 			Expect(2);
-			decimalPart = token; 
+			decimalPart = t; 
 		}
 		try {
 		 if (neg == -1){
@@ -1637,13 +1671,13 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		   }
 		 }
 		}catch (OverflowException) {
-		  Errors.SemErr(x.filename, x.line, x.col,"Omni: Overflow in tokenizing a number.");
+		  this.errors.SemErr(x.filename, x.line, x.col,"Omni: Overflow in tokenizing a number.");
 		  e = new Literal(0,SystemTypes.Int32); 
 		}
 		
 	}
 
-	static void NewObj(out Expression e) {
+	void NewObj(out Expression e) {
 		e = null;
 		Comprehension c = null;
 		TypeNode tn = null;
@@ -1670,16 +1704,44 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 
 
 
-	public static void Parse() {
-		Errors.SynErr = new ErrorProc(SynErr);
-		t = new Token();
+	public void Parse() {
+		la = new Token();
+		la.val = "";
 		Get();
 		Omni();
 
+		Expect(0);
 	}
 
-	static void SynErr(int n, string filename, int line, int col) {
-		Errors.count++;
+	static readonly bool[,]/*!*/ set = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,T, T,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,T,T, T,x,T,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, x,x},
+		{x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,x, x,T,T,T, T,x,T,x, x,x,x,T, x,x,x,T, T,T,T,T, T,T,T,T, x,x,x,x, x,x,T,T, x,T,T,T, T,T,T,T, T,T,x,x, x,x,T,T, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,T,x,x, x,x,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,x,x, x,T,T,x, T,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,T,x,x, x,x,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,x,x, x,T,T,x, T,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
+
+	};
+} // end Parser
+
+
+public class Errors {
+	public int count = 0;                                    // number of errors detected
+	public System.IO.TextWriter/*!*/ errorStream = Console.Out;   // error messages go to this stream
+	public string errMsgFormat = "{0}({1},{2}): error: {3}"; // 0=filename, 1=line, 2=column, 3=text
+	public string warningMsgFormat = "{0}({1},{2}): warning: {3}"; // 0=filename, 1=line, 2=column, 3=text
+
+	public void SynErr(string filename, int line, int col, int n) {
+		SynErr(filename, line, col, GetSyntaxErrorString(n));
+	}
+
+	public virtual void SynErr(string filename, int line, int col, string/*!*/ msg) {
+		Contract.Requires(msg != null);
+		errorStream.WriteLine(errMsgFormat, filename, line, col, msg);
+		count++;
+	}
+
+	string GetSyntaxErrorString(int n) {
 		string s;
 		switch (n) {
 			case 0: s = "EOF expected"; break;
@@ -1688,108 +1750,108 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			case 3: s = "string expected"; break;
 			case 4: s = "char expected"; break;
 			case 5: s = "backslash expected"; break;
-			case 6: s = "object expected"; break;
-			case 7: s = "string expected"; break;
-			case 8: s = "char expected"; break;
-			case 9: s = "void expected"; break;
-			case 10: s = "bool expected"; break;
-			case 11: s = "i8 expected"; break;
-			case 12: s = "i16 expected"; break;
-			case 13: s = "i32 expected"; break;
-			case 14: s = "i64 expected"; break;
-			case 15: s = "u8 expected"; break;
-			case 16: s = "u16 expected"; break;
-			case 17: s = "u32 expected"; break;
-			case 18: s = "u64 expected"; break;
-			case 19: s = "single expected"; break;
-			case 20: s = "double expected"; break;
-			case 21: s = "optional expected"; break;
-			case 22: s = "( expected"; break;
-			case 23: s = ", expected"; break;
-			case 24: s = ") expected"; break;
-			case 25: s = "$typeParam expected"; break;
-			case 26: s = "$methodTypeParam expected"; break;
-			case 27: s = "& expected"; break;
-			case 28: s = "[ expected"; break;
-			case 29: s = "] expected"; break;
-			case 30: s = "* expected"; break;
-			case 31: s = "< expected"; break;
-			case 32: s = "> expected"; break;
-			case 33: s = ". expected"; break;
-			case 34: s = ": expected"; break;
-			case 35: s = "$weirdIdent expected"; break;
-			case 36: s = "+ expected"; break;
-			case 37: s = "@ expected"; break;
-			case 38: s = "old expected"; break;
-			case 39: s = "$coerce expected"; break;
-			case 40: s = "$typetest expected"; break;
-			case 41: s = "$castclass expected"; break;
-			case 42: s = "$typeof expected"; break;
-			case 43: s = "$ite expected"; break;
-			case 44: s = "$box expected"; break;
-			case 45: s = "$unbox expected"; break;
-			case 46: s = "$ref expected"; break;
-			case 47: s = ":: expected"; break;
-			case 48: s = "$AddressOf expected"; break;
-			case 49: s = "{ expected"; break;
-			case 50: s = "} expected"; break;
-			case 51: s = "$Deref expected"; break;
-			case 52: s = "$Isinst expected"; break;
-			case 53: s = "%Isinst expected"; break;
-			case 54: s = "$blockVar expected"; break;
-			case 55: s = "$ expected"; break;
-			case 56: s = ".ctor expected"; break;
-			case 57: s = "$_forall expected"; break;
-			case 58: s = "$_exists expected"; break;
-			case 59: s = "$_exists1 expected"; break;
-			case 60: s = "$_count expected"; break;
-			case 61: s = "$_max expected"; break;
-			case 62: s = "$_min expected"; break;
-			case 63: s = "$_product expected"; break;
-			case 64: s = "$_sum expected"; break;
-			case 65: s = "{| expected"; break;
-			case 66: s = "; expected"; break;
-			case 67: s = "|} expected"; break;
-			case 68: s = "(| expected"; break;
-			case 69: s = "|) expected"; break;
-			case 70: s = "- expected"; break;
-			case 71: s = "True expected"; break;
-			case 72: s = "False expected"; break;
-			case 73: s = "null expected"; break;
-			case 74: s = "this expected"; break;
-			case 75: s = "new expected"; break;
-			case 76: s = "<= expected"; break;
-			case 77: s = ">= expected"; break;
-			case 78: s = "== expected"; break;
-			case 79: s = "!= expected"; break;
-			case 80: s = "|| expected"; break;
-			case 81: s = "&& expected"; break;
-			case 82: s = "! expected"; break;
-			case 83: s = "==> expected"; break;
-			case 84: s = "<==> expected"; break;
-			case 85: s = "| expected"; break;
-			case 86: s = "~ expected"; break;
-			case 87: s = "^ expected"; break;
-			case 88: s = "/ expected"; break;
-			case 89: s = "% expected"; break;
-			case 90: s = "0- expected"; break;
-			case 91: s = "0+ expected"; break;
-			case 92: s = "<< expected"; break;
-			case 93: s = "1>> expected"; break;
-			case 94: s = "0>> expected"; break;
-			case 95: s = "$defaultValue expected"; break;
-			case 96: s = "$unboxAny expected"; break;
-			case 97: s = "$Conv_I1 expected"; break;
-			case 98: s = "$Conv_I2 expected"; break;
-			case 99: s = "$Conv_I4 expected"; break;
-			case 100: s = "$Conv_I8 expected"; break;
-			case 101: s = "$Conv_I expected"; break;
-			case 102: s = "$Conv_U1 expected"; break;
-			case 103: s = "$Conv_U2 expected"; break;
-			case 104: s = "$Conv_U4 expected"; break;
-			case 105: s = "$Conv_U8 expected"; break;
-			case 106: s = "$Conv_U expected"; break;
-			case 107: s = "$Ldlen expected"; break;
+			case 6: s = "\"object\" expected"; break;
+			case 7: s = "\"string\" expected"; break;
+			case 8: s = "\"char\" expected"; break;
+			case 9: s = "\"void\" expected"; break;
+			case 10: s = "\"bool\" expected"; break;
+			case 11: s = "\"i8\" expected"; break;
+			case 12: s = "\"i16\" expected"; break;
+			case 13: s = "\"i32\" expected"; break;
+			case 14: s = "\"i64\" expected"; break;
+			case 15: s = "\"u8\" expected"; break;
+			case 16: s = "\"u16\" expected"; break;
+			case 17: s = "\"u32\" expected"; break;
+			case 18: s = "\"u64\" expected"; break;
+			case 19: s = "\"single\" expected"; break;
+			case 20: s = "\"double\" expected"; break;
+			case 21: s = "\"optional\" expected"; break;
+			case 22: s = "\"(\" expected"; break;
+			case 23: s = "\",\" expected"; break;
+			case 24: s = "\")\" expected"; break;
+			case 25: s = "\"$typeParam\" expected"; break;
+			case 26: s = "\"$methodTypeParam\" expected"; break;
+			case 27: s = "\"&\" expected"; break;
+			case 28: s = "\"[\" expected"; break;
+			case 29: s = "\"]\" expected"; break;
+			case 30: s = "\"*\" expected"; break;
+			case 31: s = "\"<\" expected"; break;
+			case 32: s = "\">\" expected"; break;
+			case 33: s = "\".\" expected"; break;
+			case 34: s = "\":\" expected"; break;
+			case 35: s = "\"$weirdIdent\" expected"; break;
+			case 36: s = "\"+\" expected"; break;
+			case 37: s = "\"@\" expected"; break;
+			case 38: s = "\"old\" expected"; break;
+			case 39: s = "\"$coerce\" expected"; break;
+			case 40: s = "\"$typetest\" expected"; break;
+			case 41: s = "\"$castclass\" expected"; break;
+			case 42: s = "\"$typeof\" expected"; break;
+			case 43: s = "\"$ite\" expected"; break;
+			case 44: s = "\"$box\" expected"; break;
+			case 45: s = "\"$unbox\" expected"; break;
+			case 46: s = "\"$ref\" expected"; break;
+			case 47: s = "\"::\" expected"; break;
+			case 48: s = "\"$AddressOf\" expected"; break;
+			case 49: s = "\"{\" expected"; break;
+			case 50: s = "\"}\" expected"; break;
+			case 51: s = "\"$Deref\" expected"; break;
+			case 52: s = "\"$Isinst\" expected"; break;
+			case 53: s = "\"%Isinst\" expected"; break;
+			case 54: s = "\"$blockVar\" expected"; break;
+			case 55: s = "\"$\" expected"; break;
+			case 56: s = "\".ctor\" expected"; break;
+			case 57: s = "\"$_forall\" expected"; break;
+			case 58: s = "\"$_exists\" expected"; break;
+			case 59: s = "\"$_exists1\" expected"; break;
+			case 60: s = "\"$_count\" expected"; break;
+			case 61: s = "\"$_max\" expected"; break;
+			case 62: s = "\"$_min\" expected"; break;
+			case 63: s = "\"$_product\" expected"; break;
+			case 64: s = "\"$_sum\" expected"; break;
+			case 65: s = "\"{|\" expected"; break;
+			case 66: s = "\";\" expected"; break;
+			case 67: s = "\"|}\" expected"; break;
+			case 68: s = "\"(|\" expected"; break;
+			case 69: s = "\"|)\" expected"; break;
+			case 70: s = "\"-\" expected"; break;
+			case 71: s = "\"True\" expected"; break;
+			case 72: s = "\"False\" expected"; break;
+			case 73: s = "\"null\" expected"; break;
+			case 74: s = "\"this\" expected"; break;
+			case 75: s = "\"new\" expected"; break;
+			case 76: s = "\"<=\" expected"; break;
+			case 77: s = "\">=\" expected"; break;
+			case 78: s = "\"==\" expected"; break;
+			case 79: s = "\"!=\" expected"; break;
+			case 80: s = "\"||\" expected"; break;
+			case 81: s = "\"&&\" expected"; break;
+			case 82: s = "\"!\" expected"; break;
+			case 83: s = "\"==>\" expected"; break;
+			case 84: s = "\"<==>\" expected"; break;
+			case 85: s = "\"|\" expected"; break;
+			case 86: s = "\"~\" expected"; break;
+			case 87: s = "\"^\" expected"; break;
+			case 88: s = "\"/\" expected"; break;
+			case 89: s = "\"%\" expected"; break;
+			case 90: s = "\"0-\" expected"; break;
+			case 91: s = "\"0+\" expected"; break;
+			case 92: s = "\"<<\" expected"; break;
+			case 93: s = "\"1>>\" expected"; break;
+			case 94: s = "\"0>>\" expected"; break;
+			case 95: s = "\"$defaultValue\" expected"; break;
+			case 96: s = "\"$unboxAny\" expected"; break;
+			case 97: s = "\"$Conv_I1\" expected"; break;
+			case 98: s = "\"$Conv_I2\" expected"; break;
+			case 99: s = "\"$Conv_I4\" expected"; break;
+			case 100: s = "\"$Conv_I8\" expected"; break;
+			case 101: s = "\"$Conv_I\" expected"; break;
+			case 102: s = "\"$Conv_U1\" expected"; break;
+			case 103: s = "\"$Conv_U2\" expected"; break;
+			case 104: s = "\"$Conv_U4\" expected"; break;
+			case 105: s = "\"$Conv_U8\" expected"; break;
+			case 106: s = "\"$Conv_U\" expected"; break;
+			case 107: s = "\"$Ldlen\" expected"; break;
 			case 108: s = "??? expected"; break;
 			case 109: s = "invalid PType"; break;
 			case 110: s = "invalid Ident"; break;
@@ -1805,21 +1867,30 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 
 			default: s = "error " + n; break;
 		}
-		string message = string.Format("{0}({1},{2}): syntax error: {3}", filename, line, col, s);
-		//System.Diagnostics.Debug.Fail("Syntax error during deserialization", message); // Manuel says no stinking Fail calls
-		//Console.WriteLine(message);
-		throw new ApplicationException("Syntax error during deserialization: " + message);
+		return s;
 	}
 
-	static bool[,] set = {
-	{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-	{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,T, T,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-	{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,T,T, T,x,T,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, x,x},
-	{x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,x, x,T,T,T, T,x,T,x, x,x,x,T, x,x,x,T, T,T,T,T, T,T,T,T, x,x,x,x, x,x,T,T, x,T,T,T, T,T,T,T, T,T,x,x, x,x,T,T, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-	{x,T,x,x, x,x,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,x,x, x,T,T,x, T,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-	{x,T,x,x, x,x,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,x,x, x,T,T,x, T,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
+	public void SemErr(IToken/*!*/ tok, string/*!*/ msg) {  // semantic errors
+		Contract.Requires(tok != null);
+		Contract.Requires(msg != null);
+		SemErr(tok.filename, tok.line, tok.col, msg);
+	}
 
-	};
-} // end Parser
+	public virtual void SemErr(string filename, int line, int col, string/*!*/ msg) {
+		Contract.Requires(msg != null);
+		errorStream.WriteLine(errMsgFormat, filename, line, col, msg);
+		count++;
+	}
 
-} // end namespace
+	public virtual void Warning(string filename, int line, int col, string msg) {
+		Contract.Requires(msg != null);
+		errorStream.WriteLine(warningMsgFormat, filename, line, col, msg);
+	}
+} // Errors
+
+
+public class FatalError: Exception {
+	public FatalError(string m): base(m) {}
+}
+
+}

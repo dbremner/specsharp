@@ -221,7 +221,7 @@ namespace System.Compiler.Analysis.PointsTo {
 
       AttributeNode attr = m.GetAttribute(SystemTypes.GlobalAccessAttribute);
       if (attr != null) {
-        GlobalAccessAttribute readAttr = (GlobalAccessAttribute)attr.GetRuntimeAttribute();
+        Microsoft.Contracts.GlobalAccessAttribute readAttr = (Microsoft.Contracts.GlobalAccessAttribute)attr.GetRuntimeAttribute();
         if (readAttr != null)
           res = readAttr.Value;
         }
@@ -341,7 +341,7 @@ namespace System.Compiler.Analysis.PointsTo {
         }
       AttributeNode attr = m.GetAttribute(SystemTypes.EscapesAttribute);
       if (attr != null) {
-        EscapesAttribute escAttr = (EscapesAttribute)attr.GetRuntimeAttribute();
+        Microsoft.Contracts.EscapesAttribute escAttr = (Microsoft.Contracts.EscapesAttribute)attr.GetRuntimeAttribute();
         if (escAttr != null) {
           res = escAttr.Value;
           owned = escAttr.Owned;
@@ -366,7 +366,7 @@ namespace System.Compiler.Analysis.PointsTo {
         }
       AttributeNode attr = p.GetAttribute(SystemTypes.EscapesAttribute);
       if (attr != null) {
-        EscapesAttribute escAttr = (EscapesAttribute)attr.GetRuntimeAttribute();
+        Microsoft.Contracts.EscapesAttribute escAttr = (Microsoft.Contracts.EscapesAttribute)attr.GetRuntimeAttribute();
         if (escAttr != null) {
           res = escAttr.Value;
           owned = escAttr.Owned;
