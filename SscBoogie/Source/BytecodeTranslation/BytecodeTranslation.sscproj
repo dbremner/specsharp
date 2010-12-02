@@ -102,6 +102,11 @@
              Project="{C3F39495-FAB0-4594-BDCD-921D180B5C06}"
              Private="true"
              />
+        <Reference Name="ParserHelper"
+             AssemblyName="ParserHelper"
+             Private="true"
+             HintPath="../../Binaries/ParserHelper.dll"
+             />
       </References>
     </Build>
     <Files>
