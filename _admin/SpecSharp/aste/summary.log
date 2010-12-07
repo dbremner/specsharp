@@ -1,9 +1,14 @@
-# Aste started: 2010-11-29 10:27:08
+# Aste started: 2010-12-07 07:00:07
 # Host id: Boogiebox
-# [2010-11-29 10:29:10] SpecSharp revision: 60238
-# [2010-11-29 10:30:11] Boogie revision: 60359
-# [2010-11-29 10:30:34] SscBoogie revision: 60238
-[2010-11-29 10:30:58] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2010-12-07 07:02:17] SpecSharp revision: 60540
+# [2010-12-07 07:03:27] Boogie revision: 60742
+# [2010-12-07 07:03:52] SscBoogie revision: 60540
+[2010-12-07 07:04:24] [Error] Error message:
+  C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\nmake.exe
+  BOOGIEROOT=D:\Temp\aste\Boogie failed with return code 2
 
-    warning CS1668
-    warning CS1668
+
+  returncode=2
+  cmd=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\nmake.exe
+      BOOGIEROOT=D:\Temp\aste\Boogie
+
