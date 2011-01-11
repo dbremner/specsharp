@@ -92,6 +92,7 @@ ExactTypes.ssc(43,3): Error: Object invariant possibly does not hold: w.GetType(
 ExactTypes.ssc(50,5): Error: Object invariant possibly does not hold: xs.GetType() == typeof(X[])
 ExactTypes.ssc(56,5): Error: Type cast might fail
 ExactTypes.ssc(69,5): Error: RHS might not be a subtype of the element type of the array being assigned
+ExactTypes.ssc(68,5): Related information:     (trace position)
 ExactTypes.ssc(81,5): Error: RHS might not be a subtype of the element type of the array being assigned
 
 Spec# program verifier finished with 12 verified, 5 errors
@@ -116,7 +117,6 @@ Subclass.ssc(14,5): warning CS2663: Assertion might not hold: false
 ------------------------------ Iff.ssc ---------------------
 Error: Method Iff.R(bool x, bool y), unsatisfied postcondition: result <==> x == y
 Iff.ssc(46,5): Related information:     (trace position)
-Iff.ssc(48,3): Related information:     (trace position)
 
 Spec# program verifier finished with 4 verified, 1 error
 ------------------------------ Operators.ssc ---------------------

@@ -104,8 +104,8 @@ public class PreviousErrorRelated {
     int z = 0;
     switch (x) {
     case 2:  // fall through
-    case 4:  z = 2;  break;
-    default:  z = 4;  break; //taken
+    case 4:  z = 2;  break; //taken
+    default:  z = 4;  break;
     }
     assert false; 
   }

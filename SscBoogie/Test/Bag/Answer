@@ -5,7 +5,6 @@ Bag0.ssc(11,18): warning CS2638: Using possibly null pointer to get array length
 Bag0.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: destinationIndex + length <= destinationArray.GetLowerBound(0) + destinationArray.Length
 Bag0.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: sourceIndex + length <= sourceArray.GetLowerBound(0) + sourceArray.Length
 Bag0.ssc(39,5): warning CS2663: Assignment to field Bag.count of non-exposed target object may break invariant: 0 <= count
-Bag0.ssc(39,5): warning CS2663:     (trace position)
 Bag0.ssc(40,5): warning CS2663: assignment to array location may violate the modifies clause
 Bag0.ssc(39,5): warning CS2663:     (trace position)
 Bag0.ssc(40,5): warning CS2663: Target array of assignment is not allowed to be committed
@@ -25,12 +24,10 @@ Bag0.ssc(48,7): warning CS2663:     (trace position)
 
 -------------------- Bag1.ssc --------------------
 Bag1.ssc(12,15): warning CS2663: array reference might be null
-Bag1.ssc(12,5): warning CS2663:     (trace position)
 Bag1.ssc(12,23): warning CS2638: Using possibly null pointer to get array length
 Bag1.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: destinationIndex + length <= destinationArray.GetLowerBound(0) + destinationArray.Length
 Bag1.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: sourceIndex + length <= sourceArray.GetLowerBound(0) + sourceArray.Length
 Bag1.ssc(39,5): warning CS2663: Assignment to field Bag.count of non-exposed target object may break invariant: 0 <= count
-Bag1.ssc(39,5): warning CS2663:     (trace position)
 Bag1.ssc(40,5): warning CS2663: assignment to array location may violate the modifies clause
 Bag1.ssc(39,5): warning CS2663:     (trace position)
 Bag1.ssc(40,5): warning CS2663: Target array of assignment is not allowed to be committed
@@ -52,7 +49,6 @@ Bag1.ssc(48,7): warning CS2663:     (trace position)
 Bag2.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: destinationIndex + length <= destinationArray.GetLowerBound(0) + destinationArray.Length
 Bag2.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: sourceIndex + length <= sourceArray.GetLowerBound(0) + sourceArray.Length
 Bag2.ssc(39,5): warning CS2663: Assignment to field Bag.count of non-exposed target object may break invariant: 0 <= count
-Bag2.ssc(39,5): warning CS2663:     (trace position)
 Bag2.ssc(40,5): warning CS2663: assignment to array location may violate the modifies clause
 Bag2.ssc(39,5): warning CS2663:     (trace position)
 Bag2.ssc(40,5): warning CS2663: Target array of assignment is not allowed to be committed
@@ -74,7 +70,6 @@ Bag2.ssc(48,7): warning CS2663:     (trace position)
 Bag3.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: destinationIndex + length <= destinationArray.GetLowerBound(0) + destinationArray.Length
 Bag3.ssc(24,5): warning CS2663: Call of System.Array.Copy(System.Array! sourceArray, int sourceIndex, System.Array! destinationArray, int destinationIndex, int length), unsatisfied precondition: sourceIndex + length <= sourceArray.GetLowerBound(0) + sourceArray.Length
 Bag3.ssc(39,5): warning CS2663: Assignment to field Bag.count of non-exposed target object may break invariant: 0 <= count
-Bag3.ssc(39,5): warning CS2663:     (trace position)
 Bag3.ssc(40,5): warning CS2663: assignment to array location may violate the modifies clause
 Bag3.ssc(39,5): warning CS2663:     (trace position)
 Bag3.ssc(40,5): warning CS2663: Target array of assignment is not allowed to be committed
@@ -94,7 +89,6 @@ Bag3.ssc(48,7): warning CS2663:     (trace position)
 
 -------------------- Bag4.ssc --------------------
 Bag4.ssc(39,5): warning CS2663: Assignment to field Bag.count of non-exposed target object may break invariant: 0 <= count
-Bag4.ssc(39,5): warning CS2663:     (trace position)
 Bag4.ssc(40,5): warning CS2663: assignment to array location may violate the modifies clause
 Bag4.ssc(39,5): warning CS2663:     (trace position)
 Bag4.ssc(40,5): warning CS2663: Target array of assignment is not allowed to be committed

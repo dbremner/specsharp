@@ -13,8 +13,8 @@ IntArrayRanges.ssc(30,7): Related information:     (trace position)
 Spec# program verifier finished with 3 verified, 3 errors
 
 -------------------- LoopInvariantForQuantifiers --------------------
-LoopInvariantForQuantifiers.ssc(25,10): Error: Array index possibly below lower bound
-LoopInvariantForQuantifiers.ssc(42,10): Error: Array index possibly below lower bound
+Error: Array index possibly below lower bound
+Error: Array index possibly below lower bound
 
 Spec# program verifier finished with 13 verified, 2 errors
 
@@ -103,9 +103,7 @@ PreviousErrorRelated.ssc(67,7): Related information:     (trace position)
 PreviousErrorRelated.ssc(84,5): Error: Assertion might not hold: false
 PreviousErrorRelated.ssc(82,7): Related information:     (trace position)
 PreviousErrorRelated.ssc(91,5): Error: Assertion might not hold: false
-PreviousErrorRelated.ssc(91,5): Related information:     (trace position)
 PreviousErrorRelated.ssc(98,5): Error: Assertion might not hold: false
-PreviousErrorRelated.ssc(98,5): Related information:     (trace position)
 PreviousErrorRelated.ssc(110,5): Error: Assertion might not hold: false
 PreviousErrorRelated.ssc(107,14): Related information:     (trace position)
 PreviousErrorRelated.ssc(122,5): Error: Assertion might not hold: false
@@ -152,9 +150,12 @@ Test1.ssc(209,5): Error: Assertion might not hold: Owner.Is(Owner.ElementProxy(p
 Test1.ssc(214,5): Error: Assertion might not hold: Owner.Same(Owner.ElementProxy(aa),this)
 Test1.ssc(219,5): Error: Assertion might not hold: Owner.Different(Owner.ElementProxy(pa),this)
 Test1.ssc(243,7): Error: assigning an owner requires the subject to be un-owned
+Test1.ssc(236,63): Related information:     (trace position)
 Test1.ssc(282,5): Error: Assertion might not hold: Owner.Same((!)oa[0], (!)oa[1])
 Test1.ssc(313,7): Error: assigning an owner requires the subject to be un-owned
+Test1.ssc(306,63): Related information:     (trace position)
 Test1.ssc(326,5): Error: illegal assignment to array element, RHS may already have a different owner
+Test1.ssc(322,52): Related information:     (trace position)
 
 Spec# program verifier finished with 18 verified, 21 errors
 
@@ -171,7 +172,6 @@ Spec# program verifier finished with 7 verified, 0 errors
 TwoTypes.ssc(13,7): Error: Assertion might not hold: b
 TwoTypes.ssc(11,14): Related information:     (trace position)
 TwoTypes.ssc(12,12): Related information:     (trace position)
-TwoTypes.ssc(13,7): Related information:     (trace position)
 
 Spec# program verifier finished with 1 verified, 1 error
 

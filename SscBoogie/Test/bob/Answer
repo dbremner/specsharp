@@ -34,11 +34,11 @@ Spec# program verifier finished with 3 verified, 1 error
 Spec# program verifier finished with 0 verified, 0 errors
 
 -------------------- AIFramework.dll --------------------
-Functional.ssc(229,17): Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
-Functional.ssc(230,13): Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
-Functional.ssc(268,17): Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
-Functional.ssc(269,13): Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
-Functional.ssc(270,13): Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
+Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
+Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
+Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
+Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
+Error: This statement was ignored because ldflda instructions whose source is a pointer are not yet supported.
 HeapSuccession.ssc(909,32): Error: This statement was ignored, because an argument to the call is a pointer to a boxed variable. This is not yet supported.
 HeapSuccession.ssc(951,32): Error: This statement was ignored, because an argument to the call is a pointer to a boxed variable. This is not yet supported.
 Equivalences.ssc(1625,28): Error: Method 'System.Compiler.ISet.Contains(System.Object)' expected to be declared with Pure, Confined, or StateIndependent (perhaps you have forgotten to reference the method's out-of-band contracts?)

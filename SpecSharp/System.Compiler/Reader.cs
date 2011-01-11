@@ -4366,13 +4366,23 @@ namespace System.Compiler.Metadata{
       while (this.counter < size){
         if (currentBlock == null){
           currentBlock = Reader.GetOrCreateBlock(this.blockMap, this.counter);
-#if ILOFFSETS
-          currentBlock.SourceContext = lastSourceContext;
-#endif
           result.Add(currentBlock);
         }
         bool endOfBasicBlock = this.ParseStatement(currentBlock);
-        if (endOfBasicBlock) currentBlock = null;
+#if ILOFFSETS
+        if (currentBlock != null && currentBlock.SourceContext.Document == null) {
+          // Since the current block does not have a source context, it inherits the
+          // last source context that was encountered within this basic block.
+          currentBlock.SourceContext = lastSourceContext;
+        }
+#endif
+        if (endOfBasicBlock) {
+#if ILOFFSETS
+          // We only want source context inheritance within basic blocks.
+          lastSourceContext = new SourceContext();
+#endif
+          currentBlock = null;
+        }
       }
       result.Add(Reader.GetOrCreateBlock(this.blockMap, this.counter));
       return result;
