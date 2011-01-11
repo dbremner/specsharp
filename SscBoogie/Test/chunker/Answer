@@ -61,31 +61,25 @@ ChunkerAssume.ssc(50,12): warning CS2663: Call of string.Substring(int startInde
 -------------------- Chunker10-old.ssc --------------------
 Chunker10-old.ssc(21,5): warning CS2663: Object invariant possibly does not hold: n <= src.Length
 Chunker10-old.ssc(16,14): warning CS2663:     (trace position)
-Chunker10-old.ssc(21,5): warning CS2663:     (trace position)
 
 -------------------- Chunker11-AdditiveExpose.ssc --------------------
 Chunker11-AdditiveExpose.ssc(18,22): warning CS2663: Object might not be exposable
 Chunker11-AdditiveExpose.ssc(27,5): warning CS2663: Object invariant possibly does not hold: n <= src.Length
 Chunker11-AdditiveExpose.ssc(22,14): warning CS2663:     (trace position)
-Chunker11-AdditiveExpose.ssc(27,5): warning CS2663:     (trace position)
 Chunker11-AdditiveExpose.ssc(33,22): warning CS2663: Object might not be exposable
 Chunker11-AdditiveExpose.ssc(42,5): warning CS2663: Object invariant possibly does not hold: n <= src.Length
 Chunker11-AdditiveExpose.ssc(37,14): warning CS2663:     (trace position)
-Chunker11-AdditiveExpose.ssc(42,5): warning CS2663:     (trace position)
 
 -------------------- Chunker11a.ssc --------------------
 Chunker11a.ssc(23,5): warning CS2663: Object invariant possibly does not hold: n <= src.Length
 Chunker11a.ssc(18,14): warning CS2663:     (trace position)
-Chunker11a.ssc(23,5): warning CS2663:     (trace position)
 
 -------------------- Chunker11b.ssc --------------------
 Chunker11b.ssc(23,5): warning CS2663: Object invariant possibly does not hold: n <= src.Length
 Chunker11b.ssc(18,14): warning CS2663:     (trace position)
-Chunker11b.ssc(23,5): warning CS2663:     (trace position)
 
 -------------------- Chunker11c.ssc --------------------
 Chunker11c.ssc(23,5): warning CS2663: Object invariant possibly does not hold: n <= src.Length
 Chunker11c.ssc(18,14): warning CS2663:     (trace position)
-Chunker11c.ssc(23,5): warning CS2663:     (trace position)
 
 -------------------- Chunker.ssc --------------------

@@ -9,9 +9,7 @@ Spec# program verifier finished with 9 verified, 4 errors
 
 -------------------- MustOverride --------------------
 Error: Method Ex1.B.foo(), unsatisfied postcondition: result == 0
-MustOverride.ssc(9,5): Related information:     (trace position)
 Error: Method Ex3.C.foo(), unsatisfied postcondition: result == 0
-MustOverride.ssc(39,5): Related information:     (trace position)
 
 Spec# program verifier finished with 10 verified, 2 errors
 
@@ -142,7 +140,7 @@ Spec# program verifier finished with 8 verified, 1 error
 -------------------- CheckingConsistency --------------------
 Error: Could not establish consistency of pure method contract. Method Wrong.m(int i), unsatisfied postcondition: result > 4
 CheckingConsistency.ssc(105,24): Error: The type of witness candidate "(D2)this" is not (a subtype of) the return type
-CheckingConsistency.ssc(104,11): Error: Type cast might fail
+Error: Type cast might fail
 Error: Could not establish consistency of pure method contract. Method WontFindWitness.m(), unsatisfied postcondition: result.i == 4
 Error: Could not establish consistency of pure method contract. Method BadButYouAreAllowedToTry.m(), unsatisfied postcondition: result == result + 1
 Error: Could not establish consistency of pure method contract. Method BadProp.get_M(), unsatisfied postcondition: result > 4

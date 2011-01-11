@@ -59,9 +59,13 @@ AssignToNonInvariantField.ssc(124,5): Error: Target object of assignment is not 
 AssignToNonInvariantField.ssc(142,5): Error: Target object of assignment is not allowed to be committed
 AssignToNonInvariantField.ssc(148,7): Error: Assignment to field RepClass.Y of non-exposed target object may break invariant: Y == YY
 AssignToNonInvariantField.ssc(197,5): Error: Assignment to field AnotherClient.r of non-exposed target object may break invariant: r.Z == 12
+AssignToNonInvariantField.ssc(196,5): Related information:     (trace position)
 AssignToNonInvariantField.ssc(205,5): Error: Assignment to field AnotherClient.r of non-exposed target object may break invariant: r.Z == 12
+AssignToNonInvariantField.ssc(204,5): Related information:     (trace position)
 AssignToNonInvariantField.ssc(242,5): Error: Object invariant possibly does not hold: r.Z == 12
+AssignToNonInvariantField.ssc(240,7): Related information:     (trace position)
 AssignToNonInvariantField.ssc(253,7): Error: All of the object's owned components must be fully valid
 AssignToNonInvariantField.ssc(263,5): Error: Target object of assignment is not allowed to be committed
+AssignToNonInvariantField.ssc(262,5): Related information:     (trace position)
 
 Spec# program verifier finished with 30 verified, 13 errors

@@ -53,19 +53,15 @@ Finally.ssc(7,15): warning CS2663: Method ReturnFinally.TryFinally0(), unsatisfi
 Finally.ssc(17,15): warning CS2663: Method ReturnFinally.TryFinally1(), unsatisfied postcondition: x == 6
 Finally.ssc(54,5): warning CS2663: Object invariant possibly does not hold: 0 <= y
 Finally.ssc(52,14): warning CS2663:     (trace position)
-Finally.ssc(54,5): warning CS2663:     (trace position)
 Finally.ssc(76,7): warning CS2663: Object invariant possibly does not hold: 0 <= y
 Finally.ssc(72,15): warning CS2663:     (trace position)
 Finally.ssc(74,16): warning CS2663:     (trace position)
-Finally.ssc(76,7): warning CS2663:     (trace position)
 Finally.ssc(88,7): warning CS2663: Object invariant possibly does not hold: 0 <= y
 Finally.ssc(84,15): warning CS2663:     (trace position)
 Finally.ssc(86,16): warning CS2663:     (trace position)
-Finally.ssc(88,7): warning CS2663:     (trace position)
 Finally.ssc(100,7): warning CS2663: Object invariant possibly does not hold: 0 <= y
 Finally.ssc(96,15): warning CS2663:     (trace position)
 Finally.ssc(98,16): warning CS2663:     (trace position)
-Finally.ssc(100,7): warning CS2663:     (trace position)
 Finally.ssc(109,7): warning CS2663: Assertion might not hold: false
 Finally.ssc(117,7): warning CS2663: Assertion might not hold: false
 Finally.ssc(139,19): warning CS2663: Initially: Loop invariant might not hold: 0 <= x
@@ -95,7 +91,6 @@ Spec# program verifier finished with 9 verified, 1 error
 
 -------------------- AndNumbers.ssc --------------------
 Error: Method T.OrRangeBad(bool isA, bool isB), unsatisfied postcondition: result <= 3
-AndNumbers.ssc(44,3): Related information:     (trace position)
 
 Spec# program verifier finished with 4 verified, 1 error
 
@@ -122,6 +117,5 @@ Spec# program verifier finished with 8 verified, 7 errors
 
 -------------------- TypeReconstruction --------------------
 TypeReconstruction.ssc(5,5): Error: Assertion might not hold: z == 0
-TypeReconstruction.ssc(5,5): Related information:     (trace position)
 
 Spec# program verifier finished with 1 verified, 1 error
