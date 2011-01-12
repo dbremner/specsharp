@@ -301,7 +301,7 @@ namespace Microsoft.Cci.SpecSharp {
     internal bool displayFileName = false;
 
     internal HostEnvironment()
-      : base(new NameTable(), 4) {
+      : base(new NameTable(), new InternFactory(), 0, null, true) {
       this.peReader = new PeReader(this);
       string/*?*/ loc = typeof(object).Assembly.Location;
       if (loc == null) {

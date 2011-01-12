@@ -12,7 +12,7 @@ namespace SpecSharpTests
     internal class CompilerHostEnvironment : SourceEditHostEnvironment
     {
         public CompilerHostEnvironment()
-            : base(new NameTable(), 4)
+            : base(new NameTable(), new InternFactory(), 0, null, false)
         {
             PeReader = new PeReader(this);
         }
