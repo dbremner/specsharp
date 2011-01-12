@@ -722,7 +722,7 @@ namespace Microsoft.Cci.SpecSharp {
   internal sealed class DummyEditHostEnvironment : SourceEditHostEnvironment {
 
     internal DummyEditHostEnvironment(IMetadataHost compilationHost)
-      : base(compilationHost.NameTable, 4) {
+      : base(compilationHost.NameTable, compilationHost.InternFactory, 0, null, false) {
       this.compilationHost = compilationHost;
     }
 
