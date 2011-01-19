@@ -1,9 +1,14 @@
-# Aste started: 2011-01-10 15:55:20
+# Aste started: 2011-01-19 10:30:30
 # Host id: Boogiebox
-# [2011-01-10 15:57:29] SpecSharp revision: 61497
-# [2011-01-10 15:58:29] Boogie revision: 61368
-# [2011-01-10 15:59:06] SscBoogie revision: 61497
-[2011-01-10 15:59:39] C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.com SpecSharp.sln /Build DebugCommandLine
+# [2011-01-19 10:32:18] SpecSharp revision: 61530
+# [2011-01-19 10:33:00] Boogie revision: 61745
+# [2011-01-19 10:33:24] SscBoogie revision: 61530
+[2011-01-19 10:33:27] [Error] Error message:
+  Register.cmd Clean c:\Windows\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe
+  failed with return code 100
 
-    warning CS1668
-    warning CS1668
+
+  returncode=100
+  cmd=Register.cmd Clean
+      c:\Windows\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe
+
