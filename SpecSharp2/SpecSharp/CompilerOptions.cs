@@ -116,7 +116,7 @@ namespace Microsoft.Cci.SpecSharp {
       }
       this.EmitManifest = source.EmitManifest;
       this.EncodeOutputInUTF8 = source.EncodeOutputInUTF8;
-      this.Evidence = source.Evidence;
+      //this.Evidence = source.Evidence;
       this.ExplicitOutputExtension = source.ExplicitOutputExtension;
       this.FileAlignment = source.FileAlignment;
       this.FullyQualifyPaths = source.FullyQualifyPaths;
