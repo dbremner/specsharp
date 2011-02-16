@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(true)]
 [assembly: AssemblyKeyFile("..\\..\\..\\Common\\FinalPublicKey.snk")]
 #else
-[assembly: AssemblyKeyFile("..\\..\\..\\Common\\InterimKey.snk")]
+//[assembly: AssemblyKeyFile("..\\..\\..\\Common\\InterimKey.snk")]
 #endif
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
 [assembly: ClassInterface(ClassInterfaceType.None)]
