@@ -17,5 +17,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(true)]
 [assembly: AssemblyKeyFile("..\\..\\..\\Common\\FinalPublicKey.snk")]
 #else
-[assembly: AssemblyKeyFile(@"..\..\..\..\Common\InterimKey.snk")]
+//[assembly: AssemblyKeyFile(@"..\..\..\..\Common\InterimKey.snk")]
 #endif
