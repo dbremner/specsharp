@@ -19,11 +19,19 @@ namespace Microsoft.VisualStudio.CodeTools
 
   // The main package class
   #region Attributes
+#if DEV10 
+  [Microsoft.VisualStudio.Shell.DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\10.0")
+  ,Microsoft.VisualStudio.Shell.ProvideLoadKey("Standard", "1.0", "Microsoft.VisualStudio.CodeTools.TaskManager", "Microsoft", 1)
+  ,Microsoft.VisualStudio.Shell.ProvideMenuResource(1000, 1)
+  ,Guid("DA85543E-97EC-4478-90EC-45CBCB4FA5C1")
+  ,ComVisible(true)]
+#else
   [Microsoft.VisualStudio.Shell.DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\9.0")
   ,Microsoft.VisualStudio.Shell.ProvideLoadKey("Standard", "1.0", "Microsoft.VisualStudio.CodeTools.TaskManager", "Microsoft", 1)
   ,Microsoft.VisualStudio.Shell.ProvideMenuResource(1000, 1)
   ,Guid("DA85543E-97EC-4478-90EC-45CBCB4FA5C1")
   ,ComVisible(true)]
+#endif  
   #endregion
   internal sealed class TaskManagerPackage : Microsoft.VisualStudio.Shell.Package
                                 , IVsSolutionEvents, IVsUpdateSolutionEvents
