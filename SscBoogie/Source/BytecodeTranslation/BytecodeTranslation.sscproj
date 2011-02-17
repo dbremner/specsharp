@@ -59,11 +59,6 @@
            />
       </Settings>
       <References>
-        <Reference Name="Mscorlib.Contracts"
-             AssemblyName="Mscorlib.Contracts"
-             Private="false"
-             HintPath="..\..\Binaries\Mscorlib.Contracts.dll"
-             />
         <Reference Name="Microsoft.SpecSharp"
              AssemblyName="Microsoft.SpecSharp"
              Private="false"
@@ -82,11 +77,6 @@
              AssemblyName="System.Compiler"
              Private="false"
              HintPath="..\..\Binaries\System.Compiler.dll"
-             />
-        <Reference Name="System.Compiler.Contracts"
-             AssemblyName="System.Compiler.Contracts"
-             Private="true"
-             HintPath="../../Binaries/System.Compiler.Contracts.dll"
              />
         <Reference Name="Basetypes"
              AssemblyName="Basetypes"

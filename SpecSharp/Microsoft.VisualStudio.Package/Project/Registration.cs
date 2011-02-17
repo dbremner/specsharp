@@ -118,8 +118,10 @@ namespace Microsoft.VisualStudio.Package{
       return this.GetCurrentVisualStudioVersion(null);
     }
     public virtual string GetCurrentVisualStudioVersion(string Experimental){
-#if ORCAS
-      return "9.0"+Experimental;
+#if DEV10
+      return "10.0"+Experimental;
+#elif ORCAS
+      return "9.0" + Experimental;
 #elif WHIDBEY
       return "8.0"+Experimental;
 #else
@@ -127,7 +129,12 @@ namespace Microsoft.VisualStudio.Package{
 #endif
     }
     public virtual string GetCurrentVisualStudioInstallDir(){
-#if ORCAS
+#if DEV10
+      using (RegistryKey keyVS = Microsoft.Win32.Registry.LocalMachine.OpenSubKey ("Software\\Microsoft\\VisualStudio\\10.0")){
+	      if (keyVS != null)
+          return keyVS.GetValue("InstallDir") as string;
+      }
+#elif ORCAS
       using (RegistryKey keyVS = Microsoft.Win32.Registry.LocalMachine.OpenSubKey ("Software\\Microsoft\\VisualStudio\\9.0")){
 	      if (keyVS != null)
           return keyVS.GetValue("InstallDir") as string;

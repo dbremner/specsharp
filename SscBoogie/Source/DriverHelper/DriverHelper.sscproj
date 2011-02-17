@@ -82,11 +82,6 @@
              Private="true"
              HintPath="../../Binaries/System.Compiler.Framework.dll"
              />
-        <Reference Name="System.Contracts"
-             AssemblyName="System.Contracts"
-             Private="true"
-             HintPath="../../Binaries/System.Contracts.dll"
-             />
         <Reference Name="Core"
              AssemblyName="Core"
              Private="true"
