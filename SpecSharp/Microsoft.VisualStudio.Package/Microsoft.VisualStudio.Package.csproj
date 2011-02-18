@@ -57,7 +57,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG;WHIDBEY;WHIDBEYwithGenerics;ORCAS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WHIDBEY;WHIDBEYwithGenerics;ORCAS;DEV10</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
@@ -78,7 +78,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>WHIDBEY;WHIDBEYwithGenerics;ORCAS</DefineConstants>
+    <DefineConstants>WHIDBEY;WHIDBEYwithGenerics;ORCAS;DEV10</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
