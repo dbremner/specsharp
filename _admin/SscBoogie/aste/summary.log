@@ -1,9 +1,9 @@
-# Aste started: 2011-02-18 10:02:00
+# Aste started: 2011-02-23 07:00:10
 # Host id: Boogiebox
-# [2011-02-18 10:04:18] SpecSharp revision: 62643
-# [2011-02-18 10:05:23] Boogie revision: 62632
-# [2011-02-18 10:05:57] SscBoogie revision: 62594
-[2011-02-18 10:08:26] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
+# [2011-02-23 07:03:00] SpecSharp revision: 62643
+# [2011-02-23 07:04:05] Boogie revision: 62817
+# [2011-02-23 07:04:36] SscBoogie revision: 62594
+[2011-02-23 07:07:08] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Build Debug
 
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(825,16): warning CS0659: 'Microsoft.Boogie.BasicType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(2804,16): warning CS0659: 'Microsoft.Boogie.CtorType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
@@ -17,10 +17,10 @@
     warning CS0162
     warning CS0162
     warning CS0162
-[2011-02-18 10:29:19] 4 out of 29 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
-['test15', 'lazyinline', 'stratifiedinline', 'extractloops']
-# [2011-02-18 10:31:09] Released nightly of Boogie
-[2011-02-18 10:32:32] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SscBoogie10.sln /Build Debug
+[2011-02-23 07:17:12] 26 out of 29 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+['sanity', 'test2', 'test7', 'test20', 'test21', 'aitest1', 'aitest9', 'lock', 'test13', 'inline', 'textbook', 'test15', 'bitvectors', 'smoke', 'test16', 'codeexpr', 'dafny0', 'dafny1', 'havoc0', 'VSI-Benchmarks', 'vacid0', 'livevars', 'lazyinline', 'stratifiedinline', 'extractloops', 'VSComp2010']
+# [2011-02-23 07:18:01] Released nightly of Boogie
+[2011-02-23 07:19:22] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SscBoogie10.sln /Build Debug
 
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(420,27): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(422,25): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
@@ -1472,5 +1472,6 @@
     warning CS2614
     warning CS2614
     warning CS2614
-[2011-02-18 11:28:49] 0 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
-# [2011-02-18 11:31:56] Released nightly of SscBoogie
+[2011-02-23 07:59:42] 23 out of 24 test(s) in D:\Temp\aste\SscBoogie\Test\alltests.txt failed
+['test3', 'test5', 'test6', 'test8', 'test9', 'test10', 'test11', 'aitest9', 'quanttest', 'framecond', 'objinv', 'Bag', 'chunker', 'bob', 'iterators', 'test12', 'test13', 'BoundedStack', 'textbook', 'WindowsCard', 'PrettySx', 'test16', 'test18']
+# [2011-02-23 08:02:42] Released nightly of SscBoogie
