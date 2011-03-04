@@ -1,12 +1,5 @@
-# Aste started: 2011-03-04 12:07:16
+# Aste started: 2011-03-04 15:27:50
 # Host id: Boogiebox
-# [2011-03-04 12:09:51] SpecSharp revision: 63083
-# [2011-03-04 12:10:44] Boogie revision: 63080
-# [2011-03-04 12:11:14] SscBoogie revision: 62594
-[2011-03-04 12:11:56] [Error] Error message:
-  RegisterCurrent.cmd failed with return code 1
-
-
-  returncode=1
-  cmd=RegisterCurrent.cmd
-
+# [2011-03-04 15:30:06] SpecSharp revision: 63083
+# [2011-03-04 15:31:02] Boogie revision: 63080
+# [2011-03-04 15:31:32] SscBoogie revision: 62594
