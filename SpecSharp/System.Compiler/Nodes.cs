@@ -1478,7 +1478,7 @@ namespace System.Compiler{
     NonNullableTypeExpression,
     NonNullTypeExpression,
     NullableTypeExpression,
-    NullCoalesingExpression,
+    NullCoalescingExpression,
     OutAddress,
     Parentheses,
     PointerTypeExpression,

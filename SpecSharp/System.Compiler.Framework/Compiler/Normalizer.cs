@@ -771,13 +771,17 @@ namespace System.Compiler{
             binaryExpression.Operand1 = new BinaryExpression(binaryExpression.Operand1, new Literal(binaryExpression.Operand1.Type), NodeType.Box);
           binaryExpression = new BinaryExpression(binaryExpression, new Literal(null, SystemTypes.Object), NodeType.Ne);
           goto case NodeType.Eq;
-        case NodeType.NullCoalesingExpression: {
+        case NodeType.NullCoalescingExpression: {
           Expression cachedOperand1 = binaryExpression.Operand1;
           if (cachedOperand1 == null || cachedOperand1.Type == null || binaryExpression.Operand2 == null) return null;
-          if (!(cachedOperand1 is Local || cachedOperand1 is Parameter))
-            cachedOperand1 = new Local(cachedOperand1.Type);
-          Local exprValue = new Local(binaryExpression.Type);
           StatementList statements = new StatementList();
+          if (!(cachedOperand1 is Local || cachedOperand1 is Parameter))
+          {
+              Expression cachedOperand1Temp = cachedOperand1;
+              cachedOperand1 = new Local(cachedOperand1.Type);
+              statements.Add(new AssignmentStatement(cachedOperand1, cachedOperand1Temp)); 
+          }
+          Local exprValue = new Local(binaryExpression.Type);
           Block pushValue = new Block();
           Block done = new Block();
           Expression operand1HasValue;

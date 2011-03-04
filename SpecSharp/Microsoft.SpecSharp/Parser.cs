@@ -7415,7 +7415,7 @@ namespace Microsoft.SpecSharp{
         case Token.MultiplyAssign:
         case Token.Multiply: return NodeType.Mul;
         case Token.NotEqual: return NodeType.Ne;
-        case Token.NullCoalescingOp: return NodeType.NullCoalesingExpression;
+        case Token.NullCoalescingOp: return NodeType.NullCoalescingExpression;
         case Token.Range: return NodeType.Range;
         case Token.RemainderAssign:
         case Token.Remainder: return NodeType.Rem;

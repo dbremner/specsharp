@@ -3269,7 +3269,7 @@ namespace System.Compiler{
         case NodeType.Refanyval:
           return SystemTypes.Object;
 
-        case NodeType.NullCoalesingExpression: {
+        case NodeType.NullCoalescingExpression: {
           t1 = TypeNode.StripModifier(binaryExpression.Operand1.Type, SystemTypes.NonNullType);
           t2 = TypeNode.StripModifier(binaryExpression.Operand2.Type, SystemTypes.NonNullType);
           TypeNode nonNullT1 = this.typeSystem.RemoveNullableWrapper(t1);
