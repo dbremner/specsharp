@@ -518,7 +518,7 @@ namespace System.Compiler{
         case NodeType.Ne : 
         case NodeType.Or : 
 #if !MinimalReader
-        case NodeType.NullCoalesingExpression:
+        case NodeType.NullCoalescingExpression:
         case NodeType.Range :
 #endif
         case NodeType.Refanyval :

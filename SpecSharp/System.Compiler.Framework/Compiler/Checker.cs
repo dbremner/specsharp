@@ -967,7 +967,7 @@ namespace System.Compiler {
           return this.CoerceOperandsForMul(binaryExpression, opnd1, opnd2, lit1, lit2, opnd1Type, opnd2Type);
         case NodeType.Ne:
           return this.CoerceOperandsForNe(binaryExpression, opnd1, opnd2, lit1, lit2, opnd1Type, opnd2Type);
-        case NodeType.NullCoalesingExpression:
+        case NodeType.NullCoalescingExpression:
           return this.CoerceOperandsForNullCoalescing(binaryExpression, opnd1, opnd2, lit1, lit2, opnd1Type, opnd2Type);
         case NodeType.Or:
           return this.CoerceOperandsForOr(binaryExpression, opnd1, opnd2, lit1, lit2, opnd1Type, opnd2Type);
@@ -1904,7 +1904,7 @@ namespace System.Compiler {
         case NodeType.LogicalOr: sym = "||"; break;
         case NodeType.Lt: sym = "<"; break;
         case NodeType.Maplet: sym = "~>"; break;
-        case NodeType.NullCoalesingExpression: sym = "??"; break;
+        case NodeType.NullCoalescingExpression: sym = "??"; break;
         case NodeType.Ne: sym = "!="; break;
         case NodeType.Or: sym = "|"; break;
         case NodeType.Shl: sym = "<<"; break;
