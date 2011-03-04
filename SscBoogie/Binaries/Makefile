@@ -1,6 +1,6 @@
 BOOGIEROOT=..\..\..\boogie
 BOOGIEBINDIR = Binaries
-REG_DIR=..\..\SpecSharp\Microsoft.SpecSharp\Registration
+REG_DIR=..\..\SpecSharp\Microsoft.SpecSharp\Registration\Binaries
 
 all: 
 	rem Binaries and other files that make up Boogie:
