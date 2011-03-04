@@ -91,6 +91,6 @@ for %%f in (
 )
 
 rem Finally, copy the Templates, which are needed to create new projects in VS 2008
-xcopy /I /S %COMPILER_DIR%\..\Templates %DEST_DIR%\Templates
+xcopy /I /S %COMPILER_DIR%\..\..\Templates %DEST_DIR%\Templates
 
 echo Done.  Now, manually put the contents of the %DEST_DIR% directory into SpecSharp.zip
