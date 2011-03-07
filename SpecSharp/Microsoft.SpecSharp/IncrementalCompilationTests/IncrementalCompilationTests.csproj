@@ -123,23 +123,20 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System.Compiler.Framework\System.Compiler.Framework.csproj">
-      <Name>System.Compiler.Framework9</Name>
       <Project>{5D3B8B5B-703E-4843-ABF3-A864F5B6ADA3}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>System.Compiler.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\System.Compiler.Runtime\System.Compiler.Runtime.csproj">
       <Project>{5BEE6906-9652-47B4-B617-368E9598B449}</Project>
-      <Name>System.Compiler.Runtime9</Name>
+      <Name>System.Compiler.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\System.Compiler\System.Compiler.csproj">
-      <Name>System.Compiler9</Name>
       <Project>{D7E16B38-3893-4EEF-847F-A3BE807E9546}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>System.Compiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.SpecSharp.csproj">
-      <Name>Microsoft.SpecSharp9</Name>
       <Project>{0B747571-5739-4A09-B368-2FF47C01A698}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>Microsoft.SpecSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Runtime\Microsoft.SpecSharp.Runtime.sscproj">
       <Project>{76439EA5-A08D-4B58-BF7B-BE6D68668885}</Project>

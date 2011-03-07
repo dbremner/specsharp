@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -135,7 +135,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ITaskManager\Microsoft.VisualStudio.CodeTools.ITaskManager.csproj">
       <Project>{770EFFDC-F67A-4838-A3EC-52C7363DAE00}</Project>
-      <Name>Microsoft.VisualStudio.CodeTools.ITaskManager9</Name>
+      <Name>Microsoft.VisualStudio.CodeTools.ITaskManager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

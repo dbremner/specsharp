@@ -278,13 +278,13 @@
     <Content Include="Diagrams\Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Compiler.Runtime\System.Compiler.Runtime.csproj">
-      <Project>{5BEE6906-9652-47B4-B617-368E9598B449}</Project>
-      <Name>System.Compiler.Runtime9</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\System.Compiler.Runtime\System.Compiler.Runtime.csproj">
+      <Project>{5BEE6906-9652-47B4-B617-368E9598B449}</Project>
+      <Name>System.Compiler.Runtime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
