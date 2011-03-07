@@ -57,14 +57,15 @@
              AssemblyName="System"
              Private="false"
              />
-        <Reference Name="mscorlib"
-             AssemblyName="mscorlib"
-             Private="false"
-             />
         <Reference Name="System.Compiler.Runtime"
              AssemblyName="System.Compiler.Runtime"
              Private="true"
              HintPath="..\..\..\System.Compiler.Runtime\bin\System.Compiler.Runtime.dll"
+             />
+        <Reference Name="mscorlib"
+             AssemblyName="mscorlib"
+             Private="false"
+             HintPath="../../../../../../Windows/Microsoft.NET/Framework/v2.0.50727/mscorlib.dll"
              />
       </References>
     </Build>

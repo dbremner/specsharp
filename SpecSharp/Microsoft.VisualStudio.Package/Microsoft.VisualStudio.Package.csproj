@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -251,7 +251,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.CodeTools\ITaskManager\Microsoft.VisualStudio.CodeTools.ITaskManager.csproj">
       <Project>{770EFFDC-F67A-4838-A3EC-52C7363DAE00}</Project>
-      <Name>Microsoft.VisualStudio.CodeTools.ITaskManager9</Name>
+      <Name>Microsoft.VisualStudio.CodeTools.ITaskManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Compiler.Framework\System.Compiler.Framework.csproj">
       <Project>{5D3B8B5B-703E-4843-ABF3-A864F5B6ADA3}</Project>

@@ -63,11 +63,6 @@
              Private="true"
              HintPath="..\..\..\System.Compiler.Framework\bin\System.Compiler.Framework.dll"
              />
-        <Reference Name="mscorlib"
-             AssemblyName="mscorlib"
-             Private="false"
-             HintPath="../../../WINDOWS/Microsoft.NET/Framework/v2.0.50727/mscorlib.dll"
-             />
         <Reference Name="System.Compiler.Runtime"
              AssemblyName="System.Compiler.Runtime"
              Private="true"
@@ -77,6 +72,11 @@
              AssemblyName="ParserHelper"
              Private="true"
              HintPath="../../../Binaries/ParserHelper.dll"
+             />
+        <Reference Name="mscorlib"
+             AssemblyName="mscorlib"
+             Private="false"
+             HintPath="../../../../../../Windows/Microsoft.NET/Framework/v2.0.50727/mscorlib.dll"
              />
       </References>
     </Build>

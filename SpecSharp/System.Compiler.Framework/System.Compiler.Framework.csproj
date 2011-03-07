@@ -99,6 +99,10 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\System.Compiler\System.Compiler.csproj">
+      <Project>{D7E16B38-3893-4EEF-847F-A3BE807E9546}</Project>
+      <Name>System.Compiler</Name>
+    </ProjectReference>
     <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Contracts.dll</HintPath>
@@ -121,13 +125,7 @@
     </Reference>
     <ProjectReference Include="..\System.Compiler.Runtime\System.Compiler.Runtime.csproj">
       <Project>{5BEE6906-9652-47B4-B617-368E9598B449}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-      <Name>System.Compiler.Runtime9</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\System.Compiler\System.Compiler.csproj">
-      <Project>{D7E16B38-3893-4EEF-847F-A3BE807E9546}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-      <Name>System.Compiler9</Name>
+      <Name>System.Compiler.Runtime</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
