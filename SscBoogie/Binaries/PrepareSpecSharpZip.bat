@@ -46,9 +46,9 @@ for %%f in (
 )
 REM ...and copy these to a different name --------------------
 for %%f in (
-  ExportClean.cmd ExportRegister.cmd
+  Clean.cmd Register.cmd
 ) do (
-  copy %COMPILER_DIR%\%%f %DEST_BIN_DIR%\%%f
+  copy %COMPILER_DIR%\Export%%f %DEST_BIN_DIR%\%%f
 )
 REM ...and copy the 1033 directory and its contents --------------------
 for %%f in (
