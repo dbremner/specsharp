@@ -7,3 +7,4 @@ set CONFIG=%1
 )
 
 nmake /f makefile8 Build=%CONFIG%
+xcopy /I /S ..\Templates Templates

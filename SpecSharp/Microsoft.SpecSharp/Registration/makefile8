@@ -23,6 +23,7 @@ all: Binaries\IPropertyPane.dll \
   Binaries\TaskManager.dll \
   Binaries\1033\TaskManagerUI.dll \
   Binaries\ssc.exe \
+  Binaries\Microsoft.SpecSharp.targets
 
 PermissionsChecked: Binaries\IPropertyPane.dll.temp \
   Binaries\ContractsPropertyPane.dll.temp \
@@ -49,7 +50,6 @@ PermissionsChecked: Binaries\IPropertyPane.dll.temp \
   Binaries\TaskManager.dll.temp \
   Binaries\1033\TaskManagerUI.dll.temp \
   Binaries\ssc.exe.temp \
-
 
 
 Binaries\ContractsPropertyPane.dll.temp: ..\..\Microsoft.VisualStudio.CodeTools\ContractsPropertyPane\bin\$(BUILD)\ContractsPropertyPane.dll
@@ -135,6 +135,9 @@ Binaries\ssc.exe.temp: ..\CommandLineCompiler\bin\ssc.exe
 
 
 
+
+Binaries\Microsoft.SpecSharp.targets: ..\Microsoft.SpecSharp.targets
+  copy /y /v ..\Microsoft.SpecSharp.targets Binaries\Microsoft.SpecSharp.targets
 
 
 
