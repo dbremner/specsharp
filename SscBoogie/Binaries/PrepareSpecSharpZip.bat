@@ -42,13 +42,13 @@ for %%f in (
   TaskManager.dll TaskManager.pdb
   ssc.exe ssc.pdb
 ) do (
-  copy %COMPILER_DIR%\%%f %DEST_BIN_DIR%
+  copy %COMPILER_DIR%\Binaries\%%f %DEST_BIN_DIR%
 )
 REM ...and copy these to a different name --------------------
 for %%f in (
-  Clean.cmd Register.cmd
+  ExportClean.cmd ExportRegister.cmd
 ) do (
-  copy %COMPILER_DIR%\Export%%f %DEST_BIN_DIR%\%%f
+  copy %COMPILER_DIR%\%%f %DEST_BIN_DIR%\%%f
 )
 REM ...and copy the 1033 directory and its contents --------------------
 for %%f in (
@@ -56,7 +56,7 @@ for %%f in (
   PropertyPageUI.dll
   TaskManagerUI.dll
 ) do (
-  copy %COMPILER_DIR%\1033\%%f %DEST_BIN_DIR%\1033
+  copy %COMPILER_DIR%\Binaries\1033\%%f %DEST_BIN_DIR%\1033
 )
 
 rem Copy SscBoogie ---------------------------------------
@@ -91,6 +91,6 @@ for %%f in (
 )
 
 rem Finally, copy the Templates, which are needed to create new projects in VS 2008
-xcopy /I /S %COMPILER_DIR%\..\..\Templates %DEST_DIR%\Templates
+xcopy /I /S %COMPILER_DIR%\..\Templates %DEST_DIR%\Templates
 
 echo Done.  Now, manually put the contents of the %DEST_DIR% directory into SpecSharp.zip
