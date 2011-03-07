@@ -1,49 +1,49 @@
 BOOGIEROOT=..\..\..\boogie
-BOOGIEBINDIR = Binaries
+BOOGIEBINDIR=Binaries
 REG_DIR=..\..\SpecSharp\Microsoft.SpecSharp\Registration\Binaries
 
-all: 
-	rem Binaries and other files that make up Boogie:
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ParserHelper.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ParserHelper.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\TypedUnivBackPred2.sx"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\UnivBackPred2.sx"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\UnivBackPred2.smt"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.Core.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.PowerPack.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.Contracts.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\CodeContractsExtender.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\CodeContractsExtender.pdb"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Model.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Model.pdb"
+all:
+# rem Binaries and other files that make up Boogie:
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AbsInt.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\AIFramework.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Basetypes.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Core.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ParserHelper.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ParserHelper.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Graph.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Simplify.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.SMTLib.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Provers.Z3.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCExpr.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\VCGeneration.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\TypedUnivBackPred2.sx"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\UnivBackPred2.sx"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\UnivBackPred2.smt"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.Core.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\FSharp.PowerPack.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.Contracts.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\CodeContractsExtender.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\CodeContractsExtender.pdb"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Model.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Model.pdb"
 	rem Things needed to build and run SscBoogie:
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ssc.exe"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Contracts.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Framework.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Contracts.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Mscorlib.Contracts.dll"
-	rem copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.SpecSharp.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\ssc.exe"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Contracts.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Compiler.Framework.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\System.Contracts.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Mscorlib.Contracts.dll"
+# copy /y "$(BOOGIEROOT)\$(BOOGIEBINDIR)\Microsoft.SpecSharp.dll"
 	copy /y "$(REG_DIR)\ssc.exe"
 	copy /y "$(REG_DIR)\System.Compiler.dll"
 	copy /y "$(REG_DIR)\System.Compiler.Contracts.dll"
@@ -52,7 +52,7 @@ all:
 	copy /y "$(REG_DIR)\Mscorlib.Contracts.dll"
 	copy /y "$(REG_DIR)\Microsoft.SpecSharp.dll"
 
-register: 
+register:
 	rem Things previously copied here from Boogie:
 	copy /y AbsInt.dll "$(REG_DIR)"
 	copy /y AbsInt.pdb "$(REG_DIR)"
@@ -84,6 +84,8 @@ register:
 	copy /y Microsoft.Contracts.dll "$(REG_DIR)"
 	copy /y CodeContractsExtender.dll "$(REG_DIR)"
 	copy /y CodeContractsExtender.pdb "$(REG_DIR)"
+	copy /y Model.dll "$(REG_DIR)"
+	copy /y Model.pdb "$(REG_DIR)"
 	rem New things built here:
 	copy /y Prelude.dll "$(REG_DIR)"
 	copy /y Prelude.pdb "$(REG_DIR)"
@@ -96,4 +98,4 @@ register:
 	copy /y PRELUDE.bpl "$(REG_DIR)"
 
 zip:
-  .\PrepareSpecSharpZip.bat
+	.\PrepareSpecSharpZip.bat

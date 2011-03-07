@@ -53,8 +53,8 @@ for %%f in (
 REM ...and copy the 1033 directory and its contents --------------------
 for %%f in (
   Microsoft.SpecSharp.resources.dll
-  PropertyPageUI.dll
-  TaskManagerUI.dll
+  PropertyPageUI.dll PropertyPageUI.pdb
+  TaskManagerUI.dll TaskManagerUI.pdb
 ) do (
   copy %COMPILER_DIR%\Binaries\1033\%%f %DEST_BIN_DIR%\1033
 )
@@ -65,8 +65,11 @@ for %%f in (
   AbsInt.dll AbsInt.pdb
   AIFramework.dll AIFramework.pdb
   Basetypes.dll Basetypes.pdb
+  CodeContractsExtender.dll CodeContractsExtender.pdb
   Core.dll Core.pdb
   Graph.dll Graph.pdb
+  Model.dll Model.pdb
+  ParserHelper.dll ParserHelper.pdb
   Provers.Simplify.dll Provers.Simplify.pdb
   Provers.SMTLib.dll Provers.SMTLib.pdb
   Provers.Z3.dll Provers.Z3.pdb
@@ -74,6 +77,7 @@ for %%f in (
   VCGeneration.dll VCGeneration.pdb
   TypedUnivBackPred2.sx UnivBackPred2.sx UnivBackPred2.smt
   FSharp.Core.dll
+  FSharp.PowerPack.dll
   Microsoft.Contracts.dll
 ) do (
   copy %SSCBOOGIE_DIR%\%%f %DEST_BIN_DIR%
@@ -91,6 +95,6 @@ for %%f in (
 )
 
 rem Finally, copy the Templates, which are needed to create new projects in VS 2008
-xcopy /I /S %COMPILER_DIR%\..\Templates %DEST_DIR%\Templates
+xcopy /Y /I /S %COMPILER_DIR%\Templates %DEST_DIR%\Templates
 
 echo Done.  Now, manually put the contents of the %DEST_DIR% directory into SpecSharp.zip
