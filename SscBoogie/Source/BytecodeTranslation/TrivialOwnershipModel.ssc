@@ -155,31 +155,5 @@ namespace Microsoft.Boogie
     override public void SetOwner (Bpl.Expr! target, Bpl.Expr! owner, Bpl.Expr! frame, Bpl.CmdSeq! blockCmds) {
     }
     
-    
-    
-    //*****************************************************
-    // Sharing:
-    //*****************************************************
-    
-    override internal Bpl.Expr! IsUnshared (Bpl.Expr! targetObject)
-    {
-      return Bpl.Expr.True;
-    }
-
-    override internal Bpl.Expr! IsLockProtected (Bpl.Expr! targetObject)
-    {
-      return Bpl.Expr.True;
-    }
-
-    override public Bpl.Expr! SameSharingMode (Bpl.Variable! target) {
-      return Bpl.Expr.True;
-    }
-    
-    override public void Share (Bpl.Expr! target, Bpl.CmdSeq! blockCmds) {
-    }
-    
-    override public Bpl.Trigger SharingTrigger (Bpl.Variable! target) {
-      return null;
-    }
   }
 }

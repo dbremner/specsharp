@@ -160,21 +160,6 @@ namespace Microsoft.Boogie
       
     abstract public void SetOwner (Bpl.Expr! target, Bpl.Expr! owner, Bpl.Expr! frame, Bpl.CmdSeq! blockCmds) ;
     
-    
-    
-    // Sharing:
-    
-    abstract public Bpl.Expr! SameSharingMode (Bpl.Variable! target);
-    
-    abstract public void Share (Bpl.Expr! target, Bpl.CmdSeq! blockCmds);
-    
-    abstract public Bpl.Trigger SharingTrigger (Bpl.Variable! target);
-    
-    abstract internal Bpl.Expr! IsUnshared (Bpl.Expr! targetObject);
-    
-    abstract internal Bpl.Expr! IsLockProtected (Bpl.Expr! targetObject);
-    
-    
   }
 
 }

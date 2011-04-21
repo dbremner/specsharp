@@ -464,12 +464,6 @@ namespace Microsoft.Boogie
               ensNode.ErrorData = String.Format("Constructor {0} might change the owner of the receiver object ('this'), which by default is not allowed", methodSignatureFullName);
               oEnsures.Add(ensNode);
             }
-          
-            if (method.DeclaringType is Cci.Class) {
-              Bpl.Ensures ensNode = new Bpl.Ensures(lite, om.IsUnshared(th));
-              ensNode.ErrorData = String.Format("The constructor {0} should leave the receiver object in an unshared state", methodSignatureFullName);
-              oEnsures.Add(ensNode);
-            }
           }
           else if (method.IsVirtual && !method.IsFinal)
           {
@@ -503,7 +497,6 @@ namespace Microsoft.Boogie
             bool isNonNull;
             if (Sink.IsReferenceType(type, out isNonNull))
             {
-              bool isLockProtected = parameter.GetAttribute(Cci.SystemTypes.LockProtectedAttribute) != null;
               // let's find out whether this parameter's type is a type variable
               int pos = -2;
               if (type.IsTemplateParameter) {                
@@ -525,20 +518,9 @@ namespace Microsoft.Boogie
               
               if (Sink.IsInParameter(parameter))
               {
-                Bpl.Expr! preValue = Sink.IdentWithClean((Variable!) preStateParamMap[parameter]);
-                if (isLockProtected) {
-                  Bpl.Expr! preCondition = om.IsLockProtected(preValue);
-                  if (!isNonNull)
-                  {
-                    preCondition = Bpl.Expr.Or(Bpl.Expr.Eq(preValue, sink.Null), preCondition);
-                  }
-                  Bpl.Requires! reqNode = new Bpl.Requires(lite, preCondition);
-                  reqNode.ErrorData = string.Format("Call of '{0}': the object passed as the value of parameter '{1}' must be lock-protected", sink.errorHandler.GetMethodSignature(method, false, true), parameter.Name.Name);
-                  oRequires.Add(reqNode);
-                } else {                  
-                  pc.ParameterContribution(parameter.Name.Name, preValue, type, thisin == null ? null : Sink.IdentWithClean(thisin), true, false,
-                    /*noDefault*/false, Sink.IsAdditive(parameter), Sink.IsInside(parameter), parameter.IsUniversallyDelayed, pos, (this.method.DeclaringType is Cci.Struct));
-                }
+                Bpl.Expr! preValue = Sink.IdentWithClean((Variable!) preStateParamMap[parameter]);              
+                pc.ParameterContribution(parameter.Name.Name, preValue, type, thisin == null ? null : Sink.IdentWithClean(thisin), true, false,
+                  /*noDefault*/false, Sink.IsAdditive(parameter), Sink.IsInside(parameter), parameter.IsUniversallyDelayed, pos, (this.method.DeclaringType is Cci.Struct));
 
                 // For pure methods, indicate the pure reference arguments with a free precondition:  $AsPureObject(this)==this.
                 // This condition is used as a trigger in the FirstConsistentOwner axioms.
@@ -1481,32 +1463,8 @@ namespace Microsoft.Boogie
       }
 
       this.Ensures.Add(new Ensures(true, GenerateAllocationAndOwnershipStable(new OldExpr(Bpl.Token.NoToken, sink.HeapExpr()))));
-
-      if (CommandLineOptions.Clo.MethodologySelection == CommandLineOptions.Methodology.Boogie) {
-        AddSharingModeFrameCondition(isConstructor);
-      }
     }
     
-    void AddSharingModeFrameCondition(bool isConstructor)
-    {
-      // For now, we emit the following unsound frame condition
-      //   (forall $o: ref :: old($Heap[$o, $sharingMode]) == $Heap[$o, $sharingMode])
-      // or for constructors:
-      //   (forall $o: ref :: $o == this || old($Heap[$o, $sharingMode]) == $Heap[$o, $sharingMode])
-      // It says that no method ever changes the sharing mode of an object that the caller knows about.
-      // Eventually, we should make this sound by emitting a frame condition that says "unless the method
-      // requires that $o is unshared, the method does not change the sharing mode of $o". This is sound,
-      // since the only way that the method can change the sharing mode is by performing a "share" operation,
-      // and the share operation requires that the object is unshared.
-      Bpl.Variable! o = new Bpl.BoundVariable(Bpl.Token.NoToken, new Bpl.TypedIdent(Bpl.Token.NoToken, "$o", sink.RefType));
-      Bpl.Expr! body = om.SameSharingMode(o);
-      if (isConstructor) {
-        body = Bpl.Expr.Or(Bpl.Expr.Eq(Bpl.Expr.Ident(o), Bpl.Expr.Ident("this", sink.RefType)), body);
-      }
-      Bpl.Trigger tr = om.SharingTrigger(o);
-      this.Ensures.Add(
-        new Ensures(true, new Bpl.ForallExpr(Bpl.Token.NoToken, new Bpl.VariableSeq(o), tr, body)));
-    }
     
     internal Bpl.Expr! GenerateAllocationAndOwnershipStable(Bpl.Expr! prevHeap)
     {
