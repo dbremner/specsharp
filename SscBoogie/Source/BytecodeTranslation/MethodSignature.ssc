@@ -464,6 +464,14 @@ namespace Microsoft.Boogie
               ensNode.ErrorData = String.Format("Constructor {0} might change the owner of the receiver object ('this'), which by default is not allowed", methodSignatureFullName);
               oEnsures.Add(ensNode);
             }
+			
+            if (method.DeclaringType is Cci.ArrayType) {
+              // We encountered an multi-dimentional array constructor.
+              for (int i = 1; i < InParameters.Length; i++) {
+                // free ensures param<i>$in == $DimLength(this, <i> - 1);
+                oEnsures.Add(new Bpl.Ensures(true, Bpl.Expr.Eq(Sink.Ident((!)InParameters[i]), sink.Function(Sink.BuiltinFunction.DimLength, Sink.Ident((!)InParameters[0]), Bpl.Expr.Literal(i - 1)))));
+              }
+            }
           }
           else if (method.IsVirtual && !method.IsFinal)
           {
