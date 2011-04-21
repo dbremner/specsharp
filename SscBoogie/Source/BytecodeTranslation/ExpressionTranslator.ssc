@@ -821,11 +821,6 @@ namespace Microsoft.Boogie
 
             return Bpl.Expr.And(unowned, peersAreFresh);
           }
-          case "IsLockProtected":
-          {
-            Bpl.Expr! targetObject = TranslateExpression((!) operands[0], heapName);
-            return om.IsLockProtected(targetObject);
-          }
         }
       }
       switch (calleeName) {

@@ -94,8 +94,6 @@ namespace Microsoft.Boogie
     public const string! ValidFor                = "$validfor";
     public const string! FirstConsistentOwner    = "$FirstConsistentOwner";
     public const string! AsPureObject            = "$AsPureObject";
-    public const string! SharingModeUnsharedName = "$SharingMode_Unshared";
-    public const string! SharingModeLockProtectedName = "$SharingMode_LockProtected";
     public const string! ExposeVersionFieldName  = "$exposeVersion";
     public const string! DeclType                = "DeclType";  // the class that declares a field
     public const string! AsNonNullRefField       = "AsNonNullRefField";  // used to explain the type of a field, if that type is a non-null reference type

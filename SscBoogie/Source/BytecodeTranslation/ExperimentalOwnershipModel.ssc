@@ -538,44 +538,6 @@ namespace Microsoft.Boogie
       blockCmds.Add(c);
     }
     
-    
-    
-    //*****************************************************
-    // Sharing:
-    //*****************************************************
-    
-    override internal Bpl.Expr! IsUnshared (Bpl.Expr! targetObject)
-    {
-      return Bpl.Expr.Eq(Bpl.Expr.Select(sink.HeapExpr(), targetObject, sink.SharingModeField()), Bpl.Expr.Ident(Prelude.SharingModeUnsharedName, sink.SharingMode));
-    }
-
-    override internal Bpl.Expr! IsLockProtected (Bpl.Expr! targetObject)
-    {
-      return Bpl.Expr.Eq(Bpl.Expr.Select(sink.HeapExpr(), targetObject, sink.SharingModeField()), Bpl.Expr.Ident(Prelude.SharingModeLockProtectedName, sink.SharingMode));
-    }
-
-    override public Bpl.Expr! SameSharingMode (Bpl.Variable! target) {
-      Bpl.Expr oldSharing = new OldExpr(Bpl.Token.NoToken,
-              Bpl.Expr.Select(
-                sink.HeapExpr(), Bpl.Expr.Ident(target), sink.SharingModeField()));
-      Bpl.Expr newSharing = Bpl.Expr.Select(
-            sink.HeapExpr(), Bpl.Expr.Ident(target), sink.SharingModeField());
-      return Bpl.Expr.Eq(oldSharing, newSharing);
-    }
-    
-    override public void Share (Bpl.Expr! target, Bpl.CmdSeq! blockCmds) {
-      blockCmds.Add(Cmd.MapAssign(Bpl.Token.NoToken, sink.HeapExpr(), 
-        target, sink.SharingModeField(), 
-        Bpl.Expr.Ident(Prelude.SharingModeLockProtectedName, sink.SharingMode)));
-    }
-    
-    override public Bpl.Trigger SharingTrigger (Bpl.Variable! target) {
-      Bpl.Expr newSharing = Bpl.Expr.Select(
-            sink.HeapExpr(), Bpl.Expr.Ident(target), sink.SharingModeField());
-      return new Bpl.Trigger(NoToken, true, new ExprSeq(newSharing));
-    }
-    
-    
   }
   
 }

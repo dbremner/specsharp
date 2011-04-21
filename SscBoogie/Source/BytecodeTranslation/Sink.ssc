@@ -124,9 +124,6 @@ namespace Microsoft.Boogie
       ExposeVersionType = PreludeType("exposeVersionType", standardRC);
       NondetType = PreludeType("NondetType", standardRC);
       ActivityType = PreludeType("ActivityType", standardRC);
-      if (CommandLineOptions.Clo.MethodologySelection != CommandLineOptions.Methodology.VisibleState) {
-        sharingMode = PreludeType("SharingMode", standardRC);
-      }
       HeapType = PreludeType("HeapType", standardRC);
 
       FieldTypeDecl = (!)standardRC.LookUpType("Field");
@@ -157,12 +154,6 @@ namespace Microsoft.Boogie
     internal readonly Bpl.Type! ExposeVersionType;
     internal readonly Bpl.Type! NondetType;
     internal readonly Bpl.Type! ActivityType;
-    private readonly Bpl.Type sharingMode;
-    internal Bpl.Type! SharingMode {
-      get {
-        assume sharingMode != null;  // this method should be called only if CommandLineOptions.Clo.MethodologySelection != CommandLineOptions.Methodology.VisibleState
-        return sharingMode;
-    } }
     internal readonly Bpl.Type! HeapType;
 
     internal Bpl.IdentifierExpr! HeapExpr (string! heapName) {
@@ -182,10 +173,6 @@ namespace Microsoft.Boogie
     internal Bpl.Expr! ExposeVersion (Bpl.Expr! target, Bpl.Expr! heap)
     {
       return Bpl.Expr.Select(heap, target, Fields.ExposeVersion);
-    }
-    internal Bpl.Expr! SharingModeField()
-    {
-      return Bpl.Expr.Ident("$sharingMode", FieldType(SharingMode));
     }
     /// <summary>
     /// Returns an expression corresponding to a zero-equivalent value for the given BoogiePL type.
