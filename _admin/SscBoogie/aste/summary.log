@@ -1,9 +1,9 @@
-# Aste started: 2011-04-22 07:00:19
+# Aste started: 2011-04-23 07:00:23
 # Host id: Boogiebox
-# [2011-04-22 07:02:50] SpecSharp revision: d69c464bd675
-# [2011-04-22 07:02:50] SscBoogie revision: d69c464bd675
-# [2011-04-22 07:04:05] Boogie revision: 5b6e22a85cf3
-[2011-04-22 07:06:48] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Rebuild Checked
+# [2011-04-23 07:03:02] SpecSharp revision: d2584fb425f5
+# [2011-04-23 07:03:02] SscBoogie revision: d2584fb425f5
+# [2011-04-23 07:04:17] Boogie revision: e2d86f3bdf77
+[2011-04-23 07:07:06] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Rebuild Checked
 
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(823,16): warning CS0659: 'Microsoft.Boogie.BasicType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(2802,16): warning CS0659: 'Microsoft.Boogie.CtorType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
@@ -31,10 +31,10 @@
     warning CS0162: Unreachable code detected
     warning CS0162: Unreachable code detected
     warning CC1032: Method 'VC.StratifiedVCGen+NormalChecker.CheckVC' overrides 'VC.StratifiedVCGen+StratifiedCheckerInterface.CheckVC', thus cannot add Requires.
-[2011-04-22 07:48:31] 1 out of 30 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
-['lazyinline']
-# [2011-04-22 07:49:33] Released nightly of Boogie
-[2011-04-22 07:50:34] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SscBoogie10.sln /Rebuild Debug
+[2011-04-23 07:17:49] 25 out of 30 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+['sanity', 'test0', 'test1', 'test2', 'test20', 'test21', 'aitest9', 'lock', 'test13', 'inline', 'textbook', 'test15', 'bitvectors', 'smoke', 'test16', 'codeexpr', 'dafny0', 'dafny1', 'VSI-Benchmarks', 'vacid0', 'livevars', 'lazyinline', 'stratifiedinline', 'extractloops', 'VSComp2010']
+# [2011-04-23 07:18:50] Released nightly of Boogie
+[2011-04-23 07:19:58] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SscBoogie10.sln /Rebuild Debug
 
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(420,27): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(422,25): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
@@ -1454,5 +1454,5 @@
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
-[2011-04-22 08:41:12] 0 out of 24 test(s) in D:\Temp\aste\SpecSharp\SscBoogie\Test\alltests.txt failed
-# [2011-04-22 08:44:24] Released nightly of SscBoogie
+[2011-04-23 08:10:16] 0 out of 24 test(s) in D:\Temp\aste\SpecSharp\SscBoogie\Test\alltests.txt failed
+# [2011-04-23 08:12:57] Released nightly of SscBoogie
