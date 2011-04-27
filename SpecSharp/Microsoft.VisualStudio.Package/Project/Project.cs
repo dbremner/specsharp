@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.Package{
       this.filename = filename;
       this.fNewProject = false;
       // based on the passed in flags, this either reloads/loads a project, or tries to create a new one
-      if (flags == (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE){
+      if ((flags & (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE) != 0){
         this.projFile = new XmlDocument();
         this.projFile.Load(this.filename);
         // now we create a new project... we do that by loading the template and then saving under a new name
@@ -182,8 +182,9 @@ namespace Microsoft.VisualStudio.Package{
         }
 
         IPersistFileFormat x = this;
- 
+        Directory.CreateDirectory(location);
         x.Save(Path.Combine(location, name + ext), 1, 0);
+
         // now we do have the project file saved. we need to create embedded files now. 
         foreach (XmlElement e in this.projFile.SelectNodes("//Files/Include/File")){
           string strRelFilePath = e.GetAttribute("RelPath");
@@ -208,7 +209,7 @@ namespace Microsoft.VisualStudio.Package{
       // which we delay until setsite happened
       // MB - 01/20/05 - It looks ot me as if setsite happens before this is ever reached
       // and that it is never reached again. So open the file right here.
-      if (flags == (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE){
+      if ((flags & (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE) != 0) {
         this.fNewProject = true; // MB - 01/20/05 - kind of pointless now that we open the file right here.
         HierarchyNode child = this.FirstChild; // that should be the reference folder....
         // find the first child that is a file that doesn't have the name "AssemblyInfo.ssc". This should be
