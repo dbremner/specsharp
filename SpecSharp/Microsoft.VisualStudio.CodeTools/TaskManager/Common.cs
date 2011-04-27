@@ -61,7 +61,7 @@ using System.Diagnostics;
 #if DEV10
       return @"Software\Microsoft\VisualStudio\10.0"; // Guess on failure
 #else
-      return @"Software\Microsoft\VisualStudio\10.0"; // Guess on failure
+      return @"Software\Microsoft\VisualStudio\9.0"; // Guess on failure
 #endif
     }
 
