@@ -93,12 +93,6 @@ const unique $exposeVersion : Field exposeVersionType;
 axiom DeclType($exposeVersion) == System.Object;
 
 #if !TrivialObjectModel
-// the $sharingMode field indicates the object's sharing mode, which is either $SharingMode_Unshared or $SharingMode_LockProtected
-type SharingMode;
-const unique $sharingMode : Field SharingMode;
-const unique $SharingMode_Unshared : SharingMode;
-const unique $SharingMode_LockProtected : SharingMode;
-
 // a reference to the object ($ownerRef, $ownerFrame)
 const unique $ownerRef : Field ref;
 const unique $ownerFrame : Field TName;
