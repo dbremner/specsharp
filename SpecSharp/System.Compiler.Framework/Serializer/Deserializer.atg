@@ -5,7 +5,7 @@
 // History:
 //
 // Initial version by mbarnett
-// 
+//
 //
 // Notes:
 //
@@ -25,8 +25,8 @@ using System.Text;
 /* Need to use this form of the conditional compiliation commands because
  * Coco's grammar is limited. TODO: Fix Coco's grammar.
  */
-using 
-Cci = 
+using
+Cci =
 #if CciNamespace
 Microsoft.Cci
 #else
@@ -34,7 +34,7 @@ System.Compiler
 #endif
 ;
 
-using 
+using
 #if CciNamespace
 Microsoft.Cci
 #else
@@ -48,7 +48,7 @@ using System.Diagnostics;
 COMPILER Omni
 
 
-public class ContractDeserializer : IContractDeserializer 
+public class ContractDeserializer : IContractDeserializer
 {
   private Module assembly;
   private ErrorNodeList errorList;
@@ -62,8 +62,8 @@ public class ContractDeserializer : IContractDeserializer
   {
     this.CurrentAssembly = assembly;
   }
-  
-  public Module CurrentAssembly 
+
+  public Module CurrentAssembly
   {
     get { return this.assembly; }
     set { this.assembly = value; }
@@ -180,14 +180,14 @@ private static TypeNode LookupMethodTypeParameter (string s)
   throw new ApplicationException();
 }
 
-private static Module LookupAssembly (string s) 
+private static Module LookupAssembly (string s)
 {
   Debug.Assert(currentAssembly != null);
   if (s == null)
   {
     return currentAssembly;
   }
-  
+
   for (int i=0; i<currentAssembly.AssemblyReferences.Count; i++)
   {
     AssemblyReference aref = currentAssembly.AssemblyReferences[i];
@@ -196,10 +196,10 @@ private static Module LookupAssembly (string s)
       return aref.Assembly;
     }
   }
-    
+
   return null;
 }
- 
+
 internal static int ParseContract (Module assem, string text, out Expression expression)
 {
   Debug.Assert(assem != null);
@@ -270,17 +270,17 @@ Omni 		(. Expression e; .)
 = Expr<out e >
 .
 
-/*------------------------------------------------------------------------*/  
+/*------------------------------------------------------------------------*/
 
 PType<out TypeNode c>
                    (. c = null; TypeNode modifier=null, modified=null; .)
-=   
+=
    (
      "object"      (. c = SystemTypes.Object; .)
    | "string"      (. c = SystemTypes.String; .)
    | "char"        (. c = SystemTypes.Char; .)
    | "void"        (. c = SystemTypes.Void; .)
-   | "bool"        (. c = SystemTypes.Boolean; .)  
+   | "bool"        (. c = SystemTypes.Boolean; .)
    | "i8"          (. c = SystemTypes.Int8; .)
    | "i16"         (. c = SystemTypes.Int16; .)
    | "i32"         (. c = SystemTypes.Int32; .)
@@ -293,12 +293,12 @@ PType<out TypeNode c>
    | "double"      (. c = SystemTypes.Double; .)
    | "optional" "(" PType<out modifier> "," PType<out modified> ")"
                    (. c = OptionalModifier.For(modifier,modified); .)
-   | "$typeParam" "(" 
+   | "$typeParam" "("
                    (. string id; .) Ident<out id> ")" (. c = LookupTypeParameter(id); .)
-   | "$methodTypeParam" "(" 
+   | "$methodTypeParam" "("
                    (. string id; .) Ident<out id> ")" (. c = LookupMethodTypeParameter(id); .)
    | PTypeRef<out c>
-   ) 
+   )
    [
     (
       "&"          (. c = c.GetReferenceType(); .)
@@ -320,12 +320,12 @@ PTypeRef<out TypeNode tn>
                    .)
 =
   [ Assembly<out assem> ]
-  QualName<out ns, out tname> 
+  QualName<out ns, out tname>
   NestedTypeName<out typeNames, out nestedname>
   [
     "<"  (. TypeNode arg; .)
     PType<out arg>  (. templateArgs = new TypeNodeList(); templateArgs.Add(arg); .)
-    { 
+    {
       ","
       PType<out arg>  (. templateArgs.Add(arg); .)
     }
@@ -350,7 +350,7 @@ PTypeRef<out TypeNode tn>
                         pseudoGenericName += ">";
                         tname = pseudoGenericName;
                       }
-#endif                      
+#endif
                       tn = assem.GetType(Identifier.For(ns),Identifier.For(tname));
                       if (tn == null) {
                         this.errors.SemErr(t.filename, t.line, t.col,
@@ -372,7 +372,7 @@ PTypeRef<out TypeNode tn>
                       {
                         tn = tn.GetTemplateInstance(assem, null, null, templateArgs);
                       }
-#endif                      
+#endif
                    .)
 .
 
@@ -386,7 +386,7 @@ QualName<out string bname, out string name >
                    (. string tmp; bname = ""; name = ""; .)
 =                  (. string identName; .)
   Ident<out identName>
-                   (. tmp = identName; .)                   
+                   (. tmp = identName; .)
   {
     "." Ident<out identName>
                    (. if (bname.Length > 0){
@@ -409,7 +409,7 @@ Ident<out string name>
   }
   |
   "$weirdIdent" string (. name = t.val.Substring(1, t.val.Length - 2); .)
-  
+
   )
 .
 
@@ -425,8 +425,8 @@ NestedTypeName<out ArrayList/*<string>*/ nestedPath, out string tname>
 
 DottedName<out string name>
                    (. name = ""; .)
-=                  (. string x; .) 
-  Ident<out x>     (. name = x; .)                   
+=                  (. string x; .)
+  Ident<out x>     (. name = x; .)
   {
     "." Ident<out x>
                    (. name += x; .)
@@ -439,10 +439,10 @@ FullName<out string full>
                    (. if ( full != "" ) full+="."+name; else full = name;  .)
 .
 
-/*------------------------------------------------------------------------*/  
+/*------------------------------------------------------------------------*/
 
 
-Expr <out Expression e>	
+Expr <out Expression e>
 = Term<out e>
                    (.
                      if (e == null){
@@ -451,13 +451,13 @@ Expr <out Expression e>
                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
                      }
                    .)
-. 
+.
 
 Term<out Expression e>
                    (. TypeNode typ; .)
 = Factor<null, out e>
   {(
-    "@"             
+    "@"
     Factor<e, out e>
    |
     "["                     (. ExpressionList es = new ExpressionList(); Expression a; .)
@@ -471,12 +471,12 @@ Term<out Expression e>
                                  e = new AddressDereference(new BinaryExpression(e, es[0], NodeType.Add, e.Type), typ);
                                }
                                else {
-                                 e = idx; 
-                               } 
+                                 e = idx;
+                               }
                             .)
   )}
 .
-  
+
 Factor<Expression target, out Expression e>
                    (.
                      e = null;
@@ -504,7 +504,7 @@ Factor<Expression target, out Expression e>
                      e.Type = meth.ReturnType;
                    .)
     ]
-    
+
   | BlockVar<out mb>
                    (.
                      Debug.Assert(target == null);
@@ -512,7 +512,7 @@ Factor<Expression target, out Expression e>
                      Debug.Assert(e != null);  // block variable not found
                    .)
 
-  | backslash "old" "(" 
+  | backslash "old" "("
     Expr<out e>    (.
                      OldExpression oe = new OldExpression(e);
                      oe.Type = e.Type;
@@ -559,7 +559,7 @@ Factor<Expression target, out Expression e>
                      e = new UnaryExpression(p, NodeType.RefAddress, p.Type);
                    .)
   | Quantifier<out e>
-  | TrueComprehension<out e>  
+  | TrueComprehension<out e>
   | (
        "::"
        (
@@ -630,9 +630,9 @@ BlockVar<out MemberBinding mb>
 
 OperatorNode<out Expression p>
                    (.
-                     p = null; 
+                     p = null;
                      int arity;
-                     NodeType opKind; 
+                     NodeType opKind;
                      TypeNodeList tns = null;
                      ExpressionList es;
                      TypeNode resultType;
@@ -699,7 +699,7 @@ OperatorNode<out Expression p>
                    .)
 .
 
-  
+
 Local<out Expression p>
                    (.
                      p  = null;
@@ -755,7 +755,7 @@ Parameter<out Expression p>
                          this.errors.SemErr(x.filename, x.line, x.col,
                                        String.Format("current method does not have parameter position {0}",
                                                      index));
-                         p = null; 
+                         p = null;
                        }
                      }
                    .)
@@ -779,7 +779,7 @@ SpecialName<out Expression p>
                      }
                    .)
 .
-  
+
 MemberRef<out Member  m>
                    (.
                      TypeNode dec;
@@ -860,43 +860,43 @@ InstPTypes< out TypeNodeList tns>
   ]
   ">"
 .
-  
+
 ArgPTypes< out TypeNodeList tns>
                    (.
                      tns = new TypeNodeList();
                      TypeNode tn;
                    .)
 =
-  "(" 
+  "("
   [ PTypedRef<out tn>
                    (. tns.Add(tn); .)
     { "," PTypedRef<out tn>
                    (. tns.Add(tn); .)
     }
-  ] 
+  ]
   ")"
 .
 
-PTypedRef<out TypeNode tn>	
+PTypedRef<out TypeNode tn>
                    (. tn = null; .)
   = ( PType<out tn> | TRef<out tn> )
 .
 
 TRef<out TypeNode tn >
                    (. tn = null; .)
-  = "$" number     (. tn = null; // TODO 
+  = "$" number     (. tn = null; // TODO
                    .)
 .
 
 ArgExprs<out ExpressionList es>
                    (.Expression e; es = new  ExpressionList(); .)
 =
-  "{" 
+  "{"
   [ Expr<out e>    (. es.Add(e); .)
     { "," Expr<out e>
                    (. es.Add(e); .)
     }
-  ] 
+  ]
   "}"
 .
 
@@ -960,7 +960,7 @@ Comprehension<out Expression e>
   )
 .
 
-TrueComprehension<out Expression e>  
+TrueComprehension<out Expression e>
                    (.
                      Expression body;
                      ExpressionList elist;
@@ -1046,7 +1046,7 @@ Binding<out ComprehensionBinding binding>
                    .)
 .
 
-Display<out Expression e>  
+Display<out Expression e>
                    (.
                      Comprehension ch = new Comprehension();
                      ExpressionList es = new ExpressionList();
@@ -1062,7 +1062,7 @@ Display<out Expression e>
     { "," Expr<out e>
                    (. es.Add(e); .)
     }
-  ] 
+  ]
   "|)"
                    (.
                      ch.Elements = es;
@@ -1107,13 +1107,13 @@ Num<out Expression e>
                        }
                      }catch (OverflowException) {
                        this.errors.SemErr(x.filename, x.line, x.col,"Omni: Overflow in tokenizing a number.");
-                       e = new Literal(0,SystemTypes.Int32); 
+                       e = new Literal(0,SystemTypes.Int32);
                      }
                   .)
 .
 
-Literal<out Expression e> 
-=                               (. e =null; .)  
+Literal<out Expression e>
+=                               (. e =null; .)
   ( "True"                      (. e = Cci.Literal.True; .)
   | "False"                     (. e = Cci.Literal.False; .)
   | "null"                      (. e = Cci.Literal.Null; .)
@@ -1153,7 +1153,7 @@ Literal<out Expression e>
   | NewObj<out e>
   )
   .
-  
+
 /*\
  * This production is responsible for creating the AST corresponding to "new T{...}".
 \*/
@@ -1190,7 +1190,7 @@ NewObj<out Expression e>
  * If the returned resultType is null, then whoever calls this production needs
  * to figure it out.
 \*/
-Operator<out NodeType nt, out int arity, out TypeNode resultType> 	
+Operator<out NodeType nt, out int arity, out TypeNode resultType>
                    (. nt = NodeType.Nop; arity = 0; resultType = null; .)
   = "<"            (. nt = NodeType.Lt; arity = 2; resultType = SystemTypes.Boolean; .)
   | "<="           (. nt = NodeType.Le; arity = 2; resultType = SystemTypes.Boolean; .)
