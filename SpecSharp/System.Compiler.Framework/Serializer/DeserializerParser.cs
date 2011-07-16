@@ -6,8 +6,8 @@ using System.Text;
 /* Need to use this form of the conditional compiliation commands because
  * Coco's grammar is limited. TODO: Fix Coco's grammar.
  */
-using 
-Cci = 
+using
+Cci =
 #if CciNamespace
 Microsoft.Cci
 #else
@@ -15,7 +15,7 @@ System.Compiler
 #endif
 ;
 
-using 
+using
 #if CciNamespace
 Microsoft.Cci
 #else
@@ -55,7 +55,7 @@ public class Parser {
 	public Token/*!*/ la;   // lookahead token
 	int errDist = minErrDist;
 
-public class ContractDeserializer : IContractDeserializer 
+public class ContractDeserializer : IContractDeserializer
 {
   private Module assembly;
   private ErrorNodeList errorList;
@@ -69,8 +69,8 @@ public class ContractDeserializer : IContractDeserializer
   {
     this.CurrentAssembly = assembly;
   }
-  
-  public Module CurrentAssembly 
+
+  public Module CurrentAssembly
   {
     get { return this.assembly; }
     set { this.assembly = value; }
@@ -187,14 +187,14 @@ private static TypeNode LookupMethodTypeParameter (string s)
   throw new ApplicationException();
 }
 
-private static Module LookupAssembly (string s) 
+private static Module LookupAssembly (string s)
 {
   Debug.Assert(currentAssembly != null);
   if (s == null)
   {
     return currentAssembly;
   }
-  
+
   for (int i=0; i<currentAssembly.AssemblyReferences.Count; i++)
   {
     AssemblyReference aref = currentAssembly.AssemblyReferences[i];
@@ -203,10 +203,10 @@ private static Module LookupAssembly (string s)
       return aref.Assembly;
     }
   }
-    
+
   return null;
 }
- 
+
 internal static int ParseContract (Module assem, string text, out Expression expression)
 {
   Debug.Assert(assem != null);
@@ -508,44 +508,44 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		 assem = currentAssembly;
 		}
 		#if !WHIDBEY
-		                      if (templateArgs != null){
-		                        /* then need to create the pseudo-generic name */
-		                        string pseudoGenericName = tname;
-		                        /*pseudoGenericName += SystemTypes.GenericTypeNamesMangleChar;*/
-		                        /*pseudoGenericName += templateArgs.Count.ToString();*/
-		                        pseudoGenericName += "<";
-		                        for (int i = 0, n = templateArgs.Count; i < n; i++){
-		                          if (i > 0)
-		                            pseudoGenericName += ",";
-		                          pseudoGenericName += templateArgs[i].FullName;
-		                        }
-		                        pseudoGenericName += ">";
-		                        tname = pseudoGenericName;
-		                      }
-		#endif                      
-		                      tn = assem.GetType(Identifier.For(ns),Identifier.For(tname));
-		                      if (tn == null) {
-		                        this.errors.SemErr(t.filename, t.line, t.col,
-		                                      String.Format("could not resolve namespace {0}, type {1}", ns, tname));
-		                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
-		                      }
-		                       // now do nested types
-		                      for (int i=0; i<typeNames.Count; i++){
-		                        tn = tn.GetNestedType(Identifier.For((string)typeNames[i]));
-		                      }
-		                      if (tn == null) {
-		                        this.errors.SemErr(t.filename, t.line, t.col,
-		                                      String.Format("could not resolve namespace {0} type {1} nesting {2}", ns, tname, nestedname));
-		                        throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
-		                      }
+		if (templateArgs != null){
+		 /* then need to create the pseudo-generic name */
+		 string pseudoGenericName = tname;
+		 /*pseudoGenericName += SystemTypes.GenericTypeNamesMangleChar;*/
+		 /*pseudoGenericName += templateArgs.Count.ToString();*/
+		 pseudoGenericName += "<";
+		 for (int i = 0, n = templateArgs.Count; i < n; i++){
+		   if (i > 0)
+		     pseudoGenericName += ",";
+		   pseudoGenericName += templateArgs[i].FullName;
+		 }
+		 pseudoGenericName += ">";
+		 tname = pseudoGenericName;
+		}
+		#endif
+		tn = assem.GetType(Identifier.For(ns),Identifier.For(tname));
+		if (tn == null) {
+		 this.errors.SemErr(t.filename, t.line, t.col,
+		               String.Format("could not resolve namespace {0}, type {1}", ns, tname));
+		 throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
+		}
+		// now do nested types
+		for (int i=0; i<typeNames.Count; i++){
+		 tn = tn.GetNestedType(Identifier.For((string)typeNames[i]));
+		}
+		if (tn == null) {
+		 this.errors.SemErr(t.filename, t.line, t.col,
+		               String.Format("could not resolve namespace {0} type {1} nesting {2}", ns, tname, nestedname));
+		 throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
+		}
 		#if WHIDBEY
-		                      /* Pre-Whidbey, templateArgs are used to construct a pseudo-generic name */
-		                      if (templateArgs != null)
-		                      {
-		                        tn = tn.GetTemplateInstance(assem, null, null, templateArgs);
-		                      }
-		#endif                      
-		                   
+		/* Pre-Whidbey, templateArgs are used to construct a pseudo-generic name */
+		if (templateArgs != null)
+		{
+		 tn = tn.GetTemplateInstance(assem, null, null, templateArgs);
+		}
+		#endif
+		
 	}
 
 	void Assembly(out Module assem) {
@@ -567,7 +567,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			if (bname.Length > 0){
 			 bname += "." + tmp;
 			}else{
-			  bname = tmp;
+			 bname = tmp;
 			}
 			tmp = identName;
 			
@@ -631,8 +631,8 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 				 e = new AddressDereference(new BinaryExpression(e, es[0], NodeType.Add, e.Type), typ);
 				}
 				else {
-				  e = idx; 
-				} 
+				 e = idx;
+				}
 				
 			}
 		}
@@ -664,9 +664,9 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 				ArgExprs(out es);
 				Method meth = (Method)m;
 				if ( ! meth.IsVirtual){
-				  e = new MethodCall(e, es, NodeType.Call);
+				 e = new MethodCall(e, es, NodeType.Call);
 				}else{
-				  e = new MethodCall(e, es, NodeType.Callvirt); /*dangerous*/
+				 e = new MethodCall(e, es, NodeType.Callvirt); /*dangerous*/
 				}
 				e.Type = meth.ReturnType;
 				
@@ -821,9 +821,9 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 					Expect(50);
 					Reference r = (Reference) p.Type;
 					if (r != null)
-					  e = new AddressDereference(p,r.ElementType);
+					 e = new AddressDereference(p,r.ElementType);
 					else
-					  e = new AddressDereference(p, SystemTypes.UInt8);
+					 e = new AddressDereference(p, SystemTypes.UInt8);
 					
 				} else {
 					TypeNode tt1 = null, tt2 = null, tt3 = null; 
@@ -891,10 +891,10 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			 else
 			   e.Type = currentType;
 			} else {
-			  if (currentMethod.ThisParameter == null) {
-			    currentMethod.ThisParameter = new This();
-			  }
-			  e = currentMethod.ThisParameter;
+			 if (currentMethod.ThisParameter == null) {
+			   currentMethod.ThisParameter = new This();
+			 }
+			 e = currentMethod.ThisParameter;
 			}
 			
 			break;
@@ -913,18 +913,18 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 			Get();
 			string s = t.val;
 			if (s.Length == 3 && s[0] == '\'' && s[2] == '\''){
-			  e = new Literal(s[1], SystemTypes.Char);
+			 e = new Literal(s[1], SystemTypes.Char);
 			}else if (s.StartsWith("'\\u")){
-			  try{
-			    string unicode = s.Substring(3,s.Length-4);
-			    uint x = Convert.ToUInt32(unicode);
-			    char c = Convert.ToChar(x);
-			    e= new Literal(c, SystemTypes.Char);
-			  }catch{
-			    e = new Literal('\0', SystemTypes.Char);
-			  }
+			 try{
+			   string unicode = s.Substring(3,s.Length-4);
+			   uint x = Convert.ToUInt32(unicode);
+			   char c = Convert.ToChar(x);
+			   e= new Literal(c, SystemTypes.Char);
+			 }catch{
+			   e = new Literal('\0', SystemTypes.Char);
+			 }
 			}else{
-			  e = new Literal('\0', SystemTypes.Char);
+			 e = new Literal('\0', SystemTypes.Char);
 			}
 			
 			break;
@@ -1002,40 +1002,40 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		 throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
 		}
 		if (mems.Count == 1){
-		  m = mems[0]; // Fields can't be overloaded, so there is just one of them, don't even check (Review?)
-		  Method meth = m as Method;
-		  if (meth != null){
-		    m = null;  // just in case it doesn't match stuff
-		    if (meth.IsGeneric){
-		      Debug.Assert(genericInstantiations != null && genericInstantiations.Count == meth.TemplateParameters.Count);
-		      Method instantiatedMethod = meth.GetTemplateInstance(dec, genericInstantiations);
-		      meth = instantiatedMethod;
-		    }
-		    if (meth.ParameterTypesMatchStructurally(argumentTypes)){
-		      m = meth;
-		    }
-		  }
+		 m = mems[0]; // Fields can't be overloaded, so there is just one of them, don't even check (Review?)
+		 Method meth = m as Method;
+		 if (meth != null){
+		   m = null;  // just in case it doesn't match stuff
+		   if (meth.IsGeneric){
+		     Debug.Assert(genericInstantiations != null && genericInstantiations.Count == meth.TemplateParameters.Count);
+		     Method instantiatedMethod = meth.GetTemplateInstance(dec, genericInstantiations);
+		     meth = instantiatedMethod;
+		   }
+		   if (meth.ParameterTypesMatchStructurally(argumentTypes)){
+		     m = meth;
+		   }
+		 }
 		}else{
-		  for(int i = 0; i < mems.Count; i++){
-		    Method meth = mems[i] as Method;
-		    Debug.Assert(meth != null); // why can't they be anything other than methods?
-		    if (meth.IsGeneric){
-		      Debug.Assert(genericInstantiations != null);
-		      if (genericInstantiations.Count != meth.TemplateParameters.Count) continue;
-		      // at least it has the right number of type arguments
-		      Method instantiatedMethod = meth.GetTemplateInstance(dec, genericInstantiations);
-		      if (instantiatedMethod == null) continue;
-		      if (instantiatedMethod.ParameterTypesMatchStructurally(argumentTypes)){
-		        m = instantiatedMethod;
-		        break;
-		      }
-		    }else{
-		      if (meth.ParameterTypesMatchStructurally(argumentTypes)){
-		        m = meth;
-		        break;
-		      }
-		    }
-		  } //end for
+		 for(int i = 0; i < mems.Count; i++){
+		   Method meth = mems[i] as Method;
+		   Debug.Assert(meth != null); // why can't they be anything other than methods?
+		   if (meth.IsGeneric){
+		     Debug.Assert(genericInstantiations != null);
+		     if (genericInstantiations.Count != meth.TemplateParameters.Count) continue;
+		     // at least it has the right number of type arguments
+		     Method instantiatedMethod = meth.GetTemplateInstance(dec, genericInstantiations);
+		     if (instantiatedMethod == null) continue;
+		     if (instantiatedMethod.ParameterTypesMatchStructurally(argumentTypes)){
+		       m = instantiatedMethod;
+		       break;
+		     }
+		   }else{
+		     if (meth.ParameterTypesMatchStructurally(argumentTypes)){
+		       m = meth;
+		       break;
+		     }
+		   }
+		 } //end for
 		}
 		
 	}
@@ -1066,19 +1066,19 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		Ident(out name);
 		Identifier id = Identifier.For(name);
 		for (Scope b = currentBlock; b != null; b = b.OuterScope) {
-		  Field f = b.GetField(id);
-		  if (f != null) {
-		    mb = new MemberBinding(new ImplicitThis(), f);
-		    mb.Type = f.Type;
-		    break;
-		  }
+		 Field f = b.GetField(id);
+		 if (f != null) {
+		   mb = new MemberBinding(new ImplicitThis(), f);
+		   mb.Type = f.Type;
+		   break;
+		 }
 		}
 		if (mb == null){
-		  Field field = new Field(id);
-		  field.Type = type;
-		  field.DeclaringType = new BlockScope();
-		  mb = new MemberBinding(new ImplicitThis(), field);
-		  mb.Type = type;
+		 Field field = new Field(id);
+		 field.Type = type;
+		 field.DeclaringType = new BlockScope();
+		 mb = new MemberBinding(new ImplicitThis(), field);
+		 mb.Type = type;
 		}
 		
 		Expect(50);
@@ -1093,14 +1093,14 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		Comprehension(out cexpr);
 		Comprehension c = cexpr as Comprehension;
 		if (c == null){
-		  e = null;
+		 e = null;
 		}else{
-		  c.Type = SystemTypes.GenericIEnumerable.GetTemplateInstance(currentAssembly,SystemTypes.Boolean);
-		  q.QuantifierType = n;
-		  q.Comprehension = c;
-		  q.Type = SystemTypes.Boolean;
-		  q.SourceType = SystemTypes.Boolean;
-		  e = q;
+		 c.Type = SystemTypes.GenericIEnumerable.GetTemplateInstance(currentAssembly,SystemTypes.Boolean);
+		 q.QuantifierType = n;
+		 q.Comprehension = c;
+		 q.Type = SystemTypes.Boolean;
+		 q.SourceType = SystemTypes.Boolean;
+		 e = q;
 		}
 		
 	}
@@ -1125,9 +1125,9 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 	}
 
 	void OperatorNode(out Expression p) {
-		p = null; 
+		p = null;
 		int arity;
-		NodeType opKind; 
+		NodeType opKind;
 		TypeNodeList tns = null;
 		ExpressionList es;
 		TypeNode resultType;
@@ -1144,54 +1144,54 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		 throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
 		}
 		if (tns != null) {
-		  if (tns.Count != arity) {
-		    this.errors.SemErr(t.filename, t.line, t.col,
-		                  String.Format("operator {0} expects {1} type arguments, not {2}",
-		                  p.NodeType, arity, tns.Count));
-		    throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
-		  }
-		  if (opKind == NodeType.Conv_I4 && es[0].Type == SystemTypes.Int32) {
-		    // skip
-		  }
-		  else {
-		    for (int i=0; i<arity; i++) {
-		      Literal lit = es[i] as Literal;
-		      if (lit != null && lit.Type != null && lit.Type != tns[i]) {
-		        if (tns[i] == SystemTypes.Double && lit.Type.IsPrimitiveInteger) {
-		          // then the literal was "3" (for instance), so it was parsed as an integer
-		          double d = Convert.ToDouble(lit.Value);
-		          es[i] = new Literal(d,SystemTypes.Double);
-		        }
-		        // otherwise, it is bad to change literal's type that does not match the literal value's dynamic type
-		      } else {
-		        es[i].Type = tns[i];
-		      }
-		    }
-		  }
+		 if (tns.Count != arity) {
+		   this.errors.SemErr(t.filename, t.line, t.col,
+		                 String.Format("operator {0} expects {1} type arguments, not {2}",
+		                 p.NodeType, arity, tns.Count));
+		   throw new Exception("cannot continue"); //Errors.Exception("cannot continue");
+		 }
+		 if (opKind == NodeType.Conv_I4 && es[0].Type == SystemTypes.Int32) {
+		   // skip
+		 }
+		 else {
+		   for (int i=0; i<arity; i++) {
+		     Literal lit = es[i] as Literal;
+		     if (lit != null && lit.Type != null && lit.Type != tns[i]) {
+		       if (tns[i] == SystemTypes.Double && lit.Type.IsPrimitiveInteger) {
+		         // then the literal was "3" (for instance), so it was parsed as an integer
+		         double d = Convert.ToDouble(lit.Value);
+		         es[i] = new Literal(d,SystemTypes.Double);
+		       }
+		       // otherwise, it is bad to change literal's type that does not match the literal value's dynamic type
+		     } else {
+		       es[i].Type = tns[i];
+		     }
+		   }
+		 }
 		}
 		switch (arity) {
-		  case 1:
+		 case 1:
 		#if !CLOUSOT
-		                         if (opKind == NodeType.Ldlen) {
-		                           p = new MethodCall(new MemberBinding(es[0], SystemTypes.Array.GetMethod(Identifier.For("get_Length"))), null, NodeType.Call, SystemTypes.Int32);
-		                           break;
-		                         }
-		                         if (opKind == NodeType.Conv_I4 && es[0].Type == SystemTypes.Int32) {
-		                           // skip conversion
-		                           p = es[0];
-		                           break;
-		                         }
+		   if (opKind == NodeType.Ldlen) {
+		     p = new MethodCall(new MemberBinding(es[0], SystemTypes.Array.GetMethod(Identifier.For("get_Length"))), null, NodeType.Call, SystemTypes.Int32);
+		     break;
+		   }
+		   if (opKind == NodeType.Conv_I4 && es[0].Type == SystemTypes.Int32) {
+		     // skip conversion
+		     p = es[0];
+		     break;
+		   }
 		#endif
-		                         p = new UnaryExpression(es[0], opKind);
-		                         break;
-		                       case 2:
-		                         p = new BinaryExpression(es[0], es[1], opKind);
-		                         p.Type = resultType;
-		                         break;
-		                       default:
-		                         break;
-		                     }
-		                   
+		   p = new UnaryExpression(es[0], opKind);
+		   break;
+		 case 2:
+		   p = new BinaryExpression(es[0], es[1], opKind);
+		   p.Type = resultType;
+		   break;
+		 default:
+		   break;
+		}
+		
 	}
 
 	void Operator(out NodeType nt, out int arity, out TypeNode resultType) {
@@ -1420,20 +1420,20 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		int index = Convert.ToInt32(x.val);
 		bool nonStatic = ! currentMethod.IsStatic;
 		if ( nonStatic && index == 0){
-		  p = currentMethod.ThisParameter;
+		 p = currentMethod.ThisParameter;
 		}else{
-		  // Get the parameter from the Parameters list.
-		  if (nonStatic) { index --; }
-		  if (index < currentMethod.Parameters.Count){
-		    Parameter pa = currentMethod.Parameters[index];
-		    pa.ArgumentListIndex = nonStatic ? index + 1 : index;
-		    p = pa;
-		  }else{
-		    this.errors.SemErr(x.filename, x.line, x.col,
-		                  String.Format("current method does not have parameter position {0}",
-		                                index));
-		    p = null; 
-		  }
+		 // Get the parameter from the Parameters list.
+		 if (nonStatic) { index --; }
+		 if (index < currentMethod.Parameters.Count){
+		   Parameter pa = currentMethod.Parameters[index];
+		   pa.ArgumentListIndex = nonStatic ? index + 1 : index;
+		   p = pa;
+		 }else{
+		   this.errors.SemErr(x.filename, x.line, x.col,
+		                 String.Format("current method does not have parameter position {0}",
+		                               index));
+		   p = null;
+		 }
 		}
 		
 	}
@@ -1449,9 +1449,9 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		Expect(50);
 		idname = idname.Substring(1,idname.Length-2);
 		if (idname.Equals("return value")){
-		  p = new ReturnValue(typ);
+		 p = new ReturnValue(typ);
 		}else{
-		  p = new Local(Identifier.For(idname), typ);
+		 p = new Local(Identifier.For(idname), typ);
 		}
 		
 	}
@@ -1486,7 +1486,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		tn = null; 
 		Expect(55);
 		Expect(2);
-		tn = null; // TODO 
+		tn = null; // TODO
 		
 	}
 
@@ -1671,8 +1671,8 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		   }
 		 }
 		}catch (OverflowException) {
-		  this.errors.SemErr(x.filename, x.line, x.col,"Omni: Overflow in tokenizing a number.");
-		  e = new Literal(0,SystemTypes.Int32); 
+		 this.errors.SemErr(x.filename, x.line, x.col,"Omni: Overflow in tokenizing a number.");
+		 e = new Literal(0,SystemTypes.Int32);
 		}
 		
 	}
@@ -1709,6 +1709,7 @@ internal static int ParseContract (Module assem, string text, out Expression exp
 		la.val = "";
 		Get();
 		Omni();
+		Expect(0);
 
 		Expect(0);
 	}
@@ -1892,5 +1893,6 @@ public class Errors {
 public class FatalError: Exception {
 	public FatalError(string m): base(m) {}
 }
+
 
 }
