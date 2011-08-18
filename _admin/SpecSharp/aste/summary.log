@@ -1,5 +1,7 @@
-# Aste started: 2011-03-04 15:27:50
+# Aste started: 2011-08-18 17:17:43
 # Host id: Boogiebox
-# [2011-03-04 15:30:06] SpecSharp revision: 63083
-# [2011-03-04 15:31:02] Boogie revision: 63080
-# [2011-03-04 15:31:32] SscBoogie revision: 62594
+# Configuration: boogie.cfg
+# Task: aste.tasks.boogie.FullBuild
+# [2011-08-18 17:20:46] SpecSharp revision: fe455622033f
+# [2011-08-18 17:20:46] SscBoogie revision: fe455622033f
+# [2011-08-18 17:22:00] Boogie revision: 5e96f5d0140c
