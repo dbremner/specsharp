@@ -33,6 +33,12 @@ for %%f in (AdditiveMethods) do (
   "%BGEXE%" %* /level:1 /modifiesDefault:4 %%f.dll
 )
 
+for %%f in (PureMethodOverriding) do (
+  echo.
+  echo -------------------- %%f --------------------
+  "%SSCEXE%" /target:library /debug %%f.ssc
+)
+
 for %%f in (PureStaticMethods PureReceiverMightBeCommitted
             ResultNotNewlyAllocated Branching QuantifierVisibilityInvariant
             DeferringConstructor ArrayInit CommittedOblivious ModelfieldTest CheckingConsistency) do (
