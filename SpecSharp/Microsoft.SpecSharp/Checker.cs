@@ -803,13 +803,14 @@ namespace Microsoft.SpecSharp {
         AdmissibilityChecker checker = new AdmissibilityChecker(this);
         this.TransferStateTo(checker);
         Method method = contract.DeclaringMethod;
-        if (method == contract.OriginalDeclaringMethod) {
-          bool isPure = method.IsPure;
-          if (method.IsPure || method.IsConfined || method.IsStateIndependent) {
-            foreach (Requires r in contract.Requires)
-              checker.CheckMethodSpecAdmissibility(r.Condition, method, isPure, false);
-            foreach (Ensures e in contract.Ensures)
-              checker.CheckMethodSpecAdmissibility(e.PostCondition, method, isPure, false);
+        bool isPure = method.IsPure;
+        if (method.IsPure || method.IsConfined || method.IsStateIndependent) {
+          // In principle, we would not need to recheck the admissibility for inherited specs.
+          foreach (Requires r in contract.Requires) {
+            checker.CheckMethodSpecAdmissibility(r.Condition, method, isPure, false);
+          }
+          foreach (Ensures e in contract.Ensures) {
+            checker.CheckMethodSpecAdmissibility(e.PostCondition, method, isPure, false);
           }
         }
       }
