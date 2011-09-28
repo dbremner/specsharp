@@ -89,6 +89,13 @@ Error: Postcondition violation: Result value of method OwnedResults.F5() is spec
 
 Spec# program verifier finished with 22 verified, 17 errors
 
+-------------------- PureStaticMethods --------------------
+PureStaticMethods.ssc(11,28): warning CS2663: Method call 'f' not admissible: could not find decreasing measure based on purity-level, receiver, and recursion termination value.
+PureStaticMethods.ssc(19,28): warning CS2663: Method call 'sf' not admissible: could not find decreasing measure based on purity-level, receiver, and recursion termination value.
+PureStaticMethods.ssc(36,28): warning CS2663: Method call 'sf' not admissible: could not find decreasing measure based on purity-level, receiver, and recursion termination value.
+
+Spec# program verifier finished with 11 verified, 0 errors
+
 -------------------- PureReceiverMightBeCommitted --------------------
 
 Spec# program verifier finished with 10 verified, 0 errors

@@ -23,10 +23,10 @@ namespace Microsoft.Cci{
 namespace Microsoft.SpecSharp {
 #endif
 
-  
+
   #region AdmissibilityChecker
   /// <summary>
-  /// This class performs admissibility checks on invariants, specifications of pure methods and satisfies clauses of model fields.   
+  /// This class performs admissibility checks on invariants, specifications of pure methods and satisfies clauses of model fields.
   /// </summary>
   public class AdmissibilityChecker : StandardVisitor {
     ErrorHandler ErrorHandler;
@@ -73,7 +73,7 @@ namespace Microsoft.SpecSharp {
     public void CheckMethodSpecAdmissibility(Expression exp, Method method, bool reportWFonly, bool dontReport) {
       DeclaringMethod = method;
       ReportWFErrorOnly = reportWFonly; // true for Pure methods: we only want to enforce well-foundedness on them
-      DontReportError = dontReport;     
+      DontReportError = dontReport;
       StateStack = new System.Collections.Stack();
       ResetCurrentState();
       this.VisitExpression(exp);
@@ -89,19 +89,19 @@ namespace Microsoft.SpecSharp {
 
       Method method = binding.BoundMember as Method;
       Field field = binding.BoundMember as Field;
-      if (method == null && field == null) return binding; // got e.g. a type when visiting a type-cast 
+      if (method == null && field == null) return binding; // got e.g. a type when visiting a type-cast
       String accessedMemberName = field != null ? field.Name.ToString() : method.Name.ToString();
-     
+
       //In a satisifies clause of a modelfield f defined in class C, a field f' is only allowed if it is visible in any subclass that can define an overriding modelfield.
-      //When f is sealed (i.e., f or C has sealed keyword), no subclass can define an overriding modelfield.  
-      if (this.DeclaringMfC != null && !this.DeclaringMfC.IsSealed && field != null) {  //f is not sealed        
+      //When f is sealed (i.e., f or C has sealed keyword), no subclass can define an overriding modelfield.
+      if (this.DeclaringMfC != null && !this.DeclaringMfC.IsSealed && field != null) {  //f is not sealed
         if (field.IsPrivate  ||  !field.IsVisibleOutsideAssembly && this.DeclaringMfC.Modelfield.IsVisibleOutsideAssembly)
-          this.HandleError(binding, Error.InternalFieldInOverridableModelfield, field.Name.Name, this.DeclaringMember.Name.Name, this.DeclaringMfC.DeclaringType.Name.Name); //f' is not visible outside C's assembly, but f can be overridden in an external subclass                  
+          this.HandleError(binding, Error.InternalFieldInOverridableModelfield, field.Name.Name, this.DeclaringMember.Name.Name, this.DeclaringMfC.DeclaringType.Name.Name); //f' is not visible outside C's assembly, but f can be overridden in an external subclass
           //Field f' occurs in a satisfies of modelfield f, but f can be overridden in a subclass to which f' is not visible.
-          //Possible solutions: make f' more visible, make C less visible, or make either f or C sealed.        
+          //Possible solutions: make f' more visible, make C less visible, or make either f or C sealed.
           //Todo: handle more cases in this check
-      }  
-      
+      }
+
       Expression targetObject = binding.TargetObject;
       // we do not allow arbitrary expressions as target, but do allow type and non-null casts (HACK)
       if ((targetObject is UnaryExpression || targetObject is BinaryExpression) &&
@@ -113,13 +113,13 @@ namespace Microsoft.SpecSharp {
       // BASE CALL: so that we walk through access chain in order as appear in code
       base.VisitMemberBinding(binding);
 
-      // if got an [Element] or [ElementCollection] method then setting element-level for this visit (rep:2, peer:1, none:0) 
+      // if got an [Element] or [ElementCollection] method then setting element-level for this visit (rep:2, peer:1, none:0)
       byte elementLevel = 0;
       bool previousWasElementCollection = st.PreviousWasElementCollection;
       st.PreviousWasElementCollection = false;
       if (MethodIsElementOrElementCollection(method))
         elementLevel = st.ElementLevel;
-      // if got an [ElementRep] or [ElementPeer] field then saving element-level for next visit (rep:2, peer:1, none:0) 
+      // if got an [ElementRep] or [ElementPeer] field then saving element-level for next visit (rep:2, peer:1, none:0)
       st.ElementLevel = 0;
       if (Util.FieldIsElementsRepOrPeer(field))
         st.ElementLevel = (byte)(Util.FieldIsElementsRep(field) ? 2 : 1);
@@ -142,7 +142,7 @@ namespace Microsoft.SpecSharp {
         else st.ContextDepth = 1;
       }
 
-      // access on bound variable: treated as rep 
+      // access on bound variable: treated as rep
       if (field != null && field.DeclaringType as BlockScope != null) {
         st.FirstBoundMember = false;
         st.ContextDepth = 1;
@@ -177,24 +177,24 @@ namespace Microsoft.SpecSharp {
         if (DeclaringMethod != null && DeclaringMethod.IsStateIndependent &&
                (field != null && (field.IsModelfield || !(field is ParameterField) && !(field.IsInitOnly || field.DeclaringType.IsValueType || field.DeclaringType.GetAttribute(SystemTypes.ImmutableAttribute) != null))))
           this.HandleError(st.OuterMostBinding, Error.StateIndependentSpecNotAdmissible);
-        
+
         // if first access not on locally declared field then must be from supertype and
         //either field is Additive, or field is a modelfield and we are checking a overriding modelfield contract for field.
         if (DeclaringMember != null && field != null && field.DeclaringType != DeclaringMember.DeclaringType)
           if (DeclaringMember.DeclaringType.IsAssignableTo(field.DeclaringType) && !Util.FieldIsAdditive(field) && (!field.IsModelfield || DeclaringMfC == null || DeclaringMfC.Modelfield != field))
             this.HandleError(st.OuterMostBinding, Error.NotAdmissibleFirstAccessOnNonAdditiveField, accessedMemberName);
           else if (field.DeclaringType.IsAssignableTo(DeclaringMember.DeclaringType))
-            this.HandleError(st.OuterMostBinding, Error.NotAdmissibleFirstAccessOnFieldDeclaredInSubtype, accessedMemberName);        
+            this.HandleError(st.OuterMostBinding, Error.NotAdmissibleFirstAccessOnFieldDeclaredInSubtype, accessedMemberName);
 
         // non-rep: we go out of owned cone
         if ((field != null && !(field.IsRep || (field.Type != null && field.Type.IsValueType))) || // note: handling value types (e.g. structs) as owned
             (method != null && !Util.MethodIsRep(method))) {
           st.OutsideOwnedCone = true;
           st.FirstNonRep = true;
-          // binding: must be rep (no visibility-based) 
+          // binding: must be rep (no visibility-based)
           // array access: must be rep (cannot be visibility-based as not expressible on indexed element)
           if (QuantifierBinding || isIndexerAccess)
-            this.HandleError(st.OuterMostBinding, Error.NotAdmissibleBoundCollArrayNotRep);        
+            this.HandleError(st.OuterMostBinding, Error.NotAdmissibleBoundCollArrayNotRep);
         }
         else { // rep or struct
           if (!(field != null && (field.Type != null && field.Type.IsValueType))) // field of value-type (e.g. structs) does not lead into the owned cone
@@ -225,7 +225,7 @@ namespace Microsoft.SpecSharp {
         if (field != null && field.Type != null && !(field.Type is Struct)) // if struct then do not go down (structs cannot be owned)
           st.ContextDepth++;
       }
-      // array access is non-rep and non-peer 
+      // array access is non-rep and non-peer
       // handled separately as no Element or ElementCollection notation is possible on array elements (considered always Element)
       else if (isIndexerAccess && !(field != null && field.IsPeer)) {
         st.OutsideOwnedCone = true;
@@ -355,17 +355,19 @@ namespace Microsoft.SpecSharp {
         this.ReportWFErrorOnly = false; // we want error msg even if method being specified is Pure
         // purity level is the same -> recursion value must decrease or receiver must be rep
         if ((DeclaringMethod.IsPure && method.IsPure) ||
-             (DeclaringMethod.IsConfined && !method.IsStateIndependent) ||   // HACK: need to use !IsStateIndependent as getters are Confined by default thus IsConfined is true even if it's annotated with IsStateIndependent
-             (DeclaringMethod.IsStateIndependent && method.IsStateIndependent)) {
+            (DeclaringMethod.IsConfined && !method.IsStateIndependent) ||   // HACK: need to use !IsStateIndependent as getters are Confined by default thus IsConfined is true even if it's annotated with IsStateIndependent
+            (DeclaringMethod.IsStateIndependent && method.IsStateIndependent)) {
           if (RecursionTerminationValue(DeclaringMethod, false) <= RecursionTerminationValue(method, true)) {
-              if ( (binding.TargetObject is This) || (binding.TargetObject is ImplicitThis))
+            if ((binding.TargetObject == null && DeclaringMethod.IsStatic) ||
+                (binding.TargetObject is This) || (binding.TargetObject is ImplicitThis)) {
               this.HandleWarning(errorNode, "Method call '" + method.Name.ToString() +  "' not admissible: could not find decreasing measure based on purity-level, receiver, and recursion termination value.");
-            else {
+            } else {
               this.ReportWFErrorOnly = true; // switch off reporting while deducing repness of reciever
               this.VisitExpression(binding.TargetObject);
               this.ReportWFErrorOnly = false;
-              if (TargetOutsideOwnedCone)
-                this.HandleWarning(errorNode, "Method call '" + method.Name.ToString() + "' not admissible: could not find decreasing measure based on purity-level, receiver, and recursion termination value.");                             
+              if (TargetOutsideOwnedCone) {
+                this.HandleWarning(errorNode, "Method call '" + method.Name.ToString() + "' not admissible: could not find decreasing measure based on purity-level, receiver, and recursion termination value.");
+              }
             }
           }
         }
@@ -374,9 +376,9 @@ namespace Microsoft.SpecSharp {
       // builtIn: static(?) method generated by compiler for special cases (e.g. non-null cast)
       //          we want to skip visiting the callee and preserve AdmissibilityState as was before
       //          interesting part should be in the parameters of method
-      bool builtIn = false; 
+      bool builtIn = false;
       if (Util.IsBuiltInMethodCall(method)) builtIn = true;
-      if (DeclaringMember!= null && (method.IsStatic && !builtIn) && !method.IsStateIndependent) // static Confined method call is not allowed in invariants 
+      if (DeclaringMember!= null && (method.IsStatic && !builtIn) && !method.IsStateIndependent) // static Confined method call is not allowed in invariants
         this.HandleError(errorNode, Error.NotAdmissibleStaticNonStateIndependent);
       // visiting callee if needed (no restriction on static and StateIndepedent methods)
       if (!(method.IsStatic || builtIn || method.IsStateIndependent))
@@ -413,7 +415,7 @@ namespace Microsoft.SpecSharp {
     }
 
     /// <summary>
-    /// Checks if field access is visibility-admissible. 
+    /// Checks if field access is visibility-admissible.
     /// </summary>
     /// <returns></returns>
     private bool FieldIsVisible(Field f) {
@@ -499,8 +501,8 @@ namespace Microsoft.SpecSharp {
       // st.ReportedError = true;
     }
 
-    public bool HasError() { 
-      return hasError; 
+    public bool HasError() {
+      return hasError;
     }
   }
 
@@ -589,7 +591,7 @@ namespace Microsoft.SpecSharp {
       if (field.Equals(PTGraph.allFields) || field.Equals(PTGraph.allFieldsNotOwned)) // reading all reachable fields not admissible
         this.IssueWarning(); // NOTE: this could be refined by analysing whether only rep fields are reachable
 
-      // if got an [ElementRep] or [ElementPeer] field then saving element-level for next visit (rep:2, peer:1, none:0) 
+      // if got an [ElementRep] or [ElementPeer] field then saving element-level for next visit (rep:2, peer:1, none:0)
       currentElementLevel = previousElementLevel;
       if (Util.FieldIsElementsRepOrPeer(field))
         previousElementLevel = (byte)(Util.FieldIsElementsRep(field) ? 2 : 1);
@@ -598,7 +600,7 @@ namespace Microsoft.SpecSharp {
       if (firstBoundMember) {
         firstBoundMember = false;
         // non-rep: we go out of owned cone
-        if (!(field.IsRep || (field.Type != null && field.Type.IsValueType))) { // note: handling value types (e.g. structs) as owned             
+        if (!(field.IsRep || (field.Type != null && field.Type.IsValueType))) { // note: handling value types (e.g. structs) as owned
           outsideOwnedCone = true;
         }
         else { // rep or struct
@@ -618,7 +620,7 @@ namespace Microsoft.SpecSharp {
           contextDepth++;
       }
       // access on an element of an ElementsPeer array (which means -1 level access relative to coll./array)
-      else if (currentElementLevel == 1) { 
+      else if (currentElementLevel == 1) {
         contextDepth--;
         if (contextDepth < 1)
           outsideOwnedCone = true;
@@ -667,9 +669,9 @@ namespace Microsoft.SpecSharp {
         if (f == null) return false;
         return f.GetAttribute(SystemTypes.ElementsPeerAttribute) != null;
     }
-    
+
       /* This method finds all positions of a type that can have an ElementsRep or ElementsPeer attribute.
-     * These positions are: 
+     * These positions are:
      *   -1 if the type is an array
      * or
      *   i if the type is generic and the i-th type argument is a reference type
@@ -706,7 +708,7 @@ namespace Microsoft.SpecSharp {
       {
           ExpressionList exprs = attr.Expressions;
           int value = -10;
-          if (exprs == null || exprs.Count == 0) 
+          if (exprs == null || exprs.Count == 0)
               value = -1; // default value for attribute w/o param, in particular, for arrays
           else
           {
@@ -736,7 +738,7 @@ namespace Microsoft.SpecSharp {
           {
               ExpressionList exprs = attr.Expressions;
               int value = -10;
-              if (exprs == null || exprs.Count == 0) 
+              if (exprs == null || exprs.Count == 0)
                   value = -1; // default value for attribute w/o param
               else
               {
@@ -784,7 +786,7 @@ namespace Microsoft.SpecSharp {
       if (lit != null && (lit.Value is bool)) return (bool)lit.Value;
       else return false;
     }
-    
+
     public static bool IsBuiltInMethodCall(Method m) {
       if (m == null) return false;
       return (m.FullName.LastIndexOf("IsNonNullGeneric") >= 0);
@@ -803,7 +805,7 @@ namespace Microsoft.SpecSharp {
         case "Microsoft.Contracts.Guard.FrameIsValid(optional(Microsoft.Contracts.NonNullType) System.Object,optional(Microsoft.Contracts.NonNullType) System.Type)":
         case "Microsoft.Contracts.Guard.get_IsPrevalid()":
         case "Microsoft.Contracts.Guard.FrameIsPrevalid(optional(Microsoft.Contracts.NonNullType) System.Object,optional(Microsoft.Contracts.NonNullType) System.Type)":
-          return true;         
+          return true;
       }
       return false;
     }
@@ -813,9 +815,9 @@ namespace Microsoft.SpecSharp {
 
   #region Simple specialized visitors: CallAndResultVisitor, NoReferenceComparisonVisitor and MightReturnNewlyAllocatedObjectVisitor
   /// <summary>
-  /// Visits an expression to check if expression contains (1) method or constructor call 
+  /// Visits an expression to check if expression contains (1) method or constructor call
   /// or (2) 'result' - queried by (1) HasCall and (2) HasResult.
-  /// Used for determining (1) whether an expression in a spec can be used 
+  /// Used for determining (1) whether an expression in a spec can be used
   /// for axiom generation in a sound way; (2) the RecursionTermination value of a method.
   /// </summary>
   public class CallAndResultVisitor : StandardVisitor {
@@ -849,11 +851,11 @@ namespace Microsoft.SpecSharp {
       return base.VisitReturnValue(returnValue);
     }
   }
-  
+
 
   /// <summary>
   /// Visits a method body to check if there is any "==" or "!=" operation on reference-type operands.
-  /// Used when checking body of methods marked as NoReferenceComparison. 
+  /// Used when checking body of methods marked as NoReferenceComparison.
   /// </summary>
   public class NoReferenceComparisonVisitor : StandardVisitor {
     bool noRefComparison = true;
@@ -903,7 +905,7 @@ namespace Microsoft.SpecSharp {
   /// <summary>
   /// Visits an expression to check if it might return a newly allocated object.
   /// Used when analysing specification of pure methods to exclude situations when
-  /// two references possibly refering to newly created objects are compared. 
+  /// two references possibly refering to newly created objects are compared.
   /// </summary>
   public class MightReturnNewlyAllocatedObjectVisitor : StandardVisitor {
     bool isMRNAO = false;
