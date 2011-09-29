@@ -20,8 +20,8 @@ namespace Microsoft.Boogie
   /// </summary>
   public class Sink {
       // just an abbreviation
-    private static Bpl.IToken! NoToken = Bpl.Token.NoToken; 
-  
+    private static Bpl.IToken! NoToken = Bpl.Token.NoToken;
+
     class VirtualWrapper
     {
       public Cci.Method! method;
@@ -41,8 +41,8 @@ namespace Microsoft.Boogie
         return method.GetHashCode() ^ unchecked((int) 0xfedcba98);
       }
     }
-  
-    internal readonly StringBank! stringBank = new StringBank(this);
+
+    internal readonly StringBank! stringBank;
     internal Cci.ErrorHandler! errorHandler;
     internal IAssemblyInformation! assemblyInfo;
 
@@ -79,8 +79,8 @@ namespace Microsoft.Boogie
     // mapping of BPL blocknames to SSC source code nodes, used for error reporting
     internal IDictionary<String!,Cci.CfgBlock!>! blockNameToSourceNodeMap = new Dictionary<String!,Cci.CfgBlock!>();
     internal List<Bpl.Cmd!> copyBackCommands;
-    
-    
+
+
 
     // Global to whole translation.
     internal List<Bpl.Declaration!>! toplevelDeclarations = new List<Bpl.Declaration!>();
@@ -100,8 +100,11 @@ namespace Microsoft.Boogie
 
       base(); // here because of strict-read-only field and associated rule [MAF revisit this?]
 
+      Fields = new BuiltinFields(this);
+      stringBank = new StringBank(this);
+
       numberConsts = new Cci.HashedMap();
-      
+
       // OwnershipModel can be instantiated as one of multiple special OwnershipModels
       switch (CommandLineOptions.Clo.OwnershipModelEncoding) {
         case CommandLineOptions.OwnershipModelOption.Standard:
@@ -136,7 +139,7 @@ namespace Microsoft.Boogie
     }
 
     // Types used in the translation (these are defined in PRELUDE.bpl)
-   
+
     internal readonly Bpl.Type! RefType;
     private readonly Bpl.TypeCtorDecl! FieldTypeDecl;
     internal Bpl.Type! FieldType(Type! argType)
@@ -179,7 +182,7 @@ namespace Microsoft.Boogie
     /// Only expressions of type ref, bool, int, and real get meaningful returns from this method
     /// (but other expressions still return something that will pass the BoogiePL type checker).
     /// </summary>
-    internal Bpl.Expr! ZeroEquiv (Bpl.Type! ty) {    
+    internal Bpl.Expr! ZeroEquiv (Bpl.Type! ty) {
       if (ty.IsBool) {
         return Bpl.Expr.False;
       } else if (ty.IsInt) {
@@ -201,8 +204,8 @@ namespace Microsoft.Boogie
     {
       return Bpl.Expr.Neq(Sink.Ident(name, RefType), Null);
     }
-    
-    
+
+
     /// <summary>
     /// Returns an expression that denotes "$IsNotNull(name, type)".
     /// This method will declare the type in the target code.
@@ -228,7 +231,7 @@ namespace Microsoft.Boogie
       AddField(field);
       return this.FieldIdent(field);
     }
-    
+
     private Bpl.IdentifierExpr! Expr (Cci.Method! method)
     {
       return Sink.Ident(UniqueProcedureName(method), this.Convert(method.ReturnType));
@@ -241,15 +244,15 @@ namespace Microsoft.Boogie
     {
       return UniqueProcedureName(method, false);
     }
-    
+
     internal static string! UniqueProcedureName (Cci.Method! method, bool virtualSignature)
     {
       StringBuilder name = new StringBuilder();
       name.Append(Sink.CanonicalTypeName((!)method.DeclaringType));
       name.Append(".");
-      
+
       name.Append(Sink.CleanUpName(NameOf(method.Name)));
-      
+
       // We need to use generic parameter types in the procedure
       // name due to name overloading in IL.
       Cci.TypeNodeList genericParameters = method.TemplateParameters;
@@ -263,7 +266,7 @@ namespace Microsoft.Boogie
           name.Append(Sink.CanonicalTypeName(genericType));
         }
       }
-      
+
       // If the method is an explicit operator, then it can
       // be overloaded on the return type, so need to include that!
       if (method.IsStatic && method.IsSpecialName &&
@@ -272,7 +275,7 @@ namespace Microsoft.Boogie
         name.Append("$");
         name.Append(Sink.CanonicalTypeName(method.ReturnType));
       }
-      
+
       Cci.ParameterList parameters = method.Parameters;
       if (parameters != null && parameters.Count > 0)
       {
@@ -323,10 +326,10 @@ namespace Microsoft.Boogie
         } else {
           transferCmd = new Bpl.ReturnCmd(NoToken);
         }
-        
+
         IToken tok = makeTokenFromSourceContext(block.SourceContext);
         result = new Bpl.Block(
-          tok, 
+          tok,
           Sink.BlockName(block, "block"),
           new Bpl.CmdSeq(),
           transferCmd
@@ -348,7 +351,7 @@ namespace Microsoft.Boogie
     {
       if (bplBlk.Label != null && bplBlk.Label != "entry") {
         Cci.Node node = cciBlk.BeginSourceContext();
-        if (node != null && node.SourceContext.Document != null 
+        if (node != null && node.SourceContext.Document != null
             && node.SourceContext.Document.Name != null) {
           //HACK: Sometimes the pair (bplBlk.Label, cciBlk) is already present, and the program crashed.
           //It will still crash if the label is there and maps to another block, but in that case somethings seems even more wrong...let it crash
@@ -369,22 +372,22 @@ namespace Microsoft.Boogie
     #endregion
 
 
-   #region Comments    
-    internal static Bpl.CommentCmd! MakeComment (Cci.Node! statement, string! c) 
+   #region Comments
+    internal static Bpl.CommentCmd! MakeComment (Cci.Node! statement, string! c)
     {
        string! text = "----- " + c;
-       if (statement.SourceContext.Document != null) 
+       if (statement.SourceContext.Document != null)
        {
             string! docName = (!)statement.SourceContext.Document.Name;
             docName = (!)System.IO.Path.GetFileName(docName);
-            text += String.Format("  ----- {0}({1},{2})", 
-                docName, 
-                statement.SourceContext.StartLine, 
+            text += String.Format("  ----- {0}({1},{2})",
+                docName,
+                statement.SourceContext.StartLine,
                 statement.SourceContext.StartColumn);
         }
-        return new Bpl.CommentCmd(text); 
+        return new Bpl.CommentCmd(text);
     }
-    internal void Comment (Cci.Node! statement, string! c) 
+    internal void Comment (Cci.Node! statement, string! c)
       requires this.InstructionTranslator != null && this.InstructionTranslator.currentBlock != null;
     {
       this.InstructionTranslator.currentBlock.Cmds.Add(MakeComment(statement, c));
@@ -396,24 +399,24 @@ namespace Microsoft.Boogie
     {
       return ArrayGet(array, elementType, new Bpl.Expr[] { index }, HeapExpr(heapName));
     }
-    
+
     internal Bpl.Expr! ArrayGet (Bpl.Expr! array, Bpl.Type! elementType, Bpl.Expr! index, Bpl.Expr! heap)
     {
       return ArrayGet(array, elementType, new Bpl.Expr[] { index }, heap);
     }
-    
+
     internal Bpl.Expr! ArrayGet (Bpl.Expr! array, Bpl.Type! elementType, Bpl.Expr[]! indices, string! heapName) {
       return ArrayGet(array, elementType, indices, HeapExpr(heapName));
     }
-    
+
     internal Bpl.Expr! ArrayGet (Bpl.Expr! array, Bpl.Type! elementType, Bpl.Expr[]! indices, Bpl.Expr! heap)
       requires indices.Length >= 1;
     {
       Bpl.Expr element = Function(Sink.BuiltinFunction.ArrayGet, Elements(array, heap, elementType), ArrayIndex(array, indices));
       return element;
     }
-    #endregion    
-    
+    #endregion
+
     #region Fields
     internal void AddField (Cci.Field! field)
     {
@@ -439,7 +442,7 @@ namespace Microsoft.Boogie
         ax = Function(Sink.BuiltinFunction.IncludeInMainFrameCondition, Sink.IdentWithClean(fieldConst));
         this.earlyDeclarations.Add(new Bpl.Axiom(NoToken, field.IsStatic ? Bpl.Expr.Not(ax) : ax));
       }
-      
+
       // emit:  axiom $IncludedInModifiesStar(field)
       {
         Bpl.Expr ax = Function(Sink.BuiltinFunction.IncludedInModifiesStar, Sink.IdentWithClean(fieldConst));
@@ -512,14 +515,14 @@ namespace Microsoft.Boogie
           new Bpl.VariableSeq(new Bpl.Formal(NoToken, new Bpl.TypedIdent(NoToken, "", RefType), true)),
           new Bpl.Formal(NoToken, new Bpl.TypedIdent(NoToken, "", fieldType), true));
         this.earlyDeclarations.Add(fun);
-        
+
         // A strict-readonly field is a function of the reference, that is, it is independent of the heap:
         // axiom (forall h, r :: { h[r,field] }  IsHeap(h) ==> h[r,field] == ##field(r));
         Bpl.Variable littleHVar = Sink.BoundVar("$heap", HeapType);              // h
         Bpl.Expr littleHExpr = Sink.Ident(littleHVar);
         Bpl.Variable littleRVar = Sink.BoundVar("$r", RefType);                  // r
         Bpl.Expr littleRExpr = Sink.Ident(littleRVar);
-        
+
         Bpl.Expr isHeap = Function(Sink.BuiltinFunction.IsHeap, littleHExpr);   // IsHeap(h)
         Bpl.Expr rDotField = FieldAccess(littleRExpr, field, (!)littleHVar.Name); // h[r,field]
         Bpl.Expr funAppliedToR = Function(funName, fieldType, littleRExpr);    // ##field(r)
@@ -530,7 +533,7 @@ namespace Microsoft.Boogie
           Bpl.Expr.Imp(isHeap, Bpl.Expr.Eq(rDotField, funAppliedToR)));
         this.earlyDeclarations.Add(new Bpl.Axiom(NoToken, q, "strict-readonly field is a function of the reference"));
       }
-        
+
       AddType(field.Type);
     }
      ///<summary>
@@ -544,11 +547,11 @@ namespace Microsoft.Boogie
         return Bpl.Expr.Select(HeapExpr(heapName), obj, Expr(field));
       }
     }
-    
+
     internal Bpl.Expr! FieldAccessExHeap (Bpl.Expr! obj, Cci.Field! field)
     {
         return Function(Sink.BuiltinFunction.ExHeapStructGet, obj, Expr(field));
-    }  
+    }
     ///<summary>
     /// For a static field f declared in a class C, returns the expression:  heapName[ClassRepr(T), f]
     /// Returns the expression:  heapName[ClassRepr(
@@ -583,7 +586,7 @@ namespace Microsoft.Boogie
       return new Bpl.AssumeCmd(NoToken, expression);
     }
     #endregion
-    
+
     #region Assertions
     internal static Bpl.AssertCmd! Assert (Bpl.Expr! condition, Cci.Node! errorNode, string! errorMessage)
     {
@@ -599,28 +602,28 @@ namespace Microsoft.Boogie
     {
       return new Bpl.HavocCmd(NoToken, new IdentifierExprSeq(ident));
     }
-    
+
     /// <summary>
     /// Emit the assertion: assert not $IsImmutable($typeof(e));
     /// </summary>
-    internal void AssertNotImmutable (Bpl.Expr! e, Cci.Node! errorNode, string! errorMessage) 
+    internal void AssertNotImmutable (Bpl.Expr! e, Cci.Node! errorNode, string! errorMessage)
       requires this.InstructionTranslator != null && this.InstructionTranslator.currentBlock != null;
     {
       this.InstructionTranslator.currentBlock.Cmds.Add(Assert(Bpl.Expr.Not(Function(Sink.BuiltinFunction.IsImmutable, Function(Sink.BuiltinFunction.Typeof, e))), errorNode, errorMessage));
     }
 
     /// <summary>
-    /// For field update f = e, and if f is of System.Object or interface, emit the assertion:  
+    /// For field update f = e, and if f is of System.Object or interface, emit the assertion:
     ///   assert e == null || not $IsImmutable($typeof(e));
     /// but exclude "e == null ||" if "type" is a non-null type.
     /// </summary>
-    internal void AssertNotImmutable (Bpl.Expr! e, Cci.TypeNode! type, Cci.Node! errorNode, string! errorMessage) 
+    internal void AssertNotImmutable (Bpl.Expr! e, Cci.TypeNode! type, Cci.Node! errorNode, string! errorMessage)
       requires this.InstructionTranslator != null && this.InstructionTranslator.currentBlock != null;
     {
       bool isNonNull;
       type = Sink.StripOptionalModifiers(type, out isNonNull);
 
-      Bpl.Expr cond;      
+      Bpl.Expr cond;
       if (type == Cci.SystemTypes.Object || type is Cci.Interface) {
         cond = Bpl.Expr.Not(Function(Sink.BuiltinFunction.IsImmutable, Function(Sink.BuiltinFunction.Typeof, e)));
       } else {
@@ -632,7 +635,7 @@ namespace Microsoft.Boogie
         }
         this.InstructionTranslator.currentBlock.Cmds.Add(Assert(cond, errorNode, errorMessage));
       }
-                 
+
     }
     #endregion
     [Pure]
@@ -712,7 +715,7 @@ namespace Microsoft.Boogie
       if (ptype != null)
       {
         return Function(
-          Sink.BuiltinFunction.ArrayPtr, 
+          Sink.BuiltinFunction.ArrayPtr,
           TypeNameExpression(ptype.ElementType));
       }
 
@@ -720,7 +723,7 @@ namespace Microsoft.Boogie
       if (rtype != null)
       {
         return Function(
-          Sink.BuiltinFunction.ArrayPtr, 
+          Sink.BuiltinFunction.ArrayPtr,
           TypeNameExpression(rtype.ElementType));
       }
 
@@ -731,8 +734,8 @@ namespace Microsoft.Boogie
     {
       return TypeAssumption(Sink.Ident(varName, translatedType), type);
     }
-    
-    
+
+
     internal Bpl.Expr! TypeAssumption (Bpl.Expr! expr, Cci.TypeNode! type)
     {
       return TypeAssumption(expr, type, false);
@@ -744,8 +747,8 @@ namespace Microsoft.Boogie
       bool isNotNull;
       if (IsImpossibleType(type)) {
         return Bpl.Expr.True;
-      } 
-      
+      }
+
       bool isReferenceType = Sink.IsReferenceType(type, out isNotNull);
       bool isOnExHeap = Sink.IsOnExHeap(type);
       if (isReferenceType || isOnExHeap) {
@@ -783,7 +786,7 @@ namespace Microsoft.Boogie
         // only reference types can be impossible
         return false;
       }
-      
+
       return IsImpossibleTypeAux(type);
     }
 
@@ -801,12 +804,12 @@ namespace Microsoft.Boogie
         // of "type" that has instances.
         return false;
       }
-      
+
       if (type is Cci.Class && !type.IsAbstract) {
         // there may be instances of this class itself
         return false;
       }
-      
+
       // the type is impossible iff all of its subtypes are
       return forall{Cci.TypeNode sub in subtypes; IsImpossibleTypeAux(sub)};
     }
@@ -817,7 +820,7 @@ namespace Microsoft.Boogie
       if (member is Cci.Field && ((Cci.Field)member).IsPrivate) {
         return false;  // private fields can never be mentioned in subclass invariants, so they are non-additive
       }
-      
+
       Cci.AttributeNode attr = member.GetAttribute(Cci.SystemTypes.AdditiveAttribute);
       if (attr == null) {
         // no Additive attribute means the member is not additive
@@ -826,7 +829,7 @@ namespace Microsoft.Boogie
         return GetAttributeValue(attr);
       }
     }
-   
+
     internal static bool IsAdditiveReturn (Cci.Method! method)
     {
       if (method.ReturnAttributes != null) {
@@ -839,7 +842,7 @@ namespace Microsoft.Boogie
       // no Additive attribute means the return value is not additive
       return false;
     }
-    
+
     internal static bool IsAdditive (Cci.Parameter! param)
     {
       Cci.AttributeNode attr = param.GetAttribute(Cci.SystemTypes.AdditiveAttribute);
@@ -850,17 +853,17 @@ namespace Microsoft.Boogie
         return GetAttributeValue(attr);
       }
     }
-    
+
     internal static bool IsInside (Cci.Parameter! param)
     {
       return IsInsideA((!)param.Attributes);
     }
-    
+
     internal static bool IsInside (Cci.Method! method)
     {
       return IsInsideA((!)method.Attributes);
     }
-    
+
     internal static bool IsInsideReturn (Cci.Method! method)
     {
       if (method.ReturnAttributes == null) {
@@ -869,7 +872,7 @@ namespace Microsoft.Boogie
         return IsInsideA(method.ReturnAttributes);
       }
     }
-    
+
     static bool IsInsideA (Cci.AttributeList! alist)
     {
       foreach (Cci.AttributeNode attr in alist) {
@@ -880,7 +883,7 @@ namespace Microsoft.Boogie
       }
       return false;
     }
-    
+
     public static bool IsModelField (Cci.Field! field)
       ensures field.IsModelfield ==> result;  // see comment below
     {
@@ -888,7 +891,7 @@ namespace Microsoft.Boogie
       // been read from a binary.  Thus, we instead look for the presence of a [Modelfield] attribute.
       return field.GetAttribute(Cci.SystemTypes.ModelfieldAttribute) != null;
     }
-   
+
     /// <summary>
     /// This method expects "attr" to denote an attribute that may have one parameter, of type bool.
     /// It returns the value of that boolean parameter, or "true" if the attribute does not specify
@@ -896,7 +899,7 @@ namespace Microsoft.Boogie
     /// </summary>
     static bool GetAttributeValue (Cci.AttributeNode! attr)
     {
-      bool val = true; 
+      bool val = true;
       Cci.MemberBinding binding = attr.Constructor as Cci.MemberBinding;
       if (binding != null) {
         Cci.InstanceInitializer ctor = binding.BoundMember as Cci.InstanceInitializer;
@@ -990,7 +993,7 @@ namespace Microsoft.Boogie
       IfThenElse,
       Utter,
     }
-    
+
     internal Bpl.NAryExpr! Function (BuiltinFunction f, params Bpl.Expr[]! args)
     {
       switch (f) {
@@ -1048,7 +1051,7 @@ namespace Microsoft.Boogie
           }
         case BuiltinFunction.ExHeapStructSet:
           assert args.Length == 3;
-          return Function(Prelude.ExHeapPtrStructSetterName, RefType, args);    
+          return Function(Prelude.ExHeapPtrStructSetterName, RefType, args);
         case BuiltinFunction.BaseClass:
           assert args.Length == 1;
           return Function(Prelude.BaseClassFunctionName, TypeType, args);
@@ -1241,7 +1244,7 @@ namespace Microsoft.Boogie
           assert false;  // unexpected enum value
       }
     }
-    
+
     public Bpl.NAryExpr! Function (string! function, Bpl.Type! returnType, params Bpl.Expr[]! args)
     {
       return new Bpl.NAryExpr(
@@ -1272,24 +1275,24 @@ namespace Microsoft.Boogie
       token.val = value;
       return token;
     }
-    
+
     public static Bpl.IdentifierExpr! IdentWithClean (string! id, Type! type)
     {
       return Bpl.Expr.Ident(id, type);
     }
-    
+
     public static Bpl.IdentifierExpr! IdentWithClean (Bpl.Variable! v)
     {
       //*** Note, we only use the name of the variable, leaving the IdentifierExpr unresolved.
       //*** The translator only generates unresolved names, which get resolved in a separate pass.
       return IdentWithClean((!)v.Name, v.TypedIdent.Type);
     }
-    
+
     public Bpl.IdentifierExpr! FieldIdent (Cci.Field! field)
     {
       return FieldIdent(Sink.CleanUpName(Sink.FullName(field)), Convert(field.Type));
     }
-    
+
     public Bpl.IdentifierExpr! FieldIdent (string! fieldName, Type! fieldType) {
       return Bpl.Expr.Ident(fieldName, FieldType(fieldType));
     }
@@ -1299,11 +1302,11 @@ namespace Microsoft.Boogie
       internal BuiltinFields([Delayed] Sink! sink) {
         this.sink = sink;
       }
-      
+
       private Bpl.IdentifierExpr! Id(string! fieldName, Type! fieldType) {
         return Bpl.Expr.Ident(fieldName, sink.FieldType(fieldType));
       }
-      
+
       public Bpl.IdentifierExpr! ValidFor { get {
         return Id(Prelude.ValidFor, new Bpl.MapType(NoToken, new TypeVariableSeq(), new TypeSeq(sink.TypeType), Bpl.Type.Bool));
       }}
@@ -1349,18 +1352,18 @@ namespace Microsoft.Boogie
         return Bpl.Expr.Ident(fieldName, sink.FieldType(sink.ElementsType(elementType)));
       }
      }
-    
-    public readonly BuiltinFields! Fields = new BuiltinFields(this);
-    
+
+    public readonly BuiltinFields! Fields;
+
     public readonly Bpl.Expr! Null = Ident("null", new Bpl.UnresolvedTypeIdentifier(NoToken, "ref"));
 
 
     public static Bpl.IdentifierExpr! Ident (string! id, Type! type) { return IdentWithClean(SanitizeIdentifier(id), type); }
 
-    public static Bpl.IdentifierExpr! Ident (Bpl.Variable! id) 
+    public static Bpl.IdentifierExpr! Ident (Bpl.Variable! id)
     {
       id.Name = SanitizeIdentifier((!)id.Name);
-      return IdentWithClean(id); 
+      return IdentWithClean(id);
     }
 
     public static Bpl.IdentifierExpr! Expr (Bpl.TypedIdent! i)
@@ -1382,7 +1385,7 @@ namespace Microsoft.Boogie
     {
       return TokenTextWriter.SanitizeIdentifier(name);
     }
-    
+
     // The next two maps are used exclusively by FullName(Cci.TypeNode)
     private static Cci.IMap/*<Cci.TypeNode,string!>*/! typesCciToBplName = new Cci.HashedMap();
     private static Cci.IMutableSet/*<string>*/! typesBplNames = new Cci.HashSet();
@@ -1399,7 +1402,7 @@ namespace Microsoft.Boogie
         if (n != null) {
           return n;
         }
-        
+
         string fullName = (!)type.FullName;
         // If it's a type parameter, make it unique by prepending the name of the class or
         // method that binds it.
@@ -1417,7 +1420,7 @@ namespace Microsoft.Boogie
           // apparently, there is more than one TypeNode that has this FullName, so append something that distinguishes this new name from previous ones
           fullName += "`" + type.UniqueKey;
         }
-        
+
         // now we have a meaningful, clean, and fresh name; update the maps and return the name
         typesCciToBplName[type] = fullName;
         typesBplNames.Add(fullName);
@@ -1431,7 +1434,7 @@ namespace Microsoft.Boogie
         if (n != null) {
           return n;
         }
-        
+
         string fullName = CleanUpName((!)field.FullName);
         if (fieldsBplNames.Contains(fullName)) {
           // apparently, there is more than one Cci.Field that has this FullName, so append something that distinguishes this new name from previous ones
@@ -1444,12 +1447,12 @@ namespace Microsoft.Boogie
 
         return fullName;
     }
-    
+
     public static string! BoundVarName (string! nominalName)
     {
       return Sink.CleanUpName("^" + nominalName);
     }
-    
+
     internal static void OwnedStatus (Cci.Method! m, out bool isRep, out bool isPeer, out bool ownedFalse)
       ensures (!isRep && !isPeer) || (!isPeer && !ownedFalse) || (!ownedFalse && !isRep);
     {
@@ -1496,7 +1499,7 @@ namespace Microsoft.Boogie
 //        }
 //      }
     }
-    
+
     public static bool SameType (Bpl.Type! type1, Bpl.Type! type2)
     {
         return type1.ToString() == type2.ToString();
@@ -1507,14 +1510,14 @@ namespace Microsoft.Boogie
     {
         return Convert(variable, Convert(variable.Type));
     }
-    
-    
+
+
     public static Bpl.TypedIdent! Convert (Cci.Variable! variable, Bpl.Type! type)
     {
-        string! varName = (variable.Name != null && variable.Name.Name != null && ((!)variable.Name.Name).Length > 0) ? 
+        string! varName = (variable.Name != null && variable.Name.Name != null && ((!)variable.Name.Name).Length > 0) ?
             (!) variable.Name.Name :
             "local" + variable.UniqueKey;
-    
+
         return TypedIdent(
             CleanUpName(varName),
             type
@@ -1525,20 +1528,20 @@ namespace Microsoft.Boogie
       requires !(type is Cci.Reference); // CIL pointers are always resolved to their pointees.
     {
       Bpl.SimpleType st;
-      if (type == Cci.SystemTypes.Boolean) 
+      if (type == Cci.SystemTypes.Boolean)
       {
         st = Bpl.SimpleType.Bool;
-      } 
+      }
       else if (IsIntegralType(type))
       {
         st = Bpl.SimpleType.Int;
-      } 
+      }
       else if (
         type == Cci.SystemTypes.Single ||
-        type == Cci.SystemTypes.Double) 
+        type == Cci.SystemTypes.Double)
       {
         return RealType;
-      } 
+      }
       else if (IsEnumType(type))
       {
         st = Bpl.SimpleType.Int;
@@ -1551,7 +1554,7 @@ namespace Microsoft.Boogie
       {
         return StructType;
       }
-      else 
+      else
       {
         return RefType;
       }
@@ -1581,11 +1584,11 @@ namespace Microsoft.Boogie
         case FlowedValue.Type.Tag.Arg:
           throw new System.ArgumentException();
         default:
-          return RefType; 
+          return RefType;
       }
     }
-   
-    
+
+
     public static bool IsStruct (Cci.TypeNode! type)
     {
         if (type == Cci.SystemTypes.IntPtr) return false;
@@ -1598,7 +1601,7 @@ namespace Microsoft.Boogie
 
         return type is Cci.Struct;
     }
-    
+
     [Pure]
     public static bool IsReferenceType (Cci.TypeNode! t) {
       bool isNotNull;
@@ -1608,7 +1611,7 @@ namespace Microsoft.Boogie
       t = Sink.StripOptionalModifiers(t, out isNotNull);
       return (t is Cci.Class) || (t is Cci.Interface) || (t is Cci.ArrayType) || (t is Cci.DelegateNode);
     }
-    
+
     public static bool IsOnExHeap (Cci.TypeNode! t) {
       bool result = false;
       Cci.OptionalModifier m;
@@ -1621,7 +1624,7 @@ namespace Microsoft.Boogie
       }
       return result;
     }
-    
+
     public bool IsReferenceType (FlowedValue.Type! t) {
       return Convert(t).Equals(RefType);
     }
@@ -1655,7 +1658,7 @@ namespace Microsoft.Boogie
       }
       return null;
     }
-    
+
     public static bool IsNonNullType (Cci.TypeNode! type)
     {
       bool result;
@@ -1764,7 +1767,7 @@ namespace Microsoft.Boogie
     {
       return (!)type.StripOptionalModifiers(out isNonNull);
     }
- 
+
     internal static Cci.TypeNode! ParameterType(Cci.Parameter! parm) {
       Cci.TypeNode t = parm.Type;
       while (t is Cci.Reference) {
@@ -1774,17 +1777,17 @@ namespace Microsoft.Boogie
     }
     internal static Bpl.Expr! Binary (BinaryOperator.Opcode op, Bpl.Expr! e1, Bpl.Expr! e2)
     {
-      return Bpl.Expr.Binary(NoToken, op, e1, e2); 
+      return Bpl.Expr.Binary(NoToken, op, e1, e2);
     }
 
-    internal static Bpl.Expr! And (Bpl.Expr! e1, Bpl.Expr! e2) 
-    { 
-      return Binary(BinaryOperator.Opcode.And, e1, e2); 
-    }
-
-    internal static Bpl.Expr! And (Bpl.Expr! e1, Bpl.Expr! e2, Bpl.Expr! e3) 
+    internal static Bpl.Expr! And (Bpl.Expr! e1, Bpl.Expr! e2)
     {
-      return Binary(BinaryOperator.Opcode.And, e1, And(e2,e3)); 
+      return Binary(BinaryOperator.Opcode.And, e1, e2);
+    }
+
+    internal static Bpl.Expr! And (Bpl.Expr! e1, Bpl.Expr! e2, Bpl.Expr! e3)
+    {
+      return Binary(BinaryOperator.Opcode.And, e1, And(e2,e3));
     }
     internal Bpl.Expr! IntegerLiteral (long n) {
       if (0 <= n) {
@@ -1814,9 +1817,9 @@ namespace Microsoft.Boogie
       }
       return Sink.Ident(constName, RealType);
     }
-    
-    
-    
+
+
+
     internal Bpl.Expr! Literal (object literal) {
       Bpl.Expr! literalExpr;
       if (literal == null)        { return Null; }
@@ -1851,7 +1854,7 @@ namespace Microsoft.Boogie
     {
       return Bpl.Expr.Select(heap, target, Fields.Elements(elementType));
     }
-    
+
     /// <summary>
     /// Returns TypeObject(e), and makes sure that System.Type is axiomatized.
     /// </summary>
@@ -1867,8 +1870,8 @@ namespace Microsoft.Boogie
         if (name == null) { return unique; }
         return name;
     }
-    
-    
+
+
     private Bpl.Expr! ConjoinInvariantForGenericClasses (Cci.Class! type, Bpl.Expr! receiver, string! heap, Bpl.Expr! inv) {
       foreach (Cci.Member! m in type.Members) {
         if (m is Cci.Field && !m.IsStatic) {
@@ -1890,13 +1893,13 @@ namespace Microsoft.Boogie
      }
      return inv;
    }
-        
-    
+
+
     public readonly List<Cci.Class!>! KnownClassesWithInvariants = new List<Cci.Class!>();
-    
+
     private void RecordInvariantFunction (Cci.TypeNode! type) {
       if (Equals(type.FullName, "<Module>")) { return; }
-  
+
       if (type is Cci.Class) {
         Bpl.Variable oVar = BoundVar("$oi", RefType);
         Bpl.Expr o = Ident(oVar);
@@ -1923,9 +1926,9 @@ namespace Microsoft.Boogie
               //                0 <= $h[$oi, Bag.n] && $h[$oi, Bag.n] <= $Length($h[$oi, Bag.a]);
               Bpl.Expr isheap = Function(Sink.BuiltinFunction.IsHeap, Sink.Ident(heapVar));
               Bpl.Expr body = Bpl.Expr.Imp(Bpl.Expr.And(isheap, Bpl.Expr.Not(om.IsExposed(o, TypeNameExpression(type), HeapExpr(heapVar.Name)))), d);
-              
+
               Bpl.Trigger trig = om.IsAdditivelyExposedTrigger(o, type, HeapExpr(heapVar.Name));
-              
+
               Bpl.Expr q = new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(oVar, heapVar), trig, body);
               this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, q, type.FullName + " object invariant"));
             }
@@ -1944,7 +1947,7 @@ namespace Microsoft.Boogie
             // the invariant expression as well as $Inv($h, $oi, Bag).
             Bpl.Expr inv = Function(Sink.BuiltinFunction.TheInvariant, Sink.Ident(heapVar), o, TypeNameExpression(type));
             Bpl.Expr body = Bpl.Expr.Iff(inv, d);
-            
+
             Bpl.Expr q = new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(oVar, heapVar), body);
             this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, q, type.FullName + " object invariant"));
             break;
@@ -1953,7 +1956,7 @@ namespace Microsoft.Boogie
           default:
             assert false;
         }
-        
+
       } else if (type is Cci.Struct) {
         // TODO: I find the generation of an invariant axiom for structs a bit dubious.  Should we remove this code?  --KRML
         // TODO: For generic structs, we do not yet conjoin the ElementProxy-invariant.  --PM
@@ -1982,7 +1985,7 @@ namespace Microsoft.Boogie
         this.toplevelDeclarations.Add(decl);
       }
     }
-    
+
     static int nondetCount = 0;
     internal Expr! NonDeterministicValue()
     {
@@ -1992,24 +1995,24 @@ namespace Microsoft.Boogie
       AddDeclaration(c, false);
       return Ident(c);
     }
-    
+
     const string! ActivityIndicatorName = "$ActivityIndicator";
     internal IdentifierExpr! ActivityIndicator()
     {
       return Bpl.Expr.Ident(ActivityIndicatorName, ActivityType);
     }
-    
+
     internal Bpl.Expr! QuantifyOverActivityIndicator(Bpl.Expr! cond)
     {
       ActivityFinder af = new ActivityFinder();
       af.VisitExpr(cond);
       if (af.MentionsActivityIndicator) {
-        //Add existential quantification to deal with the boxing expressions that might occur in the axiom        
+        //Add existential quantification to deal with the boxing expressions that might occur in the axiom
         cond = new Bpl.ExistsExpr(NoToken, new VariableSeq(Sink.BoundVar(ActivityIndicator().Name, ActivityType)), cond);
       }
       return cond;
     }
-    
+
     /// <summary>
     /// MentionsActivityIndicator is set to true when an IdentifierExpr referring to $ActivityIndicator is found in the visited AST.
     /// Note: reset containsOld between uses.
@@ -2017,7 +2020,7 @@ namespace Microsoft.Boogie
     ///</summary>
     private class ActivityFinder : StandardVisitor {
       public bool MentionsActivityIndicator = false;
-      
+
       public override Expr! VisitIdentifierExpr(IdentifierExpr /* ! */ node) {
         if (node == null) {
           throw new ArgumentNullException("node");
@@ -2034,17 +2037,17 @@ namespace Microsoft.Boogie
     {
       AddProcedure(method, false);
     }
-    
+
     internal void AddProcedure (Cci.Method! method, MethodSignature! sig)
     {
       AddProcedure(method, false, sig);
     }
-    
+
     internal void AddProcedure (Cci.Method! method, bool virtualSignature)
     {
       AddProcedure(method, virtualSignature, null);
     }
-    
+
     internal void AddProcedure (Cci.Method! method, bool virtualSignature, MethodSignature sig)
       requires sig != null ==> !virtualSignature;
     {
@@ -2084,23 +2087,23 @@ namespace Microsoft.Boogie
 
     private void HandleModelFields(Cci.TypeNode! type) {
       if (!(type is Cci.Class)) return;
-      if (Equals(type.FullName, "<Module>")) return;              
+      if (Equals(type.FullName, "<Module>")) return;
       if (type.Contract == null) return;
       assert type.Contract.ModelfieldContracts != null;  //should follow from spec, not sure how to make that happen (see invariants)
-      
+
       ExpressionTranslator exprTrans = new ExpressionTranslator(this, null, null, null, null);
-                        
+
       foreach (Cci.ModelfieldContract mfC in type.Contract.ModelfieldContracts) {
         //A modelfield is found. Two steps need to be taken:
         //(A) A special purpose procedure that serves as the once-and-for-all witness proof obligation must be created, and
         //(B) The axiom associated with this modelfield must be created.
-        
+
         assert mfC != null;  //from invariant of ModelfieldContract
         Cci.Field mf = mfC.Modelfield as Cci.Field;
-        assume mf != null; //as type is a class        
-        
+        assume mf != null; //as type is a class
+
         if (!CommandLineOptions.Clo.NoConsistencyChecks) {  //should we have more ways of turning off this check?
-                    
+
           #region (A) Create procedure+implementation to check proof obligation for witness
 
           // Moved step 5 to the beginning so that the procedure and implementation have the same name. When the class containing
@@ -2111,55 +2114,55 @@ namespace Microsoft.Boogie
           //5. The method that handles the implementation expects a cci method holding all the relevant information. Create it here.
           Cci.Method! consistencyCheckerMethod = new Cci.Method(mfC.DeclaringType, ((!)mfC.DeclaringType).Attributes,
                                                      Cci.Identifier.For("Boogie.ContractConsistencyCheckMF." + mfC.Modelfield.Name.Name),
-                                                     new Cci.ParameterList(), mfC.ModelfieldType, new Cci.Block());          
-                    
+                                                     new Cci.ParameterList(), mfC.ModelfieldType, new Cci.Block());
 
-          //1. first create the procedure      
+
+          //1. first create the procedure
           string! procName = Sink.UniqueProcedureName(consistencyCheckerMethod);
-          Procedure checkWitnessProc = new Bpl.Procedure(NoToken, procName, 
-            new TypeVariableSeq(), new VariableSeq(), new VariableSeq(), new RequiresSeq(), new IdentifierExprSeq(), new EnsuresSeq());      
-          
-          //2. The procedure has 1 inparameter, namely       
-          //   this : ref where $IsNotNull(this, type) && $Heap[this, $allocated]        
-          TypedIdent! ident  = new TypedIdent(NoToken, "this", RefType);        
-          ident.WhereExpr = Bpl.Expr.And(this.TypeAssumption(Sink.Ident(ident.Name, ident.Type), type, true), this.IsAllocated(ident));        
-          Bpl.Formal! thisin = new Bpl.Formal(NoToken, ident, true);                
-          checkWitnessProc.InParams.Add(thisin);        
-          
+          Procedure checkWitnessProc = new Bpl.Procedure(NoToken, procName,
+            new TypeVariableSeq(), new VariableSeq(), new VariableSeq(), new RequiresSeq(), new IdentifierExprSeq(), new EnsuresSeq());
+
+          //2. The procedure has 1 inparameter, namely
+          //   this : ref where $IsNotNull(this, type) && $Heap[this, $allocated]
+          TypedIdent! ident  = new TypedIdent(NoToken, "this", RefType);
+          ident.WhereExpr = Bpl.Expr.And(this.TypeAssumption(Sink.Ident(ident.Name, ident.Type), type, true), this.IsAllocated(ident));
+          Bpl.Formal! thisin = new Bpl.Formal(NoToken, ident, true);
+          checkWitnessProc.InParams.Add(thisin);
+
           checkWitnessProc.Modifies.Add( this.HeapExpr()); //The procedure modifies the heap
-                  
-          //3. The precondition of the procedure is 'IsValid': all owned objects are valid and this is consistent (but this.inv is not set)          
+
+          //3. The precondition of the procedure is 'IsValid': all owned objects are valid and this is consistent (but this.inv is not set)
           //(I don't understand why this is called IsValid, maybe the comment below should change)
-          Bpl.Expr thisExpr = new Bpl.IdentifierExpr(NoToken, thisin);          
-          Requires validFrame = new Requires(true, this.om.IsValid(thisExpr, type), "target object is consistent but not valid");      
+          Bpl.Expr thisExpr = new Bpl.IdentifierExpr(NoToken, thisin);
+          Requires validFrame = new Requires(true, this.om.IsValid(thisExpr, type), "target object is consistent but not valid");
           checkWitnessProc.Requires.Add(validFrame);
-                      
+
           this.toplevelDeclarations.Add(checkWitnessProc); //4. Add the procedure to the program.
-          
+
           //6. The witnesses should satisfy all satisifies defined in this contract
           //Additionally, they should satisfy all clauses of overridden contracts
-          //(as the value of the modelfield is changed on a "pack as <type>", and this change should not invalidate overridden contracts), 
+          //(as the value of the modelfield is changed on a "pack as <type>", and this change should not invalidate overridden contracts),
           //(note that clauses of implemented interface modelfields have been copied to mfC)
           ExprSeq! sats = new ExprSeq();
-          for (Cci.ModelfieldContract currentMfC = mfC; currentMfC != null; currentMfC = currentMfC.NearestOverriddenContract) {        
+          for (Cci.ModelfieldContract currentMfC = mfC; currentMfC != null; currentMfC = currentMfC.NearestOverriddenContract) {
             foreach (Cci.Expression satClause in (!)currentMfC.SatisfiesList) {
               if (satClause == null) continue;
               sats.Add(exprTrans.TranslateExpression(satClause, Prelude.HeapName));
             }
           }
-          
+
           //7. Like its procedure, the implementation has 1 inparameter, namely 'this', but it shouldn't have a where clause
-          TypedIdent! implIdent  = new TypedIdent(NoToken, "this", RefType);                
-          Bpl.Formal! implThisin = new Bpl.Formal(NoToken, implIdent, true);                
+          TypedIdent! implIdent  = new TypedIdent(NoToken, "this", RefType);
+          Bpl.Formal! implThisin = new Bpl.Formal(NoToken, implIdent, true);
           Bpl.VariableSeq ins = new VariableSeq();
-          ins.Add(implThisin);          
-          
+          ins.Add(implThisin);
+
           //8. create and add the implementation
           this.AddConsistencyCheckerImplementation(sats, ins, new VariableSeq(), consistencyCheckerMethod, mfC);
-                                
+
           #endregion
         }
-        
+
         #region (B) Add the axiom that goes with the modelfield: this is valid ==> satisfies clauses of this.mf hold
         // e.g. axiom (forall $oi: ref, $h: [ref,<x>name]x ::
         //                { $h[$oi, C.mf] }
@@ -2167,7 +2170,7 @@ namespace Microsoft.Boogie
         //                ==>
         //                $h[$oi, C.mf] <= $h[$oi, C.k] && $h[$oi, C.mf] > $h[$oi, C.j]); (i.e, satisfies clauses of mf)
         //This axiom is similar in style to the axiom generated for invariants (RecordInvariantFunction).
-                
+
         //1. Create the bound variables
         Bpl.Variable oVar = Sink.BoundVar("$oi", RefType);
         Bpl.Expr o = Sink.Ident(oVar);
@@ -2175,66 +2178,66 @@ namespace Microsoft.Boogie
 
         //2. Create the conjunction of satisifies clauses
         //Note that it is not sound to include satisifies clauses of overridden modelfields in the axiom (due to local expose).
-        Bpl.Expr satConjunction = null;      
+        Bpl.Expr satConjunction = null;
         bool firstClause = true;
         ExpressionTranslator expTran2 = new ExpressionTranslator(this, o, null, null, null);
-        foreach (Cci.Expression satClause in (!)mfC.SatisfiesList) { 
+        foreach (Cci.Expression satClause in (!)mfC.SatisfiesList) {
           if (satClause == null) continue;
-          Bpl.Expr satConjunct = expTran2.TranslateExpression(satClause, heapVar.Name);          
+          Bpl.Expr satConjunct = expTran2.TranslateExpression(satClause, heapVar.Name);
           if (firstClause) {
             satConjunction = satConjunct;
             firstClause = false;
           } else
             satConjunction = Bpl.NAryExpr.And((!)satConjunction, satConjunct);
         }
-        
+
         if (satConjunction == null) return; //3. only create axiom if there are relevant satisfies clauses.
-      
+
         //4. Create the axiom's expression
-        Bpl.Expr isHeap = Function(Sink.BuiltinFunction.IsHeap, Sink.Ident(heapVar));  //isHeap($h)                
+        Bpl.Expr isHeap = Function(Sink.BuiltinFunction.IsHeap, Sink.Ident(heapVar));  //isHeap($h)
         //Bpl.Expr and1 = Bpl.Expr.And(isHeap, Bpl.Expr.Neq(o, Bpl.Expr.Null)); //isHeap($h) && $oi != null, removed as oi != null should follow from $h[$oi, $inv] <: C
         Bpl.Expr notLocEx = Bpl.Expr.Not(om.IsExposed(o, TypeNameExpression(type), HeapExpr(heapVar.Name))); //$h[$oi, $inv] <: C && $h[$oi, $localinv] != immediate-base-type-of(Bag)
         Bpl.Expr premisse = Bpl.Expr.And(isHeap, notLocEx);
-        Bpl.Expr body = Bpl.Expr.Imp(premisse, satConjunction);        
-        Bpl.Trigger trig = new Bpl.Trigger(NoToken, true, new Bpl.ExprSeq(Bpl.Expr.Select(Sink.Ident(heapVar),o, this.Expr(mf))));                
+        Bpl.Expr body = Bpl.Expr.Imp(premisse, satConjunction);
+        Bpl.Trigger trig = new Bpl.Trigger(NoToken, true, new Bpl.ExprSeq(Bpl.Expr.Select(Sink.Ident(heapVar),o, this.Expr(mf))));
         Bpl.Expr q = new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(oVar, heapVar), trig, body);
-        
+
         this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, q));  //5. Add the axiom
         #endregion
-        
+
       }
-      
+
     }
-    
+
     ///<summary>requires if mfC == null, then consistencyCheckerMethod is (a duplicate of) the method whose contract is to be checked for consistency,
     ///else consistencyCheckerMethod is a dummy method containing the witnesses etc.
     ///Note that this method does not duplicate guards</summary>
     internal void AddConsistencyCheckerImplementation(ExprSeq! guards, Bpl.VariableSeq! ins, Bpl.VariableSeq! outs,  Cci.Method! consistencyCheckerMethod, Cci.ModelfieldContract mfC) {
-      
-      #region Step 1: set up this and result parameters 
-            
+
+      #region Step 1: set up this and result parameters
+
         Bpl.Variable thisVariable = null;
 
         foreach(Variable! v in ins){
-          if (v.Name == "this" || v.Name == "this$in") {           
+          if (v.Name == "this" || v.Name == "this$in") {
             thisVariable = v;
-            break; 
+            break;
           }
         }
-        Bpl.IdentifierExpr thisVar = thisVariable == null ? null : new Bpl.IdentifierExpr(NoToken,thisVariable);          
-        Bpl.Variable resultVariable = null;              
+        Bpl.IdentifierExpr thisVar = thisVariable == null ? null : new Bpl.IdentifierExpr(NoToken,thisVariable);
+        Bpl.Variable resultVariable = null;
         foreach(Variable! v in outs){
           if (v.Name == Prelude.ResultVariableName) {
-            resultVariable = v;         
+            resultVariable = v;
             break;
-          }          
+          }
         }
-        Bpl.IdentifierExpr resultVar = resultVariable == null ? null : new Bpl.IdentifierExpr(NoToken,resultVariable);                                                              
-      
+        Bpl.IdentifierExpr resultVar = resultVariable == null ? null : new Bpl.IdentifierExpr(NoToken,resultVariable);
+
       #endregion //step 1
-      
+
       #region Step 2: Create bpl implementation for the consistencyCheckerMethod
-        
+
         Bpl.Implementation checkerImpl = new Bpl.Implementation(
           NoToken,
           Sink.UniqueProcedureName(consistencyCheckerMethod),
@@ -2247,52 +2250,52 @@ namespace Microsoft.Boogie
 
         this.toplevelDeclarations.Add(checkerImpl);
         if (mfC == null)
-          this.implementationOrigins[checkerImpl] = consistencyCheckerMethod; //set to original method, so errors can be traced back to it.              
-         
-        //Set up guard 'post'        
-        Bpl.Expr! post = Bpl.Expr.True;            
-        foreach (Expr! guard in guards) {                             
+          this.implementationOrigins[checkerImpl] = consistencyCheckerMethod; //set to original method, so errors can be traced back to it.
+
+        //Set up guard 'post'
+        Bpl.Expr! post = Bpl.Expr.True;
+        foreach (Expr! guard in guards) {
           if (post == Bpl.Expr.True)
-            post = guard;            
+            post = guard;
           else
-            post = Bpl.Expr.And(post, guard);            
+            post = Bpl.Expr.And(post, guard);
         }
         Bpl.Expr! notPost = Bpl.Expr.Not(post);
-                                                                                                                      
+
         //Block: on (post) return
         Bpl.AssumeCmd assumePost = new Bpl.AssumeCmd(NoToken, post);
         Bpl.ReturnCmd ret = new Bpl.ReturnCmd(NoToken);
-        Bpl.Block onPostReturn = new Bpl.Block(NoToken, "onPostReturn", new Bpl.CmdSeq(assumePost), ret);            
-        
+        Bpl.Block onPostReturn = new Bpl.Block(NoToken, "onPostReturn", new Bpl.CmdSeq(assumePost), ret);
+
         Bpl.AssumeCmd assumeNotPost = new Bpl.AssumeCmd(NoToken, notPost);
-      
+
         //set up expressiontranslator to translate witnesses and guards.
         Bpl.ExpressionTranslator exprTrans = new Bpl.ExpressionTranslator(this, thisVar, resultVar, null, null);
-                                                                                                  
+
         //init gotos
-        Bpl.GotoCmd! gotoIPlus1 = new Bpl.GotoCmd(NoToken, new BlockSeq());                                                      
+        Bpl.GotoCmd! gotoIPlus1 = new Bpl.GotoCmd(NoToken, new BlockSeq());
         Bpl.GotoCmd! gotoIJPlus1 = new Bpl.GotoCmd(NoToken, new BlockSeq());
-        
-        //initialize the first block                  
+
+        //initialize the first block
         Bpl.Block checkerEntry = new Bpl.Block(NoToken, "entry", new Bpl.CmdSeq(), gotoIPlus1); //"i is -1"
-        checkerImpl.Blocks.Add(checkerEntry);              
-                      
-        //deserialize the witness attributes and update checkerImpl 
-        int attrCount = consistencyCheckerMethod.Attributes == null ? 0 : consistencyCheckerMethod.Attributes.Count;                  
+        checkerImpl.Blocks.Add(checkerEntry);
+
+        //deserialize the witness attributes and update checkerImpl
+        int attrCount = consistencyCheckerMethod.Attributes == null ? 0 : consistencyCheckerMethod.Attributes.Count;
         for (int i = 0; i < attrCount; i++) {
           #region deserialize witness attribute
           Cci.AttributeNode attr = ((!)consistencyCheckerMethod.Attributes)[i];
           if (attr == null) continue; //defensive check
           Cci.MemberBinding mb = attr.Constructor as Cci.MemberBinding;
           if (mb == null || mb.BoundMember == null) continue;  //defensive checks
-          if (mb.BoundMember.DeclaringType != Cci.SystemTypes.WitnessAttribute) continue;  //not the attribute we're looking for                      
-          assume attr.Expressions != null && attr.Expressions.Count > 3; //defensive check: signals error in IL                            
+          if (mb.BoundMember.DeclaringType != Cci.SystemTypes.WitnessAttribute) continue;  //not the attribute we're looking for
+          assume attr.Expressions != null && attr.Expressions.Count > 3; //defensive check: signals error in IL
           Cci.Literal isUpperboundAsLit = attr.Expressions[0] as Cci.Literal;
           assume isUpperboundAsLit != null; //defensive check
-          bool isUpperbound = (bool) (!)isUpperboundAsLit.Value;  //Upperbound for witness on false (i.e., all lower values are potential witnesses as well) 
+          bool isUpperbound = (bool) (!)isUpperboundAsLit.Value;  //Upperbound for witness on false (i.e., all lower values are potential witnesses as well)
           Cci.Literal nrOfDupsAsLit = attr.Expressions[1] as Cci.Literal;
           assume nrOfDupsAsLit != null; //defensive check
-          int nrOfDups = (int) (!)nrOfDupsAsLit.Value;                            
+          int nrOfDups = (int) (!)nrOfDupsAsLit.Value;
           Cci.Literal guardAsLit = attr.Expressions[2] as Cci.Literal;
           assume guardAsLit != null; //defensive check
           Cci.IContractDeserializer ds = Cci.ContractDeserializerContainer.ContractDeserializer;
@@ -2300,7 +2303,7 @@ namespace Microsoft.Boogie
           ds.CurrentAssembly = ((!)consistencyCheckerMethod.DeclaringType).DeclaringModule;
           string guardAsString = (string) guardAsLit.Value;    //guardAsString should be either a serialized expression, or ""
           Cci.Expression guard = null;
-          if (guardAsString != "")                              
+          if (guardAsString != "")
             guard = ds.ParseContract(consistencyCheckerMethod.Contract,guardAsString,null);
           //Note that guard can be null
           Cci.Literal witnessAsLit = attr.Expressions[3] as Cci.Literal;
@@ -2310,49 +2313,49 @@ namespace Microsoft.Boogie
           assume witness != null; //defensive check
           witness.SourceContext = Cci.MethodContract.GetSourceContext(attr);
           #endregion //deserialize witness attribute
-                                                                    
+
           #region witness found. Create new block(s)
           //Previous block must goto this one, this one must goto finalblock (i.e., to previousBlock.transferCmd).
-          Bpl.Expr witnessExpr = exprTrans.TranslateExpression(witness, Prelude.HeapName);  //Todo: deal with totality checks          
-          assert witnessExpr != null; //Translate should be able to deal with anything we throw at it (as anything we throw at it should be a valid expression).                                                            
-          
-          //if this isn't the first witness, assume !post                    
-          Bpl.CmdSeq witnessI0Seq = new CmdSeq();                    
+          Bpl.Expr witnessExpr = exprTrans.TranslateExpression(witness, Prelude.HeapName);  //Todo: deal with totality checks
+          assert witnessExpr != null; //Translate should be able to deal with anything we throw at it (as anything we throw at it should be a valid expression).
+
+          //if this isn't the first witness, assume !post
+          Bpl.CmdSeq witnessI0Seq = new CmdSeq();
           if (checkerImpl.Blocks.Count > 1)
             witnessI0Seq.Add(assumeNotPost);
-          //if there is a guard, create two blocks, one that updates, one that assumes !guard and skips update(s) of (duplicates of) this witness.                    
+          //if there is a guard, create two blocks, one that updates, one that assumes !guard and skips update(s) of (duplicates of) this witness.
           Bpl.GotoCmd nextIPlus1 = new GotoCmd(NoToken, new BlockSeq()); //dummy: not needed when there is no guard
           if (guard != null) {
             Bpl.Expr guardExpr = exprTrans.TranslateExpression(guard, Prelude.HeapName);
             Bpl.AssumeCmd assumeGuard = new Bpl.AssumeCmd(NoToken, guardExpr);
-            witnessI0Seq.Add(assumeGuard);                      
+            witnessI0Seq.Add(assumeGuard);
             Bpl.AssumeCmd assumeNotGuard = new Bpl.AssumeCmd(NoToken, Bpl.Expr.Not(guardExpr));
-            Bpl.Block onNotGuardSkipWitness = new Bpl.Block(NoToken, "onNotGuardSkipUpdate" + i.ToString(), new CmdSeq(assumeNotGuard), new GotoCmd(NoToken, new BlockSeq()));                       
+            Bpl.Block onNotGuardSkipWitness = new Bpl.Block(NoToken, "onNotGuardSkipUpdate" + i.ToString(), new CmdSeq(assumeNotGuard), new GotoCmd(NoToken, new BlockSeq()));
             gotoIPlus1.AddTarget(onNotGuardSkipWitness);
             gotoIJPlus1.AddTarget(onNotGuardSkipWitness);
             nextIPlus1 = (GotoCmd)(!)onNotGuardSkipWitness.TransferCmd;
             checkerImpl.Blocks.Add(onNotGuardSkipWitness);
           }
           //For reference types, we need to make sure the witness is of (a subtype of) the returntype to catch an inconsistent contract like D m(C c) ensures result == c; where C
-          //is a subclass of D. We need this because the Spec# typechecker doesn't (and shouldn't) enforce a subtype relation between result and c (where our assignment will).                    
-          //We don't check subtype the subtype relation for the duplicates: they succeed whenever the original succeeds.                                                  
+          //is a subclass of D. We need this because the Spec# typechecker doesn't (and shouldn't) enforce a subtype relation between result and c (where our assignment will).
+          //We don't check subtype the subtype relation for the duplicates: they succeed whenever the original succeeds.
           if (this.Convert(consistencyCheckerMethod.ReturnType).Equals(RefType)) {
-            Bpl.Expr witnessIsOfReturnType = this.Function(Sink.BuiltinFunction.Is, witnessExpr, this.TypeNameExpression(consistencyCheckerMethod.ReturnType));                                      
-            Bpl.AssertCmd assertWitOfRetType =  new Bpl.AssertCmd(NoToken, witnessIsOfReturnType);                      
+            Bpl.Expr witnessIsOfReturnType = this.Function(Sink.BuiltinFunction.Is, witnessExpr, this.TypeNameExpression(consistencyCheckerMethod.ReturnType));
+            Bpl.AssertCmd assertWitOfRetType =  new Bpl.AssertCmd(NoToken, witnessIsOfReturnType);
             assertWitOfRetType.ErrorData = new Translator.ErrorPair(witness, "The type of witness candidate \"" + witness.SourceContext.SourceText + "\" is not (a subtype of) the return type");
             witnessI0Seq.Add(assertWitOfRetType);
-          }                          
+          }
           Bpl.Cmd resBecomesWitnessI0 = this.GetWitnessAssignment(resultVar, witnessExpr, thisVar, mfC);
-          witnessI0Seq.Add(resBecomesWitnessI0);  
-          //if post holds, then return 
-          Bpl.GotoCmd tempIJPlus1 = new GotoCmd(NoToken, new BlockSeq(onPostReturn));                    
+          witnessI0Seq.Add(resBecomesWitnessI0);
+          //if post holds, then return
+          Bpl.GotoCmd tempIJPlus1 = new GotoCmd(NoToken, new BlockSeq(onPostReturn));
           Bpl.Block onGuardUpdateWitness = new Bpl.Block(NoToken, "onGuardUpdateWitness" + i.ToString(), witnessI0Seq, tempIJPlus1);
           //update previous goto's to try this witness if post didn't hold after previous update.
           gotoIPlus1.AddTarget(onGuardUpdateWitness);
           gotoIJPlus1.AddTarget(onGuardUpdateWitness);
           gotoIJPlus1 = (GotoCmd)(!)onGuardUpdateWitness.TransferCmd;
           gotoIPlus1 = nextIPlus1;
-          checkerImpl.Blocks.Add(onGuardUpdateWitness);                    
+          checkerImpl.Blocks.Add(onGuardUpdateWitness);
           //deal with duplicates by creating a block:
           //assume !post; $result = witness +- i; (+ or - depending on whether we are dealing with an upper- or lowerbound)
           //and let the block of witness + i update block goto the witness + (i+1) update block if the post does not hold
@@ -2360,10 +2363,10 @@ namespace Microsoft.Boogie
           for (int j = 1; j <= nrOfDups; j++) {
             if (isUpperbound)
               currentWitness = Bpl.Expr.Sub(witnessExpr, new Bpl.LiteralExpr(NoToken, BigNum.FromInt(j)));
-            else 
+            else
               currentWitness = Bpl.Expr.Add(witnessExpr, new Bpl.LiteralExpr(NoToken, BigNum.FromInt(j)));
-            Bpl.Cmd resBecomesWitnessIJ = this.GetWitnessAssignment(resultVar, currentWitness, thisVar, mfC);            
-            Bpl.Block updateIJBlock =  new Block(NoToken, "updateWitness" + i.ToString() + "_" + j.ToString(), new CmdSeq(assumeNotPost, resBecomesWitnessIJ), new Bpl.GotoCmd(NoToken, new BlockSeq()));  
+            Bpl.Cmd resBecomesWitnessIJ = this.GetWitnessAssignment(resultVar, currentWitness, thisVar, mfC);
+            Bpl.Block updateIJBlock =  new Block(NoToken, "updateWitness" + i.ToString() + "_" + j.ToString(), new CmdSeq(assumeNotPost, resBecomesWitnessIJ), new Bpl.GotoCmd(NoToken, new BlockSeq()));
             checkerImpl.Blocks.Add(updateIJBlock);
             gotoIJPlus1.AddTarget(updateIJBlock);
             gotoIJPlus1 = (GotoCmd)(!)updateIJBlock.TransferCmd;
@@ -2372,7 +2375,7 @@ namespace Microsoft.Boogie
         }
         //all witnesses processed, finish up
         //create the 'final' return block. The blocks that are still 'on the stack' must goto finalBlock.
-        Bpl.Block finalBlock = new Bpl.Block(NoToken, "returnBlock", new Bpl.CmdSeq(), new Bpl.ReturnCmd(NoToken));                  
+        Bpl.Block finalBlock = new Bpl.Block(NoToken, "returnBlock", new Bpl.CmdSeq(), new Bpl.ReturnCmd(NoToken));
         gotoIPlus1.labelTargets = new BlockSeq(finalBlock);
         gotoIPlus1.labelNames = new StringSeq(finalBlock.Label);
         gotoIJPlus1.labelTargets = new BlockSeq(finalBlock);
@@ -2380,24 +2383,24 @@ namespace Microsoft.Boogie
         if (mfC != null) {
           //For model field checks, add asserts to give the right error messages (these asserts should imply checkerSig's postcondition).
           //The witnesses should satisfy all satisifies clauses defined in this contract
-          //Additionally, they should satisfy all clauses of overridden contracts (the value of the modelfield is changed on a "pack as <type>", this change should not invalidate overridden contracts), 
-          //(note that clauses of implemented interface modelfields have been copied to mfC)              
-          for (Cci.ModelfieldContract currentMfC = mfC; currentMfC != null; currentMfC = currentMfC.NearestOverriddenContract) {        
+          //Additionally, they should satisfy all clauses of overridden contracts (the value of the modelfield is changed on a "pack as <type>", this change should not invalidate overridden contracts),
+          //(note that clauses of implemented interface modelfields have been copied to mfC)
+          for (Cci.ModelfieldContract currentMfC = mfC; currentMfC != null; currentMfC = currentMfC.NearestOverriddenContract) {
             foreach (Cci.Expression satClause in (!)currentMfC.SatisfiesList) {
               if (satClause == null) continue;
-              Bpl.Expr satExpr = exprTrans.TranslateExpression(satClause, Prelude.HeapName);                            
+              Bpl.Expr satExpr = exprTrans.TranslateExpression(satClause, Prelude.HeapName);
               finalBlock.Cmds.Add(Sink.Assert(satExpr, satClause, "The consistency of this satisfies clause could not be verified"));
             }
           }
-        }                            
+        }
         if (checkerImpl.Blocks.Count > 2) //if there is more than 1 witness, we need the assume Post; return; block.
           checkerImpl.Blocks.Add(onPostReturn);
-        checkerImpl.Blocks.Add(finalBlock);                                                                                                                             
-        
+        checkerImpl.Blocks.Add(finalBlock);
+
         #endregion //step 2
-    
+
     }
-    
+
     /// <summary>
     /// Helper method for AddConsistencyCheckerImplementation.
     /// If mfC == null, then returns result := witnessExpr, else returns $Heap[this,mf] := witnessExp
@@ -2408,24 +2411,24 @@ namespace Microsoft.Boogie
       Bpl.Cmd resBecomesWitness = null;
       if (mfC == null) {
         resBecomesWitness = Cmd.SimpleAssign(NoToken, (!)resultVar, witnessExpr); //result := witnessExpr
-      } else {          
-        Cci.Member! modF = (!)mfC.Modelfield;      
+      } else {
+        Cci.Member! modF = (!)mfC.Modelfield;
         Expr mf = this.Expr((Cci.Field)modF);
         resBecomesWitness = Cmd.MapAssign(NoToken, this.HeapExpr(), (!)thisVar, mf, witnessExpr); //$Heap[this, mf] := witnessExpr
       }
       return resBecomesWitness;
-    }                               
-    
+    }
+
     internal void AddType (Cci.TypeNode! type)
     {
         if (type.FullName == "<Module>") { return; }
-          
+
         // Peel off layers that don't matter here
         while (true) {
             if (type is Cci.ArrayType) {
                 // add supertype
                 AddType((!)Cci.SystemTypes.Array);
-                
+
                 type = ((Cci.ArrayType)type).ElementType;
             } else if (type is Cci.Reference) {
                 type = ((Cci.Reference)type).ElementType;
@@ -2488,7 +2491,7 @@ namespace Microsoft.Boogie
             if (c != null) {
               this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, c));
             }
-            
+
         } else if (type is Cci.Class || type is Cci.DelegateNode) {
             Bpl.Expr ty = TypeNameExpression(type);
 
@@ -2507,7 +2510,7 @@ namespace Microsoft.Boogie
                 Bpl.Expr bc = Function(Sink.BuiltinFunction.BaseClass, ty);
                 Bpl.Expr ads = Function(Sink.BuiltinFunction.AsDirectSubClass, ty, bc);
                 this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, Bpl.Expr.And(Bpl.Expr.Eq(bc, bt), Bpl.Expr.Eq(ads, ty))));
-                
+
                 superTypeDisjunction = Bpl.Expr.Or(superTypeDisjunction,
                                          Bpl.Expr.Subtype(bt, Sink.Ident(superK)));  // ... || baseType <: K
             }
@@ -2534,7 +2537,7 @@ namespace Microsoft.Boogie
                     AddType(intf);
                     // axiom T <: intf;
                     this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, Bpl.Expr.Subtype(ty, TypeNameExpression(intf))));
-                    
+
                     superTypeDisjunction = Bpl.Expr.Or(superTypeDisjunction,
                                              Bpl.Expr.Subtype(TypeNameExpression(intf), Sink.Ident(superK)));  // ... || intf <: K
                 }
@@ -2547,10 +2550,10 @@ namespace Microsoft.Boogie
               Bpl.Trigger trig = new Bpl.Trigger(NoToken, true, new Bpl.ExprSeq(lhs));
               this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(superK), trig, superBody)));
             }
-            
+
         } else if (type is Cci.Interface) {
             Bpl.Expr ty = TypeNameExpression(type);
-            
+
             // axiom T <: T;
             this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, Bpl.Expr.Subtype(ty, ty)));
 
@@ -2568,7 +2571,7 @@ namespace Microsoft.Boogie
                                              Bpl.Expr.Subtype(TypeNameExpression(intf), Sink.Ident(superK)));  // ... || intf <: K
                 }
             }
-            
+
             if (1 <= CommandLineOptions.Clo.OrderStrength) {
               // axiom (forall K :: {T <: K}  T <: K <==> T==K || superIntf0 <: K || ...)
               Bpl.Expr lhs = Bpl.Expr.Subtype(ty, Sink.Ident(superK));
@@ -2576,7 +2579,7 @@ namespace Microsoft.Boogie
               Bpl.Trigger trig = new Bpl.Trigger(NoToken, true, new Bpl.ExprSeq(lhs));
               this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(superK), trig, superBody)));
             }
-            
+
             // For types known to be immutable:
             //   $IsImmutable(T) && $AsImmutable(T) == T
             // (There are no interface types that are known to be mutable.)
@@ -2626,12 +2629,12 @@ namespace Microsoft.Boogie
             rhs = rhs == null ? p : Bpl.Expr.Or(rhs, p);
           }
           assert rhs != null;  // follows from enumValues.Count > 0
-          
+
           Bpl.Expr body = Bpl.Expr.Iff(lhs, rhs);
           Bpl.Trigger trig = new Bpl.Trigger(NoToken, true, new Bpl.ExprSeq(lhs));
           Bpl.Expr ax = new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(evVar), trig, body);
           this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, ax, "enum definition for " + type.FullName));
-          
+
         } else if (type is Cci.Struct){
           for (int i = 0, n = type.Interfaces == null ? 0 : type.Interfaces.Count; i < n; i++){
             Cci.Interface J = type.Interfaces[i];
@@ -2640,7 +2643,7 @@ namespace Microsoft.Boogie
             AddType(J);
             this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, Bpl.Expr.Subtype(TypeNameExpression(type), TypeNameExpression(J))));
           }
-        
+
           // axiom (forall $bx: ref :: { BoxTester($bx, T) } BoxTester($bx, T) != null ==> (exists $s: struct :: Box($s, $bx) == $bx));
           Bpl.Variable bxVar = Sink.BoundVar("$bx", RefType);
           Bpl.Expr bx = Sink.Ident(bxVar);
@@ -2654,7 +2657,7 @@ namespace Microsoft.Boogie
           this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, ax));
 
         }
-        
+
         if (!isGenericTypeParameter &&
             ((type.IsAbstract && type is Cci.Class) || type is Cci.Interface)) {
           // axiom $IsMemberlessType(T);
@@ -2673,25 +2676,25 @@ namespace Microsoft.Boogie
             // axiom forall U :: {U <: T} U <: T ==> U == T || U <: Sub0 || U <: Sub1 || ...);
             Bpl.Variable uVar = Sink.BoundVar("$U", TypeType);
             Bpl.Expr u = Sink.Ident(uVar);
-            
+
             Bpl.Expr lhs = Bpl.Expr.Subtype(u, TypeNameExpression(type));
             Bpl.Expr rhs = Bpl.Expr.Eq(u, TypeNameExpression(type));
             foreach (Cci.TypeNode sub in subtypes) {
               AddType(sub);
               rhs = Bpl.Expr.Or(rhs, Bpl.Expr.Subtype(u, TypeNameExpression(sub)));
             }
-            
+
             Bpl.Expr body = Bpl.Expr.Imp(lhs, rhs);
             Bpl.Trigger trig = new Bpl.Trigger(NoToken, true, new Bpl.ExprSeq(lhs));
             Bpl.Expr ax = new Bpl.ForallExpr(NoToken, new Bpl.VariableSeq(uVar), trig, body);
             this.toplevelDeclarations.Add(new Bpl.Axiom(NoToken, ax));
           }
         }
-            
+
         this.RecordInvariantFunction(type);
         this.HandleModelFields(type);
     }
-    
+
     /// <summary>
     /// Returns true iff it is known whether or not "type" is an Immutable type.
     /// If it returns true, "isImmutable" says whether or not "type" is an Immutable type.
@@ -2713,7 +2716,7 @@ namespace Microsoft.Boogie
       // all other types are mutable
       isImmutable = false;
       return true;
-    }  
+    }
     internal static string PrintableConstant (object value)
     {
       if (value == null) { return ""; }
@@ -2743,7 +2746,7 @@ namespace Microsoft.Boogie
     /// </summary>
     public Bpl.Expr! GetDeclaredInvariant (Cci.TypeNode! type, Bpl.Expr receiver, string! heapName) {
       Bpl.Expr d = null;
-      
+
       if (type is Cci.Class && type.Contract != null && type.Contract.InvariantCount > 0) {
         Cci.InvariantList invariants = type.Contract.Invariants;
         assert invariants != null;
@@ -2756,7 +2759,7 @@ namespace Microsoft.Boogie
             }
             Bpl.Expr e = new ExpressionTranslator(this,thisReplacement,null,null,null).TranslateExpression(inv.Condition, heapName);
             e = QuantifyOverActivityIndicator(e);
-            
+
             if (d == null) {
               d = e;
             } else {
@@ -2802,7 +2805,7 @@ namespace Microsoft.Boogie
         return nameConsts;
       }
     }
-    
+
     private readonly Duplicator! duplicator = new Bpl.Duplicator ();
     internal Bpl.Expr! Clone(Bpl.Expr! expr) {
       return (Bpl.Expr!)duplicator.Visit(expr);
@@ -2816,7 +2819,7 @@ namespace Microsoft.Boogie
     bool IsInParameter (int i);
     bool IsOutParameter (int i);
   }
-  
+
   public class MethodParameters : ParameterInfo
   {
     private Cci.ParameterList parameters;
@@ -2825,7 +2828,7 @@ namespace Microsoft.Boogie
     public bool IsInParameter (int i) {assume this.parameters != null; return Sink.IsInParameter( (!) this.parameters[i]); }
     public bool IsOutParameter (int i) {assume this.parameters != null; return Sink.IsOutParameter( (!) this.parameters[i]); }
   }
-   
+
   public class FunctionPointerParameters : ParameterInfo
   {
     private Cci.FunctionPointer! fp;

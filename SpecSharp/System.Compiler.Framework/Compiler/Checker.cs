@@ -82,6 +82,7 @@ namespace System.Compiler {
     }
     public Checker(Visitor callingVisitor)
       : base(callingVisitor) {
+      this.MayNotReferenceThisFromFieldInitializer = true;
     }
     public override void TransferStateTo(Visitor targetVisitor) {
       base.TransferStateTo(targetVisitor);
@@ -165,8 +166,8 @@ namespace System.Compiler {
       exprType = TypeNode.StripModifiers(exprType);
       Reference refType = exprType as Reference;
       if (refType != null) {
-        // Change to highlight an issue: elementType can be an optional modifier, 
-        // in which case pointerType will be null. Is this the intention? 
+        // Change to highlight an issue: elementType can be an optional modifier,
+        // in which case pointerType will be null. Is this the intention?
         TypeNode elementType = refType.ElementType;//TypeNode.StripModifiers(refType.ElementType);
         Pointer pointerType = elementType as Pointer;
         if (pointerType != null) {
@@ -472,7 +473,7 @@ namespace System.Compiler {
         assignment.Operator = NodeType.Nop;
         if (!t.IsPrimitiveNumeric && t != SystemTypes.Char && t != SystemTypes.Boolean && assignment.OperatorOverload == null &&
           (assignment.UnifiedType == null || !assignment.UnifiedType.IsPrimitiveNumeric) &&
-          oper != NodeType.AddEventHandler && oper != NodeType.RemoveEventHandler && 
+          oper != NodeType.AddEventHandler && oper != NodeType.RemoveEventHandler &&
           !(t is DelegateNode && (source.NodeType == NodeType.Add || source.NodeType == NodeType.Sub)) && !(t is EnumNode)) {
           this.HandleError(assignment, Error.BadBinaryOps,
             this.GetOperatorSymbol(oper), this.GetTypeName(t), this.GetTypeName(assignment.Source.Type));
@@ -770,7 +771,7 @@ namespace System.Compiler {
       if (e.NodeType == NodeType.Typeof) return true;
       Literal lit = e as Literal;
       if (lit != null) {
-        if (this.IsValidTypeForLiteral(e.Type) || 
+        if (this.IsValidTypeForLiteral(e.Type) ||
           (e.Type == SystemTypes.Object && lit.Value == null) ||
           (e.Type is ArrayType && ((ArrayType)e.Type).ElementType == SystemTypes.Type && lit.Value is TypeNode[])) return true;
         this.HandleError(offendingNode, Error.BadAttributeParam, this.GetTypeName(e.Type));
@@ -1831,7 +1832,7 @@ namespace System.Compiler {
       opnd2Type = this.typeSystem.RemoveNullableWrapper(opnd2Type);
       resultType = this.typeSystem.RemoveNullableWrapper(resultType);
       Error error = Error.BadBinaryOps;
-      if (!resultType.IsPrimitiveNumeric && 
+      if (!resultType.IsPrimitiveNumeric &&
         !(resultType is EnumNode && !(opnd1Type is EnumNode && opnd2Type is EnumNode)) &&
         !(resultType == SystemTypes.Char && opnd1Type == SystemTypes.Char && opnd2Type == SystemTypes.Char)) {
         if (opnd1 is Literal && opnd1Type == SystemTypes.Type) {
@@ -2088,7 +2089,7 @@ namespace System.Compiler {
       Debug.Assert(publicKey.Length == (shadowedAssembly.PublicKeyToken == null ? 0 : shadowedAssembly.PublicKeyToken.Length) * 2);
       return new AttributeNode(
           new MemberBinding(null, SystemTypes.ShadowsAssemblyAttribute.GetConstructor(SystemTypes.String, SystemTypes.String, SystemTypes.String)),
-          new ExpressionList(new Expression[] { 
+          new ExpressionList(new Expression[] {
               new Literal(publicKey, SystemTypes.String),
               new Literal(shadowedAssembly.Version == null ? "0.0" : shadowedAssembly.Version.ToString(), SystemTypes.String),
               new Literal(shadowedAssembly.Name, SystemTypes.String)
@@ -2174,7 +2175,7 @@ namespace System.Compiler {
           MemberList members = this.GetTypeView(t).GetConstructors();
           int n = members == null ? 0 : members.Count;
           if (n == 0) {
-            if ((cons.Operands == null || cons.Operands.Count == 0) && t is ITypeParameter && 
+            if ((cons.Operands == null || cons.Operands.Count == 0) && t is ITypeParameter &&
               (((ITypeParameter)t).TypeParameterFlags & (TypeParameterFlags.DefaultConstructorConstraint|TypeParameterFlags.ValueTypeConstraint)) != 0) {
               if (this.useGenerics) {
                 Method createInstance = Runtime.GenericCreateInstance.GetTemplateInstance(this.currentType, t);
@@ -2218,7 +2219,7 @@ namespace System.Compiler {
         return null;
       }
       this.CheckForObsolesence(cons, c);
-      if (!(c.DeclaringType is DelegateNode) || 
+      if (!(c.DeclaringType is DelegateNode) ||
         !(cons.Operands != null && cons.Operands.Count == 2 && (cons.Operands[0].NodeType == NodeType.AnonymousNestedFunction)))
         this.CoerceArguments(c.Parameters, ref cons.Operands, false, c.CallingConvention);
       if (cons.Owner != null) {
@@ -2255,7 +2256,7 @@ namespace System.Compiler {
         TypeNode elementType = TypeNode.StripModifiers(parameters[m-1].GetParamArrayElementType());
         TypeNode lastArgType = null;
         if (elementType != null && (n > m || (n == m - 1) || n == m
-          && (lastArgType = TypeNode.StripModifiers(arguments[m-1].Type)) != null && 
+          && (lastArgType = TypeNode.StripModifiers(arguments[m-1].Type)) != null &&
               !this.GetTypeView(lastArgType).IsAssignableTo(TypeNode.StripModifiers(parameters[m-1].Type)) &&
           !(arguments[m-1].Type == SystemTypes.Object && arguments[m-1] is Literal && ((Literal)arguments[m-1]).Value == null))) {
           ExpressionList varargs = new ExpressionList(n-m+1);
@@ -2340,7 +2341,7 @@ namespace System.Compiler {
     }
 
     protected virtual bool DoNotVisitArguments(Method m) {
-      return false; 
+      return false;
     }
 
     public virtual Expression CoerceArgument(Expression argument, Parameter p) {
@@ -2635,7 +2636,7 @@ namespace System.Compiler {
       }
       //TODO: deal with MarshalAs
 
-      // ElementsRep and ElementsPeer may only be attached to arrays and subtypes of IEnumerable and IEnumerable-like types     
+      // ElementsRep and ElementsPeer may only be attached to arrays and subtypes of IEnumerable and IEnumerable-like types
       TypeNode fieldType = TypeNode.StripModifiers(field.Type);
       if (fieldType != null &&
            (attr.Type == SystemTypes.ElementsRepAttribute || attr.Type == SystemTypes.ElementsPeerAttribute) &&
@@ -3088,13 +3089,13 @@ namespace System.Compiler {
       bool savedInsideModelfield = this.insideModelfield;
       this.insideModelfield = true;
       bool savedMayRef = this.MayReferenceThisAndBase;
-      this.MayReferenceThisAndBase = true;  //Allow this and base to be mentioned in witness and satisifes clauses. 
-      //If there is a(n explicitly specified) witness, then check that the type of the witness is a subtype of the type of the modelfield      
+      this.MayReferenceThisAndBase = true;  //Allow this and base to be mentioned in witness and satisifes clauses.
+      //If there is a(n explicitly specified) witness, then check that the type of the witness is a subtype of the type of the modelfield
       if (mfC.Witness != null) {
         this.typeSystem.ImplicitCoercion(mfC.Witness, mfC.ModelfieldType, this.TypeViewer); //perhaps we want a different error? now shows "cannot implicitly convert type A to type B".
         mfC.Witness = this.VisitExpression(mfC.Witness);
       }
-      mfC.SatisfiesList = this.VisitBooleanExpressionList(mfC.SatisfiesList); //satisfies expressions must have type boolean.        
+      mfC.SatisfiesList = this.VisitBooleanExpressionList(mfC.SatisfiesList); //satisfies expressions must have type boolean.
       this.MayReferenceThisAndBase = savedMayRef;
       this.insideModelfield = savedInsideModelfield;
       return mfC;
@@ -3242,7 +3243,7 @@ namespace System.Compiler {
             return null;
           }
         }
-        if (!this.MayReferenceThisAndBase && !(memType is Scope) && !this.insideInvariant) {
+        if (!this.NotAccessible(mem) && !this.MayReferenceThisAndBase && !(memType is Scope) && !this.insideInvariant) {
           this.HandleError(memberBinding, Error.ObjectRequired, this.GetMemberSignature(mem));
           return null;
         }
@@ -3266,7 +3267,7 @@ namespace System.Compiler {
         if (prop != null && memType != null && memType.IsValueType)
           target = memberBinding.TargetObject = new UnaryExpression(target, NodeType.AddressOf, memType.GetReferenceType());
       }
-      if (errorIfCurrentMethodIsStatic && 
+      if (errorIfCurrentMethodIsStatic &&
         ((this.currentMethod != null && this.currentMethod.IsStatic) || (this.currentField != null && this.currentField.IsStatic))) {
         this.HandleError(memberBinding, Error.ObjectRequired, this.GetMemberSignature(mem));
         return null;
@@ -3330,7 +3331,7 @@ namespace System.Compiler {
               e = Error.AssignmentToFixedVariable;
             else if (f.IsCompilerControlled && f.DeclaringType is BlockScope)
               f.Flags |= FieldFlags.Public;  //Do not give error on first assignment to controlled variable (such as foreach target var)
-            else if ((f.DeclaringType != this.currentType && f.DeclaringType != null && !this.currentType.IsStructurallyEquivalentTo(f.DeclaringType.Template)) || 
+            else if ((f.DeclaringType != this.currentType && f.DeclaringType != null && !this.currentType.IsStructurallyEquivalentTo(f.DeclaringType.Template)) ||
             !((this.currentMethod is InstanceInitializer && (target is This || target is ImplicitThis)) ||
               (this.currentMethod is StaticInitializer && target == null))) {
               if (f.DeclaringType is BlockScope || f.DeclaringType is MethodScope)
@@ -3392,7 +3393,16 @@ namespace System.Compiler {
       }
       return this.shadowedAssembly.GetType(Identifier.Empty, tn.Name);
     }
-    public override Method VisitMethod(Method method) {
+
+    public override Method VisitMethod(Method method)
+    {
+      bool oldMayReferenceThisAndBase = MayReferenceThisAndBase;
+      Method result = VisitMethodHelper(method);
+      MayReferenceThisAndBase = oldMayReferenceThisAndBase;
+      return result;
+    }
+
+    private Method VisitMethodHelper(Method method) {
       if (method == null) return null;
       if (method.IsNormalized) return method;
       this.MayReferenceThisAndBase = !(method is InstanceInitializer) || method.DeclaringType == null || method.DeclaringType.IsValueType;
@@ -3402,7 +3412,7 @@ namespace System.Compiler {
       method.Attributes = this.VisitAttributeList(method.Attributes, method);
       method.ReturnAttributes = this.VisitAttributeList(method.ReturnAttributes);
       method.SecurityAttributes = this.VisitSecurityAttributeList(method.SecurityAttributes);
-      if ((method.ReturnType == SystemTypes.DynamicallyTypedReference || method.ReturnType == SystemTypes.ArgIterator) && 
+      if ((method.ReturnType == SystemTypes.DynamicallyTypedReference || method.ReturnType == SystemTypes.ArgIterator) &&
       (this.currentOptions == null || !this.currentOptions.NoStandardLibrary) ) {
         this.HandleError(method.Name, Error.CannotReturnTypedReference, this.GetTypeName(method.ReturnType));
         method.ReturnType = SystemTypes.Object;
@@ -3442,7 +3452,7 @@ namespace System.Compiler {
       this.CheckForDuplicateDeclarations(scope);
 
       if ((this.currentPreprocessorDefinedSymbols != null && this.currentPreprocessorDefinedSymbols.ContainsKey("DefaultExposeBlocks")) &&
-        !method.IsStatic && !(method is InstanceInitializer) && method.DeclaringType is Class && 
+        !method.IsStatic && !(method is InstanceInitializer) && method.DeclaringType is Class &&
         !method.IsAbstract && method.CciKind == CciMemberKind.Regular && method.ApplyDefaultContract) {
         This thisOb = method.ThisParameter;
         MethodCall thisIsExposable = new MethodCall(
@@ -3526,12 +3536,12 @@ namespace System.Compiler {
             ifaceContractWasCopied = true;
           }
         }
-        if (method.Contract == null && somethingWasCopied) { // otherwise it was already copied into the method's contract 
+        if (method.Contract == null && somethingWasCopied) { // otherwise it was already copied into the method's contract
           method.Contract = cumulativeContract;
         }
       }
       #endregion
-      
+
       // For checked exceptions, the actual exceptions thrown must be a subset of the allowed exceptions
       TypeNodeList aes = new TypeNodeList();
       if (method.Contract != null && method.Contract.Ensures != null) {
@@ -3677,7 +3687,7 @@ namespace System.Compiler {
 
     /// <summary>
     /// Need to have this override so that inherited postconditions are not
-    /// checked again. 
+    /// checked again.
     /// </summary>
     /// <param name="Ensures"></param>
     /// <returns></returns>
@@ -3924,6 +3934,7 @@ namespace System.Compiler {
       rMods.Add(rMod);
       return mod;
     }
+
     public override Expression VisitMethodCall(MethodCall call) {
       if (call == null) return null;
       NameBinding nb = call.Callee as NameBinding;
@@ -4059,7 +4070,7 @@ namespace System.Compiler {
           this.MayReferenceThisAndBase = true;  //Base class constructor has been called
         } else if ((this.currentMethod == null && !this.insideModelfield // this is true when it is visited as part of a field initializer
                     || !this.MayReferenceThisAndBase) // this is true when it is visited as part of a ctor with an explicit call to base in the body
-                   && !this.AllowThisTarget(method) && !this.insideInvariant) {
+                    && !this.AllowThisTarget(method) && !this.insideInvariant) {
           if (mb.TargetObject is ImplicitThis) {
             this.HandleError(mb, Error.ObjectRequired, this.GetMethodSignature(method, true));
           } else if (mb.TargetObject is Base) {
@@ -4507,7 +4518,7 @@ namespace System.Compiler {
     /// This method checks all of the methods in a class or structure to make sure that
     /// if the method implements an interface method (either explicitly or implicitly),
     /// then the contract inheritance rules are not violated.
-    /// 
+    ///
     /// It also introduces the default expose block around the body of whichever methods
     /// should get the default.
     /// </summary>
@@ -4597,7 +4608,7 @@ namespace System.Compiler {
 
     /// <summary>
     /// Need to have this override so that inherited preconditions are not
-    /// checked again. 
+    /// checked again.
     /// </summary>
     /// <param name="Requires"></param>
     /// <returns></returns>
@@ -4723,9 +4734,9 @@ namespace System.Compiler {
       }
       this.insideMethodContract = savedInsideMethodContract;
       this.typeSystem.insideUnsafeCode = savedUnsafe;
-      this.yieldNode = savedYield;      
+      this.yieldNode = savedYield;
       return contract;
-    }    
+    }
     public override Module VisitModule(Module module) {
       if (module == null) return null;
       this.currentModule = module;
@@ -5098,8 +5109,8 @@ namespace System.Compiler {
 
     public override Expression VisitQualifiedIdentifier(QualifiedIdentifier qualifiedIdentifier) {
       //At this stage, the only way a quantified identifier can exist without the program being in error is
-      //when the reference is to a modelfield of a class C that was inherited from an interface, but not implemented explicity by C  
-      //TODO: Check if this is the case, and resolve the qualified identifier to a memberbinding.      
+      //when the reference is to a modelfield of a class C that was inherited from an interface, but not implemented explicity by C
+      //TODO: Check if this is the case, and resolve the qualified identifier to a memberbinding.
       //Otherwise:
       //Report the error and remove this node from the tree
       if (qualifiedIdentifier == null) return null;
@@ -5266,7 +5277,7 @@ namespace System.Compiler {
         this.HandleError(qd.Source, Error.QueryBadDeleteTarget);
         return null;
       }
-      Expression collection = qd.SourceEnumerable = (qd.Target == null) ? ((QueryIterator)source).Expression : 
+      Expression collection = qd.SourceEnumerable = (qd.Target == null) ? ((QueryIterator)source).Expression :
         GetSourceCollection(source, qd.Target.Type);
       TypeNode elementType = this.typeSystem.GetStreamElementType(collection, this.TypeViewer);
 
@@ -5544,7 +5555,7 @@ namespace System.Compiler {
         this.HandleError(ql, Error.QueryBadLimitNotLiteral);
         return null;
       } else if (!this.typeSystem.ImplicitCoercionFromTo(ql.Expression.Type, SystemTypes.Int64, this.TypeViewer)) {
-        if (!this.typeSystem.ImplicitCoercionFromTo(ql.Expression.Type, SystemTypes.Double, this.TypeViewer) && 
+        if (!this.typeSystem.ImplicitCoercionFromTo(ql.Expression.Type, SystemTypes.Double, this.TypeViewer) &&
           !this.typeSystem.ImplicitCoercionFromTo(ql.Expression.Type, SystemTypes.Decimal, this.TypeViewer)) {
           this.HandleError(ql.Expression, Error.QueryBadLimit);
           return null;
@@ -5657,7 +5668,7 @@ namespace System.Compiler {
       }
       if (qqe.Type == null) return null;
       // TODO: we need to insert the same logic as the one used in an if statement
-      if (!this.typeSystem.ImplicitCoercionFromTo(qqe.Type, SystemTypes.Boolean, this.TypeViewer) && 
+      if (!this.typeSystem.ImplicitCoercionFromTo(qqe.Type, SystemTypes.Boolean, this.TypeViewer) &&
         !this.typeSystem.ImplicitCoercionFromTo(qqe.Type, SystemTypes.SqlBoolean, this.TypeViewer)) {
         this.HandleError(qqe, Error.QueryBadQuantifiedExpression);
         return null;
@@ -5846,7 +5857,7 @@ namespace System.Compiler {
           if (nb != null) {
             for (int i = 0, n = nb.BoundMembers == null ? 0 : nb.BoundMembers.Count; i < n; i++) {
               Member mem = nb.BoundMembers[i];
-              if (mem is Field || mem is TypeNode || mem is Event || 
+              if (mem is Field || mem is TypeNode || mem is Event ||
                 (mem is Property && (((Property)mem).Parameters == null || ((Property)mem).Parameters.Count == 0))) {
                 offendingMember = mem; break;
               }
@@ -6267,7 +6278,7 @@ namespace System.Compiler {
             if (swlit != null && swlit.Value != null && lit.Value != null && !swlit.Value.Equals(lit.Value)) {
               this.HandleError(scase, Error.UnreachableCode);
               if (scase.Body != null && scase.Body.Statements != null && scase.Body.Statements.Count > 0 &&
-                scase.Body.Statements[scase.Body.Statements.Count-1] != null && 
+                scase.Body.Statements[scase.Body.Statements.Count-1] != null &&
                 scase.Body.Statements[scase.Body.Statements.Count-1].NodeType == NodeType.SwitchCaseBottom)
                 scase.Body.Statements[scase.Body.Statements.Count-1] = null;
               scase.IsErroneous = true;
@@ -6413,9 +6424,9 @@ namespace System.Compiler {
     }
     public override Expression VisitThis(This This) {
       if (!this.MayReferenceThisAndBase &&
-        (this.currentMethod == null // this is true when it is visited as part of a field initializer
-        ||
-        !this.insideInvariant // this is true when it is visited as part of a ctor with an explicit call to base in the body        
+          (this.currentMethod == null // this is true when it is visited as part of a field initializer
+           ||
+           !this.insideInvariant // this is true when it is visited as part of a ctor with an explicit call to base in the body
         )) {
         this.HandleError(This, Error.ThisInBadContext);
         return null;
@@ -6768,7 +6779,7 @@ namespace System.Compiler {
       }
       typeNode.Attributes = this.VisitAttributeList(typeNode.Attributes, typeNode);
       this.currentType = this.typeSystem.currentType = typeNode;
-      this.CheckHidingAndOverriding(typeNode);            
+      this.CheckHidingAndOverriding(typeNode);
       #region Deal with modelfields that are inherited from implemented interfaces.
       if (typeNode is Class) {
         StringCollection implementedModelfields = new StringCollection(); //contains the names of modelfields implemented so far
@@ -6784,7 +6795,7 @@ namespace System.Compiler {
               {
                 this.HandleError(typeNode, Error.GenericError, "Class " + typeNode.Name.Name + " cannot implement two interfaces that both define a model field " + fieldnameToImplement);
                 continue; //ignore this contract
-                //Disallowed to prevent the unexpected modification of a modelfield in one interface by changing a modelfield in another interface.              
+                //Disallowed to prevent the unexpected modification of a modelfield in one interface by changing a modelfield in another interface.
               }
               else
               {
@@ -6824,7 +6835,7 @@ namespace System.Compiler {
                 if (implementingMember != null)
                 {
                   //typeNode defines a modelfield (i.e., implementingMember) that can implement mfCToImplement
-                  Debug.Assert(typeNode.Contract != null); //a class that defines a modelfield must have a modelfieldcontract that applies to it. 
+                  Debug.Assert(typeNode.Contract != null); //a class that defines a modelfield must have a modelfieldcontract that applies to it.
                   foreach (ModelfieldContract mfC in typeNode.Contract.ModelfieldContracts)
                     if (mfC.Modelfield == implementingMember)
                     {
@@ -6835,7 +6846,7 @@ namespace System.Compiler {
                 }
                 #endregion
                 #region if there is no implementingMember: add a new modelfield + contract to typeNode and store contract in mfCThatImplements
-                //TODO: Unfortunately, qualified identifiers have already been resolved: currently references to the modelfield will produce an error. 
+                //TODO: Unfortunately, qualified identifiers have already been resolved: currently references to the modelfield will produce an error.
                 if (implementingMember == null)
                 {
                   Identifier mfIdent = new Identifier(mfCToImplement.Modelfield.Name.Name);
@@ -6849,11 +6860,11 @@ namespace System.Compiler {
                 }
                 #endregion
                 #region Implement the property and property getter that represent mfCToImplement, let getter return mfCThatImplements.Modelfield
-                //assert typeNode.Contract.ModelfieldContracts.Contains(mfCThatImplements); 
+                //assert typeNode.Contract.ModelfieldContracts.Contains(mfCThatImplements);
                 //create Property:
                 //  public <mfCThatImplements.ModelfieldType> <mfCThatImplements.Modelfield.Name>
                 //    ensures result == <mfCThatImplements.Modelfield>;
-                //  { [Confined] get { return <mfCThatImplements.Modelfield>; }  } 
+                //  { [Confined] get { return <mfCThatImplements.Modelfield>; }  }
                 //  Note that getter needs to be confined because it inherits NoDefaultContract
                 MemberBinding thisMf = new MemberBinding(new This(typeNode), mfCThatImplements.Modelfield);
                 Statement ret = new Return(thisMf);
@@ -6898,19 +6909,19 @@ namespace System.Compiler {
       this.CheckCircularDependency(typeNode);
       this.CheckForDuplicateDeclarations(typeNode);
       // must do this *after* CheckForDuplicateDeclarations
-      this.CheckForInterfaceImplementationsOfOutOfBandContractedMethods(typeNode);      
+      this.CheckForInterfaceImplementationsOfOutOfBandContractedMethods(typeNode);
       this.CheckOperatorOverloads(typeNode);
       if (typeNode is Class && typeNode.IsSealed)
         this.CheckForNewFamilyOrVirtualMembers(typeNode);
       this.VisitTemplateInstanceTypes(typeNode);
-      this.CheckContractInheritance(typeNode);      
-      TypeNode result = base.VisitTypeNode(typeNode);           
-      
+      this.CheckContractInheritance(typeNode);
+      TypeNode result = base.VisitTypeNode(typeNode);
+
       #region infer and serialize witnesses where needed (for modelfields and pure methods). ALSO infers postconditions.
       if (this.currentOptions != null && !this.currentOptions.DisablePublicContractsMetadata && !this.currentOptions.DisableInternalContractsMetadata) {
-        //Note that this code could move to the boogie end, except that we need a runtime witness for modelfields.      
+        //Note that this code could move to the boogie end, except that we need a runtime witness for modelfields.
         //We need to show that the contract of a modelfield mf is consistent in order to use the associated axioms.
-        //An inferred witness is a guess at an expression e that will satisfy the contract, i.e., 
+        //An inferred witness is a guess at an expression e that will satisfy the contract, i.e.,
         //an expression e such that for each satisfies clause p, p[e/mf] holds. Checking this witness is left to Boogie.
         if (typeNode.Contract != null) {
           foreach (ModelfieldContract mfC in typeNode.Contract.ModelfieldContracts) {
@@ -6930,7 +6941,7 @@ namespace System.Compiler {
               if (witnesses.RuntimeWitness != null)
                 mfC.Witness = witnesses.RuntimeWitness;
               else
-                mfC.Witness = this.GetInferredWitness(mfC); //this calculates a runtime witness 
+                mfC.Witness = this.GetInferredWitness(mfC); //this calculates a runtime witness
             }
           }
         }
@@ -6939,12 +6950,12 @@ namespace System.Compiler {
           if (method == null || method.ReturnType == null) continue;
           if (!method.IsPure && !method.IsConfined && !method.IsStateIndependent) continue;
           if (method.CciKind != CciMemberKind.Regular) continue; //no need to check consistency of methodology method contracts
-          if (method.ReturnType == SystemTypes.Void) continue; //no witness needed for void        
+          if (method.ReturnType == SystemTypes.Void) continue; //no witness needed for void
           #region infer potential method contract witnesses and add them as WitnessAttributes
-          //A pure method can be used in specifications and assert statements. 
+          //A pure method can be used in specifications and assert statements.
           //Therefore, we need to show that the contract of a pure method is consistent in order to use purity axioms.
-          //An inferred witness is a guess at an expression e that will satisfy all postconditions, i.e., 
-          //an expression e such that for each postcondition p, p[e/result] holds. Checking this witness is left to Boogie.                
+          //An inferred witness is a guess at an expression e that will satisfy all postconditions, i.e.,
+          //an expression e such that for each postcondition p, p[e/result] holds. Checking this witness is left to Boogie.
           Expression postcondition = null;
           if (method.Contract != null) {
             foreach (Ensures ens in method.Contract.Ensures) {
@@ -6960,7 +6971,7 @@ namespace System.Compiler {
           #region find witnesses in method code and infer postconditions
           if (method.Body != null && method.Body.Statements != null) {
             WitnessFromCodeFinderVisitor codeWitnessFinder = new WitnessFromCodeFinderVisitor();
-            if (!method.IsVirtual && //don't infer postcondition: the absence might be intentional, to give overriding method more freedom               
+            if (!method.IsVirtual && //don't infer postcondition: the absence might be intentional, to give overriding method more freedom
                 (method.Contract == null || method.Contract.Ensures.Count == 0)) //don't infer post if user specified a postcondition
           { //look for inferred postconditions
               codeWitnessFinder.methodToInferPostFrom = method;
@@ -6983,12 +6994,12 @@ namespace System.Compiler {
       // Note that this (possibly) adds things to the Attributes of the typeNode
       // Those attribute nodes will not be checked as part of Checker
       this.SerializeContracts(typeNode);
-      
+
 
       this.currentType = this.typeSystem.currentType = savedCurrentType;
       return result;
     }
-    
+
     public virtual void SerializeContracts(TypeNode type) {
       Debug.Assert(type != null);
       if (type.Contract != null && this.currentOptions != null && !this.currentOptions.DisableInternalContractsMetadata) {
@@ -7007,10 +7018,10 @@ namespace System.Compiler {
         #endregion
         #region if type is a class, then serialize its modelfieldcontracts
         foreach (ModelfieldContract mfC in contract.ModelfieldContracts) {
-          if (!(type is Class)) break;          
+          if (!(type is Class)) break;
           #region Adorn type with ModelfieldContractAttribute containing serialized modelfield and witness of mfC
           Debug.Assert(mfC != null);  //something's wrong in the code.
-          if (mfC.Witness == null) continue; //something's wrong in the input ssc (but should already have dealt with)  
+          if (mfC.Witness == null) continue; //something's wrong in the input ssc (but should already have dealt with)
           MemberBinding thisMf = new MemberBinding(new This(mfC.Modelfield.DeclaringType), mfC.Modelfield);
           InstanceInitializer wCtor = SystemTypes.ModelfieldContractAttribute.GetConstructor(SystemTypes.String, SystemTypes.String);
           AttributeNode a = Checker.SerializeExpressions(wCtor, new ExpressionList(thisMf, mfC.Witness), mfC.Witness.SourceContext, this.currentModule);
@@ -7019,7 +7030,7 @@ namespace System.Compiler {
           #region For each satisfies clause of mfC, adorn type with SatisfiesAttributes containing serialized field + clauseConjunct
           foreach (Expression satClause in mfC.SatisfiesList) {
             if (satClause == null) continue; //don't report error, has already been done.
-            foreach (Expression satConjunct in SplitConjuncts(satClause)) { //storing the conjuncts individually allows better error reporting 
+            foreach (Expression satConjunct in SplitConjuncts(satClause)) { //storing the conjuncts individually allows better error reporting
               InstanceInitializer ctor = SystemTypes.SatisfiesAttribute.GetConstructor(SystemTypes.String, SystemTypes.String);
               AttributeNode attr = Checker.SerializeExpressions(ctor, new ExpressionList(thisMf, satConjunct), satConjunct.SourceContext, this.currentModule);
               type.Attributes.Add(attr);
@@ -7037,53 +7048,53 @@ namespace System.Compiler {
           m.Attributes.Add(new AttributeNode(attrBinding, null));
           #endregion
         }
-        Method meth = m as Method;        
+        Method meth = m as Method;
         if (meth != null && meth.Contract != null) {
           if (meth.IsVisibleOutsideAssembly ? !(this.currentOptions != null && this.currentOptions.DisablePublicContractsMetadata) : !(this.currentOptions != null && this.currentOptions.DisableInternalContractsMetadata))
             this.SerializeMethodContract(meth.Contract);
-        }        
+        }
       }
     }
 
-    #region getWitness from expressions    
+    #region getWitness from expressions
 
     protected static WUCs GetWitnesses(Expression e, Member modelfield, TypeNode/*!*/ witnessType) {
-      Debug.Assert(witnessType != null);      
+      Debug.Assert(witnessType != null);
       WUCs result = new WUCs();
       if (witnessType == SystemTypes.Boolean) {
         //enumerate over all possible witness: i.e, true and false
         result.Exact.Add(new WitnessUnderConstruction(new Literal(true, SystemTypes.Boolean), null, 0));
         result.Exact.Add(new WitnessUnderConstruction(new Literal(false, SystemTypes.Boolean), null, 0));
       } else if (witnessType.NodeType == NodeType.EnumNode) {
-        //enumerate over all possible witnesses: i.e., the members of the enum          
+        //enumerate over all possible witnesses: i.e., the members of the enum
         for (int i = 0; i < witnessType.Members.Count; i++ )
           result.Exact.Add(new WitnessUnderConstruction(new Literal(i, witnessType), null, 0));
-      } else {        
+      } else {
         //search for witnesses in expression e
         if (e != null)
           result = Checker.GetWUCs(e, modelfield, witnessType);
         if (result.Exact.Count > 0)
           result.RuntimeWitness = result.Exact[0].Witness;  //pick one of the exact witnesses as the runtime witness
-        //Now need to add the default witness(es) to the mix. 
+        //Now need to add the default witness(es) to the mix.
         //Toss in (WUC.Neqs.Count + 1) defaultWitnesses (note that the nr of duplicates is not useful unless witnessType is numeric, but ok).
         //doesn't really matter if we treat the default as exact, upper or lower bound as it is only aiming at branches that contain no witnesses.
         foreach (Expression defaultWitness in Checker.GetDefaultWitnesses(witnessType))
-          result.Exact.Add(new WitnessUnderConstruction(defaultWitness, null, result.Neqs.Count));            
+          result.Exact.Add(new WitnessUnderConstruction(defaultWitness, null, result.Neqs.Count));
         #region reverse the order of the Exact witnesses
-        //want to add defaults as the first elements, as the default witness will not give an exception -> add to exact. Note that that might break the 
+        //want to add defaults as the first elements, as the default witness will not give an exception -> add to exact. Note that that might break the
         //invariant that exact-elements have NrOfDuplicates == 0.
-        List<WitnessUnderConstruction> exactWithDefault = new List<WitnessUnderConstruction>();      
+        List<WitnessUnderConstruction> exactWithDefault = new List<WitnessUnderConstruction>();
         for (int i = 0; i < result.Exact.Count; i++)
           exactWithDefault.Add(result.Exact[i]);
         result.Exact = exactWithDefault;
-        #endregion    
+        #endregion
       }
       return result;
     }
 
     /// <param name="e">the expression for which we are trying to find possible witnesses of consistency</param>
     /// <param name="modelfield">the modelfield for which we are trying to find a witness, or null if we are looking for result in a method postcondition</param>
-    /// <param name="witnessType">the type of the witness we are looking for</param>    
+    /// <param name="witnessType">the type of the witness we are looking for</param>
     protected static WUCs GetWUCs(Expression e, Member modelfield, TypeNode witnessType) {
       WUCs result = new WUCs();
       BinaryExpression be = e as BinaryExpression;
@@ -7097,7 +7108,7 @@ namespace System.Compiler {
         if (inferredWitness != null) {
           WitnessUnderConstruction wuc = new WitnessUnderConstruction(inferredWitness, null, 0);
           if (nt == NodeType.Eq || nt == NodeType.Iff)
-            result.Exact.Add(wuc); //found result <==> P. Then P is the only potential witness.            
+            result.Exact.Add(wuc); //found result <==> P. Then P is the only potential witness.
           else {
             //When we find one of the numeric operators, we can assume that witnessType is numeric,
             //as otherwise the type checker will have produced an error.
@@ -7130,13 +7141,13 @@ namespace System.Compiler {
           lhsWUCs.Duplicate(rhsWUCs.Neqs.Count);
           rhsWUCs.Duplicate(lhsWUCs.Neqs.Count);
           //It might be that the right-hand side witnesses are total only given the validity of the be.Operand1.
-          //Therefore, we want to guard these witnesses by be.Operand1. However, if be.Operand1 contains the modelfield/result value, 
+          //Therefore, we want to guard these witnesses by be.Operand1. However, if be.Operand1 contains the modelfield/result value,
           //that trick is not going to work: it needs to be evaluated with the witness as its value.
           //i.e., if the witness is only total when be.operand1 holds, then it is not a good witness when be.operand1 requires its evaluation.
           if (nt == NodeType.LogicalAnd && lhsWUCs.IsEmpty)
             rhsWUCs.Guard(be.Operand1);
         } else if (nt == NodeType.LogicalOr) {
-          //No need to increase duplicates for || (or |). But we can guard the rhs by !(lhs) if lhs doesn't give witnesses. 
+          //No need to increase duplicates for || (or |). But we can guard the rhs by !(lhs) if lhs doesn't give witnesses.
           if (lhsWUCs.IsEmpty)
             rhsWUCs.Guard(new UnaryExpression(be.Operand1, NodeType.Neg, SystemTypes.Boolean));
         }
@@ -7153,7 +7164,7 @@ namespace System.Compiler {
         #region Treat P ? A : B as P ==> A && !P ==> B
         //Need to look into P for witnesses to: for instance, consider the consistent contract ensures result == 5 ? true : false;
         //But also want to pick up witnesses from !P: for instance, consider the consistent contract ensures !(result == 5 ? false : true);
-        //In the second case it is essential to have 5 in result.neq so that ! can turn it into an exact witness. 
+        //In the second case it is essential to have 5 in result.neq so that ! can turn it into an exact witness.
         Expression PimplA = new BinaryExpression(te.Operand1, te.Operand2, NodeType.Implies);
         Expression notP = new UnaryExpression(te.Operand1, NodeType.Neg, SystemTypes.Boolean);
         Expression notPimplB = new BinaryExpression(notP, te.Operand3, NodeType.Implies);
@@ -7173,7 +7184,7 @@ namespace System.Compiler {
       }
       return result;
     }
-   
+
     /// <returns>A list of expression that should, by default, be tried as witness for the consistency of an expression of witnessType</returns>
     private static ExpressionList GetDefaultWitnesses(TypeNode witnessType) {
       ExpressionList result = new ExpressionList();
@@ -7250,46 +7261,46 @@ namespace System.Compiler {
 
     /// <summary>
     /// requires nt to be a type that can go into a BinaryExpression that has i as second operand
-    /// </summary>    
+    /// </summary>
     public static void AddOrSub(List<WitnessUnderConstruction> listToOperateOn, int val, NodeType nt) {
       for (int i = 0; i < listToOperateOn.Count; i++) {
         WitnessUnderConstruction wuc = listToOperateOn[i];
         wuc.Witness = new BinaryExpression(wuc.Witness, new Literal(val, wuc.Witness.Type), nt);
       }
-    }     
+    }
     #endregion
 
-    private class WitnessFromCodeFinderVisitor : StandardVisitor {            
-      public ExpressionList Witnesses = new ExpressionList(); //for each statement return E; in the visited code, E in returnExpressions if E is admissible as a witness.       
-      public Method methodToInferPostFrom = null;  //if set, Visit tries to infer a postcondition for method. 
+    private class WitnessFromCodeFinderVisitor : StandardVisitor {
+      public ExpressionList Witnesses = new ExpressionList(); //for each statement return E; in the visited code, E in returnExpressions if E is admissible as a witness.
+      public Method methodToInferPostFrom = null;  //if set, Visit tries to infer a postcondition for method.
 
       public override StatementList VisitStatementList(StatementList statements) {
         if (statements == null) return null;
         foreach (Statement stat in statements) {
           Return r = stat as Return;
           if (r != null && r.Expression != null) { //Statement return E; found. Test admissibility of E as a witness.
-            WitnessFromCodeAdmissibilityVisitor admis = new WitnessFromCodeAdmissibilityVisitor();            
+            WitnessFromCodeAdmissibilityVisitor admis = new WitnessFromCodeAdmissibilityVisitor();
             try {
               admis.VisitExpression(r.Expression);
               this.Witnesses.Add(r.Expression); //witness found, otherwise exception would have been thrown
-              
+
               #region add inferred postconditions if needed
-              TypeNode retType = (methodToInferPostFrom == null || methodToInferPostFrom.ReturnType == null) ? null : methodToInferPostFrom.ReturnType;              
+              TypeNode retType = (methodToInferPostFrom == null || methodToInferPostFrom.ReturnType == null) ? null : methodToInferPostFrom.ReturnType;
               if (r == statements[0] && retType != null && (retType.IsObjectReferenceType || retType.IsPrimitiveComparable)) {
                 //the return statement is the first statement of the body.
                 //We would like to add ensures result == r.Expression; However, we have to be careful, for 2 reasons.
                 //1: == cannot be applied to structs and generic types. Note that we already tested that we do not return a struct.
                 //2: result might be the implicitly boxed version of r.Expression (e.g., public object m() {returns 5;}), in which case result == r.Expression does not hold (in particular at runtime)
                 //To account for 2, we have to box/unbox result and r.Expression as necessary
-                //If r.Expression is a generic type, we have to distinguish cases !(r.Expression is System.ValueType) or (r.Expression is int) and act accordingly                              
+                //If r.Expression is a generic type, we have to distinguish cases !(r.Expression is System.ValueType) or (r.Expression is int) and act accordingly
                 //(We do not (yet) support cases where r.Expression is a valueType other than an int, but they could be handled along the same lines.)
 
                 if (methodToInferPostFrom.Contract == null) {
                   methodToInferPostFrom.Contract = new MethodContract(methodToInferPostFrom);
                 }
-                SourceContext scInferred = methodToInferPostFrom.Name.SourceContext; //can't set the sourcetext, so error message will be confusing...but then again, the idea is that this can never crash                                                                                
-                
-                //Duplicate the return expression to avoid sharing problems 
+                SourceContext scInferred = methodToInferPostFrom.Name.SourceContext; //can't set the sourcetext, so error message will be confusing...but then again, the idea is that this can never crash
+
+                //Duplicate the return expression to avoid sharing problems
                 Duplicator dup = new Duplicator(this.methodToInferPostFrom.DeclaringType.DeclaringModule, this.methodToInferPostFrom.DeclaringType);
                 Expression returnInEq = dup.VisitExpression(r.Expression);
 
@@ -7303,22 +7314,22 @@ namespace System.Compiler {
                 if (r.Expression.NodeType == NodeType.Box) { //if the return expression has been (implicitly) boxed, unbox both it and result
                   returnInEq = (returnInEq as BinaryExpression).Operand1; //as we have the return expression in hand, unboxing is easy
                   //adjust resultInEq to (returnInEq.Type)resultInEq (i.e., add an unbox), using an explicit coercion
-                  BinaryExpression resultUnboxed = new BinaryExpression(resultInEq, intType, NodeType.Unbox, SystemTypes.Int32.GetReferenceType(), scInferred); //gets type System.Int32@ 
+                  BinaryExpression resultUnboxed = new BinaryExpression(resultInEq, intType, NodeType.Unbox, SystemTypes.Int32.GetReferenceType(), scInferred); //gets type System.Int32@
                   AddressDereference resultDeref = new AddressDereference(resultUnboxed, returnInEq.Type, scInferred);
                   resultInEq = new BinaryExpression(resultDeref, intLit, NodeType.ExplicitCoercion, SystemTypes.Int32, scInferred);
                 }
-                                
+
                 if (returnInEq.Type != null && (returnInEq.Type.IsObjectReferenceType || returnInEq.Type.IsPrimitiveComparable)) {
                   //returnInEq is not a user-defined struct (to which we can't apply ==)
                   Expression eq = null; //holds the postcondition that is added
                   if (!(isGenericTypeThatCanBeStruct(returnInEq.Type))) {
-                    //== can be applied to returnInEq. Therefore, it can also be applied to resultInEq, which is of a supertype (i.e., not generic type, not a struct). 
+                    //== can be applied to returnInEq. Therefore, it can also be applied to resultInEq, which is of a supertype (i.e., not generic type, not a struct).
                     eq = new BinaryExpression(resultInEq, returnInEq, NodeType.Eq, SystemTypes.Boolean, scInferred);
                   } else {
-                    #region adjust eq to compensate for generics 
+                    #region adjust eq to compensate for generics
                     //insert  ensures !(returnInEq is System.ValueType) ==> (object)resultInEq == (object)returnInEq;
                     //and     ensures returnInEq is int ==> (int)(object)resultInEq == (int)(object)returnInEq;
-                    //the cast to object is needed to allow application of == and the cast to int. 
+                    //the cast to object is needed to allow application of == and the cast to int.
                     //Note that resultInEq.Type is known to also be a generic type as it is a supertype.
                     //(and note that in this case, there was no unboxing)
 
@@ -7336,8 +7347,8 @@ namespace System.Compiler {
                     MemberBinding boxType = new MemberBinding(null, returnInEq.Type); //could also use method return type
                     BinaryExpression resultBoxed = new BinaryExpression(resultBinding, boxType, NodeType.Box, returnInEq.Type, scInferred);
                     resultInEq = new BinaryExpression(resultBoxed, objectLit, NodeType.ExplicitCoercion, SystemTypes.Object, scInferred);
-                    
-                    //adjust returnInEq to (object)returnInEq                    
+
+                    //adjust returnInEq to (object)returnInEq
                     BinaryExpression returnBoxed = new BinaryExpression(returnInEq, boxType, NodeType.Box, returnInEq.Type, scInferred);
                     returnInEq = new BinaryExpression(returnBoxed, objectLit, NodeType.ExplicitCoercion, SystemTypes.Object, scInferred);
                     #endregion
@@ -7350,45 +7361,45 @@ namespace System.Compiler {
                     methodToInferPostFrom.Contract.Ensures.Add(firstPost);
 
                     //Now add ensures returnInEq is int ==> (int)(object)resultInEq == (int)(object)returnInEq;
-                    //antecedent: r.Expression is int                
+                    //antecedent: r.Expression is int
                     Expression secondAnte = new BinaryExpression(r.Expression, intLit, NodeType.Is, SystemTypes.Boolean, scInferred);
 
                     #region adjust resultInEq and returnInEq to (int)resultInEq and (int)returnInEq
                     //set resultInSecondEq to (int)resultInEq, i.e., to (int)(object)result
                     //this requires an unbox to int32@, then an adress-deref to int32, then an explicitcast to int32
                     //note that if we unbox to type Int32 directly, we get a "operation could destabilize the runtime" warining from the checkin tests
-                    BinaryExpression resultUnboxed = new BinaryExpression(resultInEq, intType, NodeType.Unbox, SystemTypes.Int32.GetReferenceType(), scInferred); //gets type System.Int32@ 
+                    BinaryExpression resultUnboxed = new BinaryExpression(resultInEq, intType, NodeType.Unbox, SystemTypes.Int32.GetReferenceType(), scInferred); //gets type System.Int32@
                     AddressDereference resultDeref = new AddressDereference(resultUnboxed, SystemTypes.Int32, scInferred);
                     BinaryExpression resultInSecondEq = new BinaryExpression(resultDeref, intLit, NodeType.ExplicitCoercion, SystemTypes.Int32, scInferred);
 
-                    //adjust returnInEq to (int)returnInEq 
+                    //adjust returnInEq to (int)returnInEq
                     BinaryExpression returnUnboxed = new BinaryExpression(returnInEq, intType, NodeType.Unbox, SystemTypes.Int32.GetReferenceType(), scInferred);
                     AddressDereference returnDeref = new AddressDereference(returnUnboxed, SystemTypes.Int32, scInferred);
                     BinaryExpression returnInSecondEq = new BinaryExpression(returnDeref, intLit, NodeType.ExplicitCoercion, SystemTypes.Int32, scInferred);
                     #endregion
-                    
+
                     Expression secondEq = new BinaryExpression(resultInSecondEq, returnInSecondEq, NodeType.Eq, SystemTypes.Boolean, scInferred);
-                    eq = new BinaryExpression(secondAnte, secondEq, NodeType.Implies, SystemTypes.Boolean, scInferred); //(Ab)use eq to hold the implication 
+                    eq = new BinaryExpression(secondAnte, secondEq, NodeType.Implies, SystemTypes.Boolean, scInferred); //(Ab)use eq to hold the implication
                     #endregion
                   }
                   //Add the constructed equality as a postcondition.
                   EnsuresNormal newPost = new EnsuresNormal(eq);
                   newPost.SourceContext = scInferred;
-                  methodToInferPostFrom.Contract.Ensures.Add(newPost);  
-                } //else don't generate a postcondition, can't apply == to a user-defined struct                 
+                  methodToInferPostFrom.Contract.Ensures.Add(newPost);
+                } //else don't generate a postcondition, can't apply == to a user-defined struct
               }
               #endregion
             }
-            catch (ApplicationException e) { ApplicationException dumme = e; } //witness not admissible ('using' e to avoid warning)           
+            catch (ApplicationException e) { ApplicationException dumme = e; } //witness not admissible ('using' e to avoid warning)
           }
         }
         return statements;
       }
-            
+
       /// <summary>
       /// requires type is ITypeParameter
       /// ensures result == true unless type is known not to be a struct
-      /// </summary>        
+      /// </summary>
       private bool isGenericTypeThatCanBeStruct(TypeNode type) {
         if (type is ITypeParameter) {
           TypeParameterFlags flags = ((ITypeParameter)type).TypeParameterFlags;
@@ -7406,12 +7417,12 @@ namespace System.Compiler {
     //Throws ApplicationException if expression not admissible.
       public override Expression VisitMemberBinding(MemberBinding memberBinding) {
         if (memberBinding.BoundMember == null || memberBinding.BoundMember.DeclaringType is BlockScope)
-          throw new ApplicationException("unimplemented"); //DeclaringType is BlockScope indicates a local variable 
+          throw new ApplicationException("unimplemented"); //DeclaringType is BlockScope indicates a local variable
         return memberBinding;
       }
       public override Expression VisitLiteral(Literal literal){
         return literal;
-      }            
+      }
       public override Expression VisitTernaryExpression(TernaryExpression expression) {
         this.VisitExpression(expression.Operand1);
         this.VisitExpression(expression.Operand2);
@@ -7423,12 +7434,12 @@ namespace System.Compiler {
         this.VisitExpression(be.Operand2);
         return be;
       }
-      public override Statement VisitSwitchCaseBottom(Statement switchCaseBottom) { //have to implement this abstract method 
-        throw new ApplicationException("unimplemented");  
+      public override Statement VisitSwitchCaseBottom(Statement switchCaseBottom) { //have to implement this abstract method
+        throw new ApplicationException("unimplemented");
       }
 
     }
-   
+
 
     /// <summary>
     /// if mfC does not have a witness, infer one and return it, else return mfC.Witness.
@@ -7436,39 +7447,39 @@ namespace System.Compiler {
     /// <param name="mfC"></param>
     /// <returns></returns>
     private Expression GetInferredWitness(ModelfieldContract/*!*/ mfC) {
-      //At some point, this method should be replaced with the better inference scheme used for pure method 
+      //At some point, this method should be replaced with the better inference scheme used for pure method
       if (mfC.ModelfieldType == null) return mfC.Witness; //something's wrong
-      if (mfC.HasExplicitWitness) return mfC.Witness; //don't change user-supplied witness.                  
+      if (mfC.HasExplicitWitness) return mfC.Witness; //don't change user-supplied witness.
       //Let P be the conjunction of the expressions in eList.
       //if result != null, then either result witnesses the consistency of P, or P is inconsistent (either not total or P => false)
-      //No, we're not gonna get quite that far, for instance on this.mf < i && this.mf != this.i - 1; (atually, we can do that one now)     
+      //No, we're not gonna get quite that far, for instance on this.mf < i && this.mf != this.i - 1; (atually, we can do that one now)
       //for now, let's only worry about modelfields as far as this method is concerned.
-      return GetInferredWitness(mfC.SatisfiesList, mfC.ModelfieldType, mfC.Modelfield);  
+      return GetInferredWitness(mfC.SatisfiesList, mfC.ModelfieldType, mfC.Modelfield);
     }
-   
+
     /// <param name="eListIn">An expressionlist containing postconditions</param>
     /// <param name="resultType">The type of the result variable in the postcondtions</param>
-    /// <returns>our best guess at an expression e that will satisfy all postconditions, i.e., 
+    /// <returns>our best guess at an expression e that will satisfy all postconditions, i.e.,
     ///an expression e such that for each postcondition p, p[e/result] holds.</returns>
     public static Expression GetInferredWitness(ExpressionList eListIn, TypeNode resultType) {
-      return GetInferredWitness(eListIn, resultType, null);  
+      return GetInferredWitness(eListIn, resultType, null);
     }
 
     protected static Expression GetInferredWitness(ExpressionList eListIn, TypeNode resultType, Member theModelfield) {
       #region Split Conjunct and Disjuncts into NoAndOrList, then look for this.mf == P or this.mf <==> P, return P if found
-      ExpressionList splitAndList = new ExpressionList();            
-      foreach (Expression e in eListIn)         
+      ExpressionList splitAndList = new ExpressionList();
+      foreach (Expression e in eListIn)
         foreach (Expression e2 in SplitConjuncts(e))
           splitAndList.Add(e2);
-      
+
       Expression inferredWitness = null; //stores the witness that we are constructing.
       //eList is a list of ensures or satisfies clauses.
-      //if eList contains an expression "this.theModelfield == B", then either B is a witness or the mfC does not have a witness.      
+      //if eList contains an expression "this.theModelfield == B", then either B is a witness or the mfC does not have a witness.
       foreach (Expression e in splitAndList) {
-        if (e.NodeType == NodeType.Eq || e.NodeType == NodeType.Iff) {        
+        if (e.NodeType == NodeType.Eq || e.NodeType == NodeType.Iff) {
           inferredWitness = Checker.GetWitnessHelper(e, theModelfield);
           if (inferredWitness != null)
-            return inferredWitness; //witness found          
+            return inferredWitness; //witness found
         }
       }
 
@@ -7484,10 +7495,10 @@ namespace System.Compiler {
 
       //try again
       foreach (Expression e in splitAndOrList) {
-        if (e.NodeType == NodeType.Eq) {        
+        if (e.NodeType == NodeType.Eq) {
           inferredWitness = Checker.GetWitnessHelper(e, theModelfield);
           if (inferredWitness != null)
-            return inferredWitness; //witness found          
+            return inferredWitness; //witness found
         }
       }
       #endregion
@@ -7496,26 +7507,26 @@ namespace System.Compiler {
       foreach (Expression e in eList) {
         BinaryExpression eBinary = e as BinaryExpression;
         if (eBinary != null && e.NodeType == NodeType.Eq) {
-          //equality found. Check if it is of the shape this.mf == P (where mf is the modelfield). If so, either P is a witness, or no witness exists.           
+          //equality found. Check if it is of the shape this.mf == P (where mf is the modelfield). If so, either P is a witness, or no witness exists.
           MemberBinding posMf = eBinary.Operand1 as MemberBinding;
-          //can't compare against theModelfieldBinding as they are not the same object. 
+          //can't compare against theModelfieldBinding as they are not the same object.
           //not completely sure if the This check is good enough (no type info) but I think it should be enough (can't be of the wrong type as type is added automatically)
           if (posMf != null && posMf.TargetObject is This && posMf.BoundMember == theModelfield)
             return eBinary.Operand2;
           posMf = eBinary.Operand2 as MemberBinding;
           if (posMf != null && posMf.TargetObject is This && posMf.BoundMember == theModelfield)
-            return eBinary.Operand1;          
+            return eBinary.Operand1;
         }
       }
       */
 
-      //no equalities.                
+      //no equalities.
       if (resultType.IsPrimitiveNumeric || resultType == SystemTypes.Char) {
         #region try numeric heuristics and return result
-        //Lets try our heuristics for >, <, <=, >=, !=.            
+        //Lets try our heuristics for >, <, <=, >=, !=.
         bool greaterOk = true;
         bool smallerOk = true;
-        foreach (Expression e in splitAndOrList) {          
+        foreach (Expression e in splitAndOrList) {
           Expression improver = Checker.GetWitnessHelper(e, theModelfield);
           if (improver == null) continue; //Not of the shape "this.themodelfield op B", no heuristic applies: we have to hope that the witness we come up with will satisfy this constraint.
           NodeType addOrSub = NodeType.DefaultValue;
@@ -7539,18 +7550,18 @@ namespace System.Compiler {
           } else
             improve = false;
           if (improve) {
-            Expression condition = new BinaryExpression(inferredWitness, improver, e.NodeType, new TypeExpression(new Literal(TypeCode.Boolean), 0));             
+            Expression condition = new BinaryExpression(inferredWitness, improver, e.NodeType, new TypeExpression(new Literal(TypeCode.Boolean), 0));
             if (addOrSub != NodeType.DefaultValue)
-              improver = new BinaryExpression(improver, new Literal(1, resultType), addOrSub, resultType);            
+              improver = new BinaryExpression(improver, new Literal(1, resultType), addOrSub, resultType);
             if (inferredWitness == null)
               inferredWitness = improver;
-            else {              
+            else {
               inferredWitness = new TernaryExpression(condition, inferredWitness, improver, NodeType.Conditional, inferredWitness.Type);
-            }              
+            }
           }
         }
         if (inferredWitness == null)
-          inferredWitness = new Literal(0, resultType); //no witness candidate found, try 0 and hope for the best.        
+          inferredWitness = new Literal(0, resultType); //no witness candidate found, try 0 and hope for the best.
         return inferredWitness;
         #endregion
       } else if (resultType.TypeCode == System.TypeCode.Boolean) {
@@ -7562,42 +7573,42 @@ namespace System.Compiler {
           if (e.NodeType == NodeType.Ne) {
             improver = Checker.GetWitnessHelper(e, theModelfield);
             if (improver != null) { //this.theModelfield != improver found.
-              return new UnaryExpression(improver, NodeType.Neg); //improve witness to !inferredWitness and return.              
+              return new UnaryExpression(improver, NodeType.Neg); //improve witness to !inferredWitness and return.
             }
-          } 
+          }
           if (e.NodeType != NodeType.Implies) continue; //no heuristic applies.
           improver = Checker.GetWitnessHelper(e, theModelfield, false);
           if (improver != null) //found improver ==> this.theModelfield. Improve witness to inferredWitness || improver.
-            inferredWitness = new BinaryExpression(inferredWitness, improver, NodeType.Or);          
-        }        
-        return inferredWitness;        
+            inferredWitness = new BinaryExpression(inferredWitness, improver, NodeType.Or);
+        }
+        return inferredWitness;
         #endregion
       }
       //no heuristic applies. Return a default witness.
       return Checker.GetDefaultWitnesses(resultType)[0]; //Allowing multiple witnesses for modelfields has not been implemented yet. Just return the first one for now.
-       
-                 
+
+
     }
 
     private static Expression GetWitnessHelper(Expression e, Member theModelfield) {
       return GetWitnessHelper(e,theModelfield, true);
     }
-    
+
 
     /// <summary>
-    /// either e is a BinaryExpression of the shape "A operator B", and either (B is this.theModelfield and result == A, or considerRhs 
+    /// either e is a BinaryExpression of the shape "A operator B", and either (B is this.theModelfield and result == A, or considerRhs
     /// e is a BinaryExpression of the shape "A operator B", then
     ///   (if B is of the shape this.theModelfield, then result == A, else if considerRhs and A is of the shape this.theModelfield then result == B)
-    /// else result == null    
+    /// else result == null
     /// when !considerLhs, then only the shape of B is checked.
     /// when theModelfield == null, checks for result instead of this.theModelfield.
-    /// </summary>        
+    /// </summary>
     private static Expression GetWitnessHelper(Expression e, Member theModelfield, bool considerLhs) {
       if (!(e is BinaryExpression)) return null;
       BinaryExpression eAsBinary = e as BinaryExpression;
       if (theModelfield != null) {
         MemberBinding posMf = eAsBinary.Operand2 as MemberBinding;
-        //can't compare against theModelfieldBinding as they are not the same object. 
+        //can't compare against theModelfieldBinding as they are not the same object.
         //not completely sure if the This check is good enough (no type info) but I think it should be enough (can't be of the wrong type as type is added automatically)
         if (posMf != null && posMf.TargetObject is This && posMf.BoundMember == theModelfield)
           return eAsBinary.Operand1;
@@ -7640,14 +7651,14 @@ namespace System.Compiler {
     /// <para><code>
     /// requires ctor != null &amp;&amp; toSerialize != null &amp;&amp; toSerialize.SourceContext != null;
     /// </code></para>
-    /// </summary>            
-    public static AttributeNode SerializeExpression(InstanceInitializer/*!*/ ctor, Expression/*!*/ toSerialize, Module containingModule) { 
+    /// </summary>
+    public static AttributeNode SerializeExpression(InstanceInitializer/*!*/ ctor, Expression/*!*/ toSerialize, Module containingModule) {
       return Checker.SerializeExpressions(ctor, null, new ExpressionList(toSerialize), toSerialize.SourceContext, containingModule);
     }
 
     /// <summary>
     /// Serializes the expressions in toSerialize to an attribute determined by ctor, as if they come from module containingModule.
-    /// Uses the SourceContext information of <param name="sc">sc</param> for the source context for the attribute. 
+    /// Uses the SourceContext information of <param name="sc">sc</param> for the source context for the attribute.
     /// <para><code>
     /// requires ctor != null &amp;&amp; toSerialize != null &amp;&amp; 0 &lt; toSerialize.Count &amp;&amp; sc != null;;
     /// </code></para>
@@ -7698,7 +7709,7 @@ namespace System.Compiler {
         args.Add(new NamedArgument(Identifier.For("SourceText"), new Literal(sc.SourceText, SystemTypes.String)));
       }
       return new AttributeNode(attrBinding, args, (AttributeTargets)0);
-    }    
+    }
 
     // TODO: otherwise clauses on requires, exceptional ensures
     public virtual void SerializeMethodContract(MethodContract mc) {
@@ -7732,7 +7743,7 @@ namespace System.Compiler {
               if (ee.Inherited || ee.PostCondition.SourceContext.Document == null) continue;
               InstanceInitializer ctor = SystemTypes.ThrowsAttribute.GetConstructor(SystemTypes.Type, SystemTypes.String);
               AttributeNode a = Checker.SerializeExpressions(ctor,
-                new ExpressionList(new Literal(ee.Type, SystemTypes.Type)), 
+                new ExpressionList(new Literal(ee.Type, SystemTypes.Type)),
                 new ExpressionList(ee.PostCondition),
                 ee.PostCondition.SourceContext,
                 this.currentModule);
@@ -7753,11 +7764,11 @@ namespace System.Compiler {
         }
       }
       if (mc.Modifies != null && mc.Modifies.Count > 0) {
-        for (int i = 0, n = mc.Modifies.Count; i < n; i++) {                    
+        for (int i = 0, n = mc.Modifies.Count; i < n; i++) {
           Expression e = mc.Modifies[i];
           if (e == null || e.SourceContext.Document == null) continue;
           InstanceInitializer ctor = SystemTypes.ModifiesAttribute.GetConstructor(SystemTypes.String);
-          AttributeNode a = Checker.SerializeExpression(ctor, e, this.currentModule);          
+          AttributeNode a = Checker.SerializeExpression(ctor, e, this.currentModule);
           mc.DeclaringMethod.Attributes.Add(a);
         }
       }
@@ -7767,8 +7778,8 @@ namespace System.Compiler {
     /// <summary>
     /// requires serFor is Method || serFor is ModelfieldContract
     /// if serFor is a ModelfieldContract mfC, then mfC.Witness is serialized as well.
-    /// </summary>        
-    protected virtual void SerializeWUCs(WUCs toSerialize, Node serializeFor) {      
+    /// </summary>
+    protected virtual void SerializeWUCs(WUCs toSerialize, Node serializeFor) {
       ModelfieldContract mfC = serializeFor as ModelfieldContract;
       if (mfC != null && mfC.Witness != null)
         toSerialize.Exact.Add(new WitnessUnderConstruction(mfC.Witness, null, 0)); //add user-defined witness (optimization: make it the first witness)
@@ -7781,7 +7792,7 @@ namespace System.Compiler {
 
     /// <summary>
     /// requires serFor is Method || serFor is ModelfieldContract
-    /// </summary>        
+    /// </summary>
     protected virtual void SerializeWUCList(System.Collections.Generic.List<Checker.WitnessUnderConstruction>/*!*/ toSer, bool isNotLowerbound, Node serFor) {
       ModelfieldContract mfC = serFor as ModelfieldContract;
       foreach (WitnessUnderConstruction wuc in toSer) {
@@ -7793,7 +7804,7 @@ namespace System.Compiler {
         else
           serList.Add(null); //The witness-attribute will sit on the node, no need to add identifier
         AttributeNode wa = Checker.SerializeExpressions(ctor, serList, wuc.Witness.SourceContext, this.currentModule);
-        //Now add the remaining 2 expressions to wa 
+        //Now add the remaining 2 expressions to wa
         ExpressionList eList = new ExpressionList(new Literal(isNotLowerbound, SystemTypes.Boolean), new Literal(wuc.NrOfDuplications, SystemTypes.Int32));
         for (int i = 0; i < wa.Expressions.Count; i++) //use for loop to make sure the order of the expressions is preserved
           eList.Add(wa.Expressions[i]);
@@ -7844,7 +7855,7 @@ namespace System.Compiler {
                 }
                 continue;
               }
-              if (locMeth.IsStatic || !locMeth.IsPublic || 
+              if (locMeth.IsStatic || !locMeth.IsPublic ||
                   (locMeth.ReturnType != meth.ReturnType && locMeth.ReturnType != null && !locMeth.ReturnType.IsStructurallyEquivalentTo(meth.ReturnType)))
                 continue;
               exactMatch = locMeth;
@@ -7853,7 +7864,7 @@ namespace System.Compiler {
               //continue;
             }
             closeMatch = locMeth;
-            if (locMeth.IsStatic || (!locMeth.IsPublic && locMeth.ImplementedTypes == null) || 
+            if (locMeth.IsStatic || (!locMeth.IsPublic && locMeth.ImplementedTypes == null) ||
               (locMeth.ReturnType != meth.ReturnType && locMeth.ReturnType != null && !locMeth.ReturnType.IsStructurallyEquivalentTo(meth.ReturnType)))
               continue;
             exactMatch = locMeth;
@@ -7906,7 +7917,7 @@ namespace System.Compiler {
           }
           //          REVIEW: We may want this check (or something similar here. Is it better to move everything to CheckContractInheritance?
           //          if (meth.Contract != null && meth.Contract.Ensures != null && meth.Contract.Ensures.Length > 0){
-          //              this.HandleError(initialTypeSearchStartedAt, Error.EnsuresInInterfaceNotInMethod, this.GetMethodSignature(meth),this.GetMethodSignature(exactMatch)); 
+          //              this.HandleError(initialTypeSearchStartedAt, Error.EnsuresInInterfaceNotInMethod, this.GetMethodSignature(meth),this.GetMethodSignature(exactMatch));
           //            }
           //          }
 
@@ -8094,7 +8105,7 @@ namespace System.Compiler {
           if (p0type != type && p0type != null && p0type.Template != type)
             this.HandleError(m.Name, Error.BadUnaryOperatorSignature);
         } else if (key == StandardIds.opDecrement.UniqueIdKey || key == StandardIds.opIncrement.UniqueIdKey) {
-          if (p0type != type && p0type != null && p0type.Template != type || 
+          if (p0type != type && p0type != null && p0type.Template != type ||
             m.ReturnType != type && m.ReturnType != null && m.ReturnType.Template != type)
             this.HandleError(m.Name, Error.BadIncDecSignature);
         } else if (key == StandardIds.opTrue.UniqueIdKey || key == StandardIds.opFalse.UniqueIdKey) {
@@ -8578,7 +8589,7 @@ namespace System.Compiler {
               }
               if (!this.ImplementedTypesOverlap(meth2.ImplementedTypes, meth.ImplementedTypes)) continue;
               //weed out getters, setters etc. Their property, event, etc. will show up as an error
-              if (meth2.IsSpecialName && meth.IsSpecialName && 
+              if (meth2.IsSpecialName && meth.IsSpecialName &&
               !(meth2 is InstanceInitializer && meth is InstanceInitializer) && !(meth2 is StaticInitializer && meth is StaticInitializer)) {
                 if (meth.Name != null && (meth.Name.UniqueIdKey == StandardIds.opExplicit.UniqueIdKey || meth.Name.UniqueIdKey == StandardIds.opImplicit.UniqueIdKey)) {
                   if (meth2.ReturnType != meth.ReturnType) continue;
@@ -8672,17 +8683,17 @@ namespace System.Compiler {
       }
     }
     protected virtual bool IsLegalDuplicateMethod(Method original, Method potentialDuplicate) {
-      // by default, no methods may legally duplicate, but some other languages (e.g. Sing#'s type 
+      // by default, no methods may legally duplicate, but some other languages (e.g. Sing#'s type
       // extensions) allow it for method extensions
       return false;
     }
     protected virtual bool IsLegalDuplicateProperty(Property original, Property potentialDuplicate) {
-      // by default, no properties may legally duplicate, but some other languages (e.g. Sing#'s type 
+      // by default, no properties may legally duplicate, but some other languages (e.g. Sing#'s type
       // extensions) allow it for property extensions
       return false;
     }
     protected virtual bool IsLegalDuplicateEvent(Event original, Event potentialDuplicate) {
-      // by default, no events may legally duplicate, but some other languages (e.g. Sing#'s type 
+      // by default, no events may legally duplicate, but some other languages (e.g. Sing#'s type
       // extensions) allow it for event extensions
       return false;
     }
@@ -8731,7 +8742,7 @@ namespace System.Compiler {
                     matched = true;
                     break;
                   }
-                }                
+                }
               }
               if (!matched)
                 this.HandleError(mfC.Modelfield.Name, Error.OverrideNotExpected, mfC.Modelfield.Name.Name);
@@ -8742,7 +8753,7 @@ namespace System.Compiler {
 
       }
       #endregion
-      
+
       #region Complain about any element of members that claims to hide or override, but is not set to null above.
       for (int i = 0, n = members.Count; i < n; i++) {
         Member mem = members[i];
@@ -8811,10 +8822,10 @@ namespace System.Compiler {
                     this.HandleRelatedError(bmem);
                   }
                 } else {
-                  Error err = Error.MemberHidesBaseClassMember;                  
+                  Error err = Error.MemberHidesBaseClassMember;
                   if (be != null && be.IsVirtual && !(mem.DeclaringType is Interface)) err = Error.MemberHidesBaseClassOverridableMember;
                   this.HandleError(mem.Name, err, this.GetMemberName(mem), this.GetMemberSignature(bmem));
-                  this.HandleRelatedWarning(bmem);                  
+                  this.HandleRelatedWarning(bmem);
                 }
               }
               members[i] = null;
@@ -8849,7 +8860,7 @@ namespace System.Compiler {
                   if (!meth.IsVirtual && meth.IsPublic)
                     this.MakeMethodVirtualIfThatWouldMakeItImplementAnInterfaceMethod(meth);
                 } else if (mem.OverridesBaseClassMember) {
-                  if ((meth.Flags & MethodFlags.MethodAccessMask) != (bmeth.Flags & MethodFlags.MethodAccessMask) && 
+                  if ((meth.Flags & MethodFlags.MethodAccessMask) != (bmeth.Flags & MethodFlags.MethodAccessMask) &&
                     !((meth.Flags & MethodFlags.MethodAccessMask) == MethodFlags.Family && (bmeth.Flags & MethodFlags.MethodAccessMask) == MethodFlags.FamORAssem &&
                     meth.DeclaringType.DeclaringModule != bmeth.DeclaringType.DeclaringModule)) {
                     this.HandleError(mem.Name, Error.OverrideChangesAccess, this.GetMethodSignature(meth), this.GetMethodSignature(bmeth), this.GetMemberAccessString(bmeth));
@@ -8940,7 +8951,7 @@ namespace System.Compiler {
               if (bprop != null) {
                 meth = prop.Getter; if (meth == null) meth = prop.Setter;
                 Method bmeth = bprop.Getter; if (bmeth == null) bmeth = bprop.Setter;
-                if ((meth.Flags & MethodFlags.MethodAccessMask) != (bmeth.Flags & MethodFlags.MethodAccessMask) && 
+                if ((meth.Flags & MethodFlags.MethodAccessMask) != (bmeth.Flags & MethodFlags.MethodAccessMask) &&
                   !((meth.Flags & MethodFlags.MethodAccessMask) == MethodFlags.Family && (bmeth.Flags & MethodFlags.MethodAccessMask) == MethodFlags.FamORAssem &&
                   meth.DeclaringType.DeclaringModule != bmeth.DeclaringType.DeclaringModule) && !mem.HidesBaseClassMember) {
                   this.HandleError(mem.Name, Error.OverrideChangesAccess, this.GetMemberSignature(prop), this.GetMemberSignature(bprop), this.GetMemberAccessString(bmeth));
@@ -8992,7 +9003,7 @@ namespace System.Compiler {
         }
       }
     }
-        
+
     /// <summary>
     ///The hidden base method may still end up implementing an interface explicitly implemented by this.currentType.
     ///Prevent that by marking meth as virtual (and newslot) if that means it gets to implement a local interface method
@@ -9185,17 +9196,17 @@ namespace System.Compiler {
       if (member is ParameterField) return true;
       switch ((((Method)method).Flags & MethodFlags.MethodAccessMask)) {
         case MethodFlags.Public:
-          return member.IsPublic || 
+          return member.IsPublic ||
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null;
         case MethodFlags.Family:
-          return member.IsPublic || member.IsFamily || 
+          return member.IsPublic || member.IsFamily ||
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null  || member.GetAttribute(SystemTypes.SpecProtectedAttribute)!= null;
         case MethodFlags.Assembly:
-          return member.IsPublic || member.IsAssembly || 
+          return member.IsPublic || member.IsAssembly ||
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null  || member.GetAttribute(SystemTypes.SpecInternalAttribute)!= null;
         case MethodFlags.FamANDAssem:
           return member.IsPublic || member.IsFamilyAndAssembly ||
-            member.GetAttribute(SystemTypes.SpecPublicAttribute)!=null  || 
+            member.GetAttribute(SystemTypes.SpecPublicAttribute)!=null  ||
             (member.GetAttribute(SystemTypes.SpecInternalAttribute)!=null && member.GetAttribute(SystemTypes.SpecProtectedAttribute) != null);
         case MethodFlags.FamORAssem:
           return member.IsPublic || member.IsFamily || member.IsFamilyOrAssembly || member.IsAssembly ||
@@ -9276,7 +9287,7 @@ namespace System.Compiler {
       }
       switch ((((Method)method).Flags & MethodFlags.MethodAccessMask)) {
         case MethodFlags.Public:
-          return member.IsPublic || 
+          return member.IsPublic ||
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null;
         case MethodFlags.Family:
           return member.IsPublic || member.IsFamily || member.IsFamilyOrAssembly ||
@@ -9286,7 +9297,7 @@ namespace System.Compiler {
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null  || member.GetAttribute(SystemTypes.SpecInternalAttribute)!= null;
         case MethodFlags.FamANDAssem:
           return member.IsPublic || member.IsFamilyAndAssembly ||
-            member.GetAttribute(SystemTypes.SpecPublicAttribute)!=null  || 
+            member.GetAttribute(SystemTypes.SpecPublicAttribute)!=null  ||
             (member.GetAttribute(SystemTypes.SpecInternalAttribute)!=null && member.GetAttribute(SystemTypes.SpecProtectedAttribute) != null);
         case MethodFlags.FamORAssem:
           return member.IsPublic || member.IsFamily || member.IsFamilyOrAssembly || member.IsAssembly ||
@@ -9305,22 +9316,22 @@ namespace System.Compiler {
       if (method.Flags == MethodFlags.CompilerControlled) return true; // comprehension, but what else?
       switch ((((Method)method).Flags & MethodFlags.MethodAccessMask)){
         case MethodFlags.Public:
-          return member.IsPublic || 
+          return member.IsPublic ||
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null;
         case MethodFlags.Family:
-          return member.IsPublic || member.IsFamily || 
+          return member.IsPublic || member.IsFamily ||
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null  || member.GetAttribute(SystemTypes.SpecProtectedAttribute)!= null;
         case MethodFlags.Assembly:
-          return member.IsPublic || member.IsAssembly || 
-            member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null  || member.GetAttribute(SystemTypes.SpecInternalAttribute)!= null; 
+          return member.IsPublic || member.IsAssembly ||
+            member.GetAttribute(SystemTypes.SpecPublicAttribute)!= null  || member.GetAttribute(SystemTypes.SpecInternalAttribute)!= null;
         case MethodFlags.FamANDAssem:
           return member.IsPublic || member.IsFamilyAndAssembly ||
-            member.GetAttribute(SystemTypes.SpecPublicAttribute)!=null  || 
+            member.GetAttribute(SystemTypes.SpecPublicAttribute)!=null  ||
             (member.GetAttribute(SystemTypes.SpecInternalAttribute)!=null && member.GetAttribute(SystemTypes.SpecProtectedAttribute) != null);
         case MethodFlags.FamORAssem:
           return member.IsPublic || member.IsFamily || member.IsFamilyOrAssembly || member.IsAssembly ||
             member.GetAttribute(SystemTypes.SpecPublicAttribute)!=null  || member.GetAttribute(SystemTypes.SpecInternalAttribute)!=null ||
-            member.GetAttribute(SystemTypes.SpecProtectedAttribute)!=null  
+            member.GetAttribute(SystemTypes.SpecProtectedAttribute)!=null
             ;
         case MethodFlags.Private:
           return true;
@@ -9331,7 +9342,7 @@ namespace System.Compiler {
     }
     private bool IsSpecProtected(Member member) {
       return member.GetAttribute(SystemTypes.SpecProtectedAttribute)!= null &&
-        this.GetTypeView(this.currentType).IsAssignableTo(member.DeclaringType) && 
+        this.GetTypeView(this.currentType).IsAssignableTo(member.DeclaringType) &&
         this.currentType.NodeType==NodeType.Class && member.DeclaringType.NodeType==NodeType.Class;
     }
     private bool IsSpecInternal(Member member) {
@@ -9418,7 +9429,7 @@ namespace System.Compiler {
       if ((object)effectiveCurrentType != (object)currentType) {
         // the member is being accessed from a type extension; see whether the member
         // would be accessible if it were being accessed from the extendee type
-        // [v-craigc-TODO: consider inaccessible any members not visible according to the 
+        // [v-craigc-TODO: consider inaccessible any members not visible according to the
         // accessibility claimed by the extension; the current code implicitly grants private
         // access to extensions]
         if (!NotAccessible(member, type, ref qualifierType, visibility, currentModule, effectiveCurrentType, typeViewer)) {
