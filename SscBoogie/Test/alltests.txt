@@ -11,7 +11,7 @@ framecond        Use    Heap frame conditions tests
 objinv           Use    Object invariant tests
 Bag              Use    The stages of the Bag demo, testing the plug-in and making sure the demo works
 chunker          Use    The stages of the Chunker demo, testing the plug-in and making sure the demo works
-bob              Use	   Boogie-on-Boogie bug fix regression tests
+bob              Use    Boogie-on-Boogie bug fix regression tests
 iterators        Use    The Iterator design pattern
 test12           Use    Visibility based invariants
 test13           Use    ExistsUnique
@@ -24,3 +24,4 @@ test16           Use    Tests methodology of visible-state semantics and loop un
 test18           Use    More purity and model-field tests
 test22           Use    Programs included in the Spec# tutorial
 test14           NeedsDafny    Verifications of Boogie itself
+tutorial         Use    Examples from the Spec# tutorial
