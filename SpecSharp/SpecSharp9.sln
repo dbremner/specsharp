@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{ED267107-23BE-48C9-9CCD-C84CFFD04218}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SpecSharp", "SpecSharp", "{D9479818-8943-4FCA-B825-8B6C473B33C5}"
@@ -20,19 +20,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Inte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ssc", "Microsoft.SpecSharp\CommandLineCompiler\ssc.csproj", "{01298982-80B4-44B2-AD1D-05BC9FE4F990}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Resources", "Microsoft.SpecSharp\Resources\Resources.vcxproj", "{89948739-B4BA-40B5-9130-619039913B9F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Resources", "Microsoft.SpecSharp\Resources\Resources.vcproj", "{89948739-B4BA-40B5-9130-619039913B9F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Checkin Tests", "Microsoft.SpecSharp\Checkin Tests\Checkin Tests.vcxproj", "{071F6156-3711-44D5-B569-3FE3E13F4A2A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Checkin Tests", "Microsoft.SpecSharp\Checkin Tests\Checkin Tests.vcproj", "{071F6156-3711-44D5-B569-3FE3E13F4A2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Package", "Microsoft.VisualStudio.Package\Microsoft.VisualStudio.Package.csproj", "{74FFF4C7-17CB-40C1-A6FE-3E419237DF61}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LastKnownGood", "Microsoft.SpecSharp\LastKnownGood10\LastKnownGood.vcxproj", "{C394A537-4F59-4568-9F5E-54B5E3DA1B28}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LastKnownGood", "Microsoft.SpecSharp\LastKnownGood9\LastKnownGood.vcproj", "{C394A537-4F59-4568-9F5E-54B5E3DA1B28}"
 EndProject
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "Microsoft.SpecSharp.Runtime", "Microsoft.SpecSharp\Runtime\Microsoft.SpecSharp.Runtime.sscproj", "{76439EA5-A08D-4B58-BF7B-BE6D68668885}"
 	ProjectSection(ProjectDependencies) = postProject
-		{5BEE6906-9652-47B4-B617-368E9598B449} = {5BEE6906-9652-47B4-B617-368E9598B449}
-		{FBCA6915-0E32-4A74-AB9E-AFC976E89375} = {FBCA6915-0E32-4A74-AB9E-AFC976E89375}
 		{FBCA6915-0E72-4A64-AB9E-ADC976E89275} = {FBCA6915-0E72-4A64-AB9E-ADC976E89275}
+		{FBCA6915-0E32-4A74-AB9E-AFC976E89375} = {FBCA6915-0E32-4A74-AB9E-AFC976E89375}
+		{5BEE6906-9652-47B4-B617-368E9598B449} = {5BEE6906-9652-47B4-B617-368E9598B449}
 	EndProjectSection
 EndProject
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "Mscorlib.Contracts", "Samples\OutOfBandContracts\Mscorlib\Mscorlib.Contracts.sscproj", "{FBCA6915-0E72-4A64-AB9E-ADC976E89275}"
@@ -52,11 +52,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractsPropertyPane", "Mi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager", "Microsoft.VisualStudio.CodeTools\TaskManager\TaskManager.csproj", "{059A5071-3E00-4629-8A64-1EA96FCF752B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TaskManagerUi", "Microsoft.VisualStudio.CodeTools\TaskManagerUI\TaskManagerUi.vcxproj", "{BED6C8D0-4339-4177-A7AD-7F5DA8DD8830}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TaskManagerUI", "Microsoft.VisualStudio.CodeTools\TaskManagerUI\TaskManagerUi.vcproj", "{BED6C8D0-4339-4177-A7AD-7F5DA8DD8830}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.SpecSharp", "Microsoft.SpecSharp\Microsoft.SpecSharp.csproj", "{0B747571-5739-4A09-B368-2FF47C01A698}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PropertyPageUI", "Microsoft.VisualStudio.CodeTools\PropertyPageUI\PropertyPageUI.vcxproj", "{BED6C8D0-4333-4175-A7A1-7F5DA8DD8831}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PropertyPageUI", "Microsoft.VisualStudio.CodeTools\PropertyPageUI\PropertyPageUI.vcproj", "{BED6C8D0-4333-4175-A7A1-7F5DA8DD8831}"
 EndProject
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "System.Xml.Contracts", "Samples\OutOfBandContracts\System.Xml\System.Xml.Contracts.sscproj", "{AA38A8AC-EDCA-497B-A12E-C41F05B58B18}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -66,14 +66,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncrementalCompilationTests", "Microsoft.SpecSharp\IncrementalCompilationTests\IncrementalCompilationTests.csproj", "{4FCB471B-EF8B-4C6A-8BD4-D01E9942EEA0}"
 EndProject
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "System.Compiler.Contracts", "Samples\OutOfBandContracts\System.Compiler\System.Compiler.Contracts.sscproj", "{FBCA6915-0E33-4A64-AB9E-AFC976E89275}"
-	ProjectSection(ProjectDependencies) = postProject
-		{D7E16B38-3893-4EEF-847F-A3BE807E9546} = {D7E16B38-3893-4EEF-847F-A3BE807E9546}
-	EndProjectSection
 EndProject
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "System.Compiler.Framework.Contracts", "Samples\OutOfBandContracts\System.Compiler.Framework\System.Compiler.Framework.Contracts.sscproj", "{395FB8C6-63CF-437E-AA57-CADCD6C17FA6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5D3B8B5B-703E-4843-ABF3-A864F5B6ADA3} = {5D3B8B5B-703E-4843-ABF3-A864F5B6ADA3}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
