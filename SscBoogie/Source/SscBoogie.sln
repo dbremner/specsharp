@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "SscBoogie", "SscBoogie\SscBoogie.sscproj", "{653640D6-84AD-43DD-86A3-92C33748ED20}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EA527319-2786-4B45-9EDE-803F76390191} = {EA527319-2786-4B45-9EDE-803F76390191}
