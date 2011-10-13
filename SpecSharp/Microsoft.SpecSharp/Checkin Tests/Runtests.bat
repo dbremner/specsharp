@@ -1,10 +1,16 @@
 @echo off
-xcopy /Q /Y ..\CommandLineCompiler\bin\System.Compiler.* .
 xcopy /Q /Y ..\Runtime\bin\Microsoft.SpecSharp.Runtime.* .
+xcopy /Q /Y ..\CommandLineCompiler\bin\System.Compiler.* .
+xcopy /Q /Y ..\CommandLineCompiler\bin\Microsoft.SpecSharp.* .
+xcopy /Q /Y ..\CommandLineCompiler\bin\Microsoft.VisualStudio.* .
+xcopy /Q /Y ..\CommandLineCompiler\bin\ssc.exe .
+
 set errors=0
 set test=%1
 if %1x == x set test=*
-..\CommandLineCompiler\bin\ssc.exe %test%.suite
+REM This is necessary because the tests currently fail in 64-bit mode.
+corflags /Force /nologo /32BIT+ ssc.exe
+ssc.exe %test%.suite
 if %ERRORLEVEL% NEQ 0 set errors=1
 if %errors% NEQ 0 goto End
 
