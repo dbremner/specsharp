@@ -7933,6 +7933,15 @@ class C{
 (5,18): error CS1002: ; expected
 (8,1): error CS1519: Invalid token '}' in class, struct, or interface member declaration
 `
+`/debug
+class C {
+  invariant forall{int i in (0 : 1), int j in (0 : 1); i == j};
+  invariant forall{int i in (0 : 1),
+`
+(3,13): error CS1003: Syntax error, 'iterator or expression' expected
+(3,36): error CS1002: ; expected
+(4,1): error CS1513: } expected
+`
 `/d:NONONNULLTYPECHECK
 class StringP {
   public static StringP whenString(WhenString todo){
