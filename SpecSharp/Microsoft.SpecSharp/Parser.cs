@@ -246,7 +246,7 @@ namespace Microsoft.SpecSharp{
       ns.AliasDefinitions.Add(aliasD);
     }
     private void ParseUsingDirectives(Namespace ns, TokenSet followers){
-      while (this.currentToken == Token.Using)        
+      while (this.currentToken == Token.Using)
         this.ParseUsingDirective(ns, followers|Token.Using);
       this.SkipTo(followers);
     }
@@ -449,12 +449,12 @@ namespace Microsoft.SpecSharp{
           case Token.Struct: this.ParseTypeDeclaration(ns, null, attributes, flags, false, sctx, followers); break;
           case Token.Delegate: this.ParseDelegateDeclaration(ns, null, attributes, flags, sctx, followers); break;
           case Token.Enum: this.ParseEnumDeclaration(ns, null, attributes, flags, sctx, followers); break;
-          case Token.Namespace: 
-            if (tok != this.currentToken || (attributes != null && attributes.Count > 0)) 
-              this.HandleError(Error.BadTokenInType); 
+          case Token.Namespace:
+            if (tok != this.currentToken || (attributes != null && attributes.Count > 0))
+              this.HandleError(Error.BadTokenInType);
             return;
           case Token.LeftBracket:
-            this.HandleError(Error.BadTokenInType); 
+            this.HandleError(Error.BadTokenInType);
             this.GetNextToken();
             return;
           case Token.MultiLineDocCommentStart:
@@ -507,7 +507,7 @@ namespace Microsoft.SpecSharp{
     private AttributeList ParseAttributes(Namespace ns, TokenSet followers){
       if (this.currentToken != Token.LeftBracket) return null;
       AttributeList attributes = new AttributeList();
-      bool allowGlobalAttributes = ns != null && ns.Name == Identifier.Empty && 
+      bool allowGlobalAttributes = ns != null && ns.Name == Identifier.Empty &&
         (ns.NestedNamespaces == null || ns.NestedNamespaces.Count == 0) && (ns.Types == null || ns.Types.Count == 0);
       while(this.currentToken == Token.LeftBracket){
         SourceContext sctx = this.scanner.CurrentSourceContext;
@@ -556,7 +556,7 @@ namespace Microsoft.SpecSharp{
         for(;;){
           AttributeNode attr = new AttributeNode();
           attr.SourceContext = attrCtx;
-          attr.Target = flags;       
+          attr.Target = flags;
           if (this.currentToken == Token.DoubleColon){
             Identifier prefix = id;
             this.GetNextToken();
@@ -584,7 +584,7 @@ namespace Microsoft.SpecSharp{
           id = this.scanner.GetIdentifier();
           this.SkipIdentifierOrNonReservedKeyword();
         }
-        this.ParseBracket(sctx, Token.RightBracket, followers, Error.ExpectedRightBracket);      
+        this.ParseBracket(sctx, Token.RightBracket, followers, Error.ExpectedRightBracket);
       }
       this.SkipTo(followers);
       return attributes;
@@ -623,7 +623,7 @@ namespace Microsoft.SpecSharp{
       }
       attr.SourceContext.EndPos = this.scanner.endPos;
       if (this.sink != null && this.currentToken != Token.EndOfFile) this.sink.EndParameters(this.scanner.CurrentSourceContext);
-      this.ParseBracket(sctx, Token.RightParenthesis, followers, Error.ExpectedRightParenthesis);      
+      this.ParseBracket(sctx, Token.RightParenthesis, followers, Error.ExpectedRightParenthesis);
     }
     private TypeFlags ParseTypeModifiers(){
       TypeFlags result = (TypeFlags)0;
@@ -634,37 +634,37 @@ namespace Microsoft.SpecSharp{
             break;
           case Token.Public:
             if ((result & TypeFlags.VisibilityMask) != 0){
-              if ((result & TypeFlags.Public) != 0) 
+              if ((result & TypeFlags.Public) != 0)
                 this.HandleError(Error.DuplicateModifier, "public");
               else
                 this.HandleError(Error.ConflictingProtectionModifier);
             }
             result |= TypeFlags.Public;
             break;
-          case Token.Internal: 
+          case Token.Internal:
             if ((result & TypeFlags.VisibilityMask) != 0){
-              if ((result & TypeFlags.VisibilityMask) == TypeFlags.NestedAssembly) 
+              if ((result & TypeFlags.VisibilityMask) == TypeFlags.NestedAssembly)
                 this.HandleError(Error.DuplicateModifier, "internal");
               else
                 this.HandleError(Error.ConflictingProtectionModifier);
             }
-            result |= TypeFlags.NestedAssembly; 
+            result |= TypeFlags.NestedAssembly;
             break;
-          case Token.Abstract: 
+          case Token.Abstract:
             if ((result & (TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName)) == (TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName)){
               this.HandleError(Error.AbstractSealedStatic);
               break;
             }
             if ((result & TypeFlags.Abstract) != 0) this.HandleError(Error.DuplicateModifier, "abstract");
-            result |= TypeFlags.Abstract; 
+            result |= TypeFlags.Abstract;
             break;
-          case Token.Sealed: 
+          case Token.Sealed:
             if ((result & (TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName)) == (TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName)){
               this.HandleError(Error.SealedStaticClass);
               break;
             }
             if ((result & TypeFlags.Sealed) != 0) this.HandleError(Error.DuplicateModifier, "sealed");
-            result |= TypeFlags.Sealed; 
+            result |= TypeFlags.Sealed;
             break;
           case Token.Static:
             if ((result & (TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName)) == (TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName)){
@@ -679,7 +679,7 @@ namespace Microsoft.SpecSharp{
               this.HandleError(Error.SealedStaticClass);
               break;
             }
-            result |= TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName; 
+            result |= TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName;
             break;
           case Token.Unsafe:
             if (!this.allowUnsafeCode){
@@ -710,11 +710,11 @@ namespace Microsoft.SpecSharp{
     private void ParseTypeDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TypeFlags flags, bool isPartial, SourceContext sctx, TokenSet followers){
       this.ParseTypeDeclaration(ns, parentType, attributes, null, null, flags, isPartial, sctx, followers);
     }
-    private void ParseTypeDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseTypeDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, bool isPartial, SourceContext sctx, TokenSet followers){
       this.ParseTypeDeclaration(ns, parentType, attributes, modifierTokens, modifierContexts, TypeFlags.None, isPartial, sctx, followers);
     }
-    private void ParseTypeDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseTypeDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, TypeFlags flags, bool isPartial, SourceContext sctx, TokenSet followers){
       if (parentType is Interface){
         this.HandleError(Error.InterfacesCannotContainTypes);
@@ -723,7 +723,7 @@ namespace Microsoft.SpecSharp{
       TypeNode t = null;
       InvariantCt = 0;
       switch(this.currentToken){
-        case Token.Class: 
+        case Token.Class:
           Class c = new Class();
           t = c;
           if (parentType == null)
@@ -731,7 +731,7 @@ namespace Microsoft.SpecSharp{
           else
             t.DeclaringType = parentType;
           if (modifierTokens != null)
-            t.Flags |= this.NestedTypeFlags(modifierTokens, modifierContexts, t, isPartial)|TypeFlags.BeforeFieldInit; 
+            t.Flags |= this.NestedTypeFlags(modifierTokens, modifierContexts, t, isPartial)|TypeFlags.BeforeFieldInit;
           else{
             t.IsUnsafe = this.inUnsafeCode;
             t.Flags |= flags|TypeFlags.BeforeFieldInit;
@@ -741,7 +741,7 @@ namespace Microsoft.SpecSharp{
             c.Flags &= ~TypeFlags.SpecialName;
           }
           break;
-        case Token.Interface: 
+        case Token.Interface:
           t = new Interface();
           if (parentType == null)
             t.DeclaringNamespace = ns;
@@ -766,14 +766,14 @@ namespace Microsoft.SpecSharp{
             t.Flags |= flags|TypeFlags.BeforeFieldInit;
           }
           break;
-        case Token.Struct: 
-          t = new Struct(); 
+        case Token.Struct:
+          t = new Struct();
           if (parentType == null)
             t.DeclaringNamespace = ns;
           else
             t.DeclaringType = parentType;
           if (modifierTokens != null)
-            t.Flags |= this.NestedTypeFlags(modifierTokens, modifierContexts, t, isPartial)|TypeFlags.BeforeFieldInit; 
+            t.Flags |= this.NestedTypeFlags(modifierTokens, modifierContexts, t, isPartial)|TypeFlags.BeforeFieldInit;
           else{
             if ((flags & TypeFlags.Abstract) != 0){
               if ((flags & TypeFlags.Sealed) != 0 && (flags & TypeFlags.SpecialName) != 0){
@@ -790,7 +790,7 @@ namespace Microsoft.SpecSharp{
             t.Flags |= flags|TypeFlags.BeforeFieldInit;
           }
           break;
-        default: 
+        default:
           Debug.Assert(false);
           break;
       }
@@ -869,7 +869,7 @@ namespace Microsoft.SpecSharp{
       this.SkipTo(followers|Parser.TypeMemberStart);
       if (!followers[this.currentToken])
         this.SkipTo(followers, Error.NamespaceUnexpected);
-      if (isPartial) this.MergeWithCompleteType(t);        
+      if (isPartial) this.MergeWithCompleteType(t);
     }
     private void AddTypeToModule(TypeNode t){
       Identifier name = t.Name;
@@ -891,7 +891,7 @@ namespace Microsoft.SpecSharp{
       Debug.Assert(partialType != null && partialType.PartiallyDefines != null);
       TypeNode completeType = partialType.PartiallyDefines;
       AttributeList attributes = partialType.Attributes;
-      AttributeList allAttributes = completeType.Attributes; 
+      AttributeList allAttributes = completeType.Attributes;
       if (allAttributes == null) allAttributes = completeType.Attributes = new AttributeList();
       for (int i = 0, n = attributes == null ? 0 : attributes.Count; i < n; i++){
         AttributeNode attr = attributes[i];
@@ -899,7 +899,7 @@ namespace Microsoft.SpecSharp{
         allAttributes.Add(attr);
       }
       MemberList members = partialType.Members;
-      MemberList allMembers = completeType.Members; 
+      MemberList allMembers = completeType.Members;
       for (int i = 0, n = members == null ? 0 : members.Count; i < n; i++){
         Member mem = members[i];
         if (mem == null) continue;
@@ -1043,7 +1043,7 @@ namespace Microsoft.SpecSharp{
         param.Interfaces = new InterfaceList();
         if (this.currentToken != Token.Comma) break;
         this.GetNextToken();
-      }      
+      }
       this.Skip(Token.GreaterThan);
       this.SkipTo(followers);
     }
@@ -1138,21 +1138,21 @@ namespace Microsoft.SpecSharp{
         this.ParseModifiers(modifierTokens, modifierContexts, t.NodeType == NodeType.Interface);
         sctx.EndPos = this.scanner.endPos;
         switch(this.currentToken){
-          case Token.Class: 
-          case Token.Struct: 
+          case Token.Class:
+          case Token.Struct:
           case Token.Interface:
             this.ParseTypeDeclaration(null, t, attributes, modifierTokens, modifierContexts, false, sctx, followersOrTypeMemberStart);
             break;
-          case Token.Delegate: 
+          case Token.Delegate:
             TypeNode del = this.ParseDelegateDeclaration(null, t, attributes, modifierTokens, modifierContexts, sctx, followersOrTypeMemberStart);
             if (del is FunctionTypeExpression){
               this.lastDocCommentBackingField = (XmlElement)del.Documentation;
               this.ParseFieldOrMethodOrPropertyOrStaticInitializer(del, t, attributes, modifierTokens, modifierContexts,
-                sctx, this.scanner.CurrentSourceContext, followersOrTypeMemberStart); 
+                sctx, this.scanner.CurrentSourceContext, followersOrTypeMemberStart);
             }
             break;
-          case Token.Enum: 
-            this.ParseEnumDeclaration(null, t, attributes, modifierTokens, modifierContexts, sctx, followersOrTypeMemberStart); 
+          case Token.Enum:
+            this.ParseEnumDeclaration(null, t, attributes, modifierTokens, modifierContexts, sctx, followersOrTypeMemberStart);
             break;
           case Token.Const:
             this.ParseConst(t, attributes, modifierTokens, modifierContexts, sctx, followersOrTypeMemberStart);
@@ -1179,7 +1179,7 @@ namespace Microsoft.SpecSharp{
           case Token.Identifier:
             NotPartial:
               this.ParseFieldOrMethodOrPropertyOrStaticInitializer(t, attributes, modifierTokens, modifierContexts,
-                sctx, followersOrTypeMemberStart); 
+                sctx, followersOrTypeMemberStart);
             break;
           case Token.Model:
             this.GetNextToken();
@@ -1259,10 +1259,10 @@ namespace Microsoft.SpecSharp{
           case Token.New:
           case Token.Public:
           case Token.Protected:
-          case Token.Internal: 
-          case Token.Private: 
-          case Token.Abstract: 
-          case Token.Sealed: 
+          case Token.Internal:
+          case Token.Private:
+          case Token.Abstract:
+          case Token.Sealed:
           case Token.Static:
           case Token.Readonly:
           case Token.Volatile:
@@ -1307,13 +1307,13 @@ namespace Microsoft.SpecSharp{
         switch(modifierTokens[i]){
           case Token.New:
             if (ntype.HidesBaseClassMember)
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "new");             
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "new");
             ntype.HidesBaseClassMember = true;
             break;
           case Token.Public:
             if ((result & TypeFlags.VisibilityMask) != 0){
               if ((result & TypeFlags.VisibilityMask) == TypeFlags.NestedPublic)
-                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");             
+                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");
               else
                 this.HandleError(modifierContexts[i],Error.ConflictingProtectionModifier);
             }
@@ -1334,12 +1334,12 @@ namespace Microsoft.SpecSharp{
               }else
                 this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             }
-            result |= TypeFlags.NestedFamily; 
+            result |= TypeFlags.NestedFamily;
             break;
-          case Token.Internal: 
+          case Token.Internal:
             if ((result & TypeFlags.VisibilityMask) != 0){
-              if ((result & TypeFlags.VisibilityMask) == TypeFlags.NestedAssembly || (result & TypeFlags.VisibilityMask) == TypeFlags.NestedFamORAssem) 
-                this.HandleError(Error.DuplicateModifier, "internal");             
+              if ((result & TypeFlags.VisibilityMask) == TypeFlags.NestedAssembly || (result & TypeFlags.VisibilityMask) == TypeFlags.NestedFamORAssem)
+                this.HandleError(Error.DuplicateModifier, "internal");
               else if ((result & TypeFlags.NestedFamily) != 0){
                 result &= ~TypeFlags.NestedFamily;
                 result |= TypeFlags.NestedFamORAssem;
@@ -1347,45 +1347,45 @@ namespace Microsoft.SpecSharp{
               }else
                 this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             }
-            result |= TypeFlags.NestedAssembly; 
+            result |= TypeFlags.NestedAssembly;
             break;
-          case Token.Private: 
+          case Token.Private:
             if ((result & TypeFlags.VisibilityMask) != 0){
               if ((result & TypeFlags.VisibilityMask) == TypeFlags.NestedPrivate)
-                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "private");             
+                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "private");
               else
                 this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             }
-            result |= TypeFlags.NestedPrivate; 
+            result |= TypeFlags.NestedPrivate;
             break;
           case Token.Abstract:
             if (!(ntype is Class)){
               this.HandleError(Error.InvalidModifier, "abstract");
               break;
             }
-            if ((result & TypeFlags.Abstract) != 0) 
+            if ((result & TypeFlags.Abstract) != 0)
               this.HandleError(modifierContexts[i], Error.DuplicateModifier, "abstract");
-            result |= TypeFlags.Abstract; 
+            result |= TypeFlags.Abstract;
             break;
-          case Token.Sealed: 
+          case Token.Sealed:
             if (!(ntype is Class)){
               this.HandleError(Error.InvalidModifier, "sealed");
               break;
             }
-            if ((result & TypeFlags.Sealed) != 0) 
+            if ((result & TypeFlags.Sealed) != 0)
               this.HandleError(modifierContexts[i], Error.DuplicateModifier, "sealed");
-            result |= TypeFlags.Sealed; 
+            result |= TypeFlags.Sealed;
             break;
           case Token.Static:
             if (!(ntype is Class)){
               this.HandleError(Error.InvalidModifier, "static");
               break;
             }
-            if ((result & TypeFlags.Sealed) != 0) 
+            if ((result & TypeFlags.Sealed) != 0)
               this.HandleError(modifierContexts[i], Error.DuplicateModifier, "sealed");
-            if ((result & TypeFlags.Abstract) != 0) 
+            if ((result & TypeFlags.Abstract) != 0)
               this.HandleError(modifierContexts[i], Error.DuplicateModifier, "abstract");
-            result |= TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName; 
+            result |= TypeFlags.Abstract|TypeFlags.Sealed|TypeFlags.SpecialName;
             break;
           case Token.Readonly:
             this.HandleError(Error.InvalidModifier, "readonly");
@@ -1425,13 +1425,13 @@ namespace Microsoft.SpecSharp{
       }
       return result;
     }
-    private void ParseFieldOrMethodOrPropertyOrStaticInitializer(TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseFieldOrMethodOrPropertyOrStaticInitializer(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, object sctx, TokenSet followers){
       SourceContext idCtx = this.scanner.CurrentSourceContext;
       TypeNode t = this.ParseTypeExpression(parentType.ConstructorName, followers|Parser.IdentifierOrNonReservedKeyword|Token.Explicit|Token.Implicit);
       this.ParseFieldOrMethodOrPropertyOrStaticInitializer(t, parentType, attributes, modifierTokens, modifierContexts, sctx, idCtx, followers);
     }
-    private void ParseFieldOrMethodOrPropertyOrStaticInitializer(TypeNode t, TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseFieldOrMethodOrPropertyOrStaticInitializer(TypeNode t, TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, object sctx, SourceContext idCtx, TokenSet followers){
       if (Parser.IsVoidType(t) && this.currentToken == Token.LeftParenthesis){
         this.ParseConstructor(parentType, attributes, modifierTokens, modifierContexts, sctx, idCtx, followers|Token.Semicolon);
@@ -1455,10 +1455,10 @@ namespace Microsoft.SpecSharp{
         case Token.New:
         case Token.Public:
         case Token.Protected:
-        case Token.Internal: 
-        case Token.Private: 
-        case Token.Abstract: 
-        case Token.Sealed: 
+        case Token.Internal:
+        case Token.Private:
+        case Token.Abstract:
+        case Token.Sealed:
         case Token.Static:
         case Token.Readonly:
         case Token.Volatile:
@@ -1477,7 +1477,7 @@ namespace Microsoft.SpecSharp{
         case Token.LessThan:
           if (t is TypeExpression && ((TypeExpression)t).Expression is Identifier){
             this.HandleError(t.SourceContext, Error.MemberNeedsType);
-            this.ParseMethod(parentType, attributes, modifierTokens, modifierContexts, sctx, 
+            this.ParseMethod(parentType, attributes, modifierTokens, modifierContexts, sctx,
               this.TypeExpressionFor(Token.Void), null, (Identifier)((TypeExpression)t).Expression, followers);
             return;
           }
@@ -1496,7 +1496,7 @@ namespace Microsoft.SpecSharp{
       TypeExpression interfaceType = null;
       Identifier id = this.scanner.GetIdentifier();
       if (badModifier) id.SourceContext.Document = null; //suppress any further errors involving this member
-      this.SkipIdentifierOrNonReservedKeyword(); 
+      this.SkipIdentifierOrNonReservedKeyword();
       if (this.currentToken == Token.DoubleColon){
         Identifier prefix = id;
         this.GetNextToken();
@@ -1620,12 +1620,12 @@ namespace Microsoft.SpecSharp{
         return;
       }
       Identifier name = this.scanner.GetIdentifier();
-      #endregion                
-      
+      #endregion
+
       ModelfieldContract mfC = new ModelfieldContract(parentType, attributes, type, name, name.SourceContext);
-          
+
       #region handle modifiers
-      bool isNew = false;      
+      bool isNew = false;
       for (int i = 0, n = modifierTokens.Length; i < n; i++) {
         switch (modifierTokens[i]) {
           case Token.New:
@@ -1639,8 +1639,8 @@ namespace Microsoft.SpecSharp{
           case Token.Override:
             if (isNew || mfC.IsOverride || parentType is Interface)
               this.HandleError(modifierContexts[i], Error.InvalidModifier, modifierContexts[i].SourceText);
-            else {              
-              mfC.IsOverride = true;              
+            else {
+              mfC.IsOverride = true;
             }
             break;
           case Token.Sealed:
@@ -1655,8 +1655,8 @@ namespace Microsoft.SpecSharp{
         }
       }
       #endregion
-            
-      this.GetNextToken(); //now expect either a semicolon, or {ConstraintsAndWitness}     
+
+      this.GetNextToken(); //now expect either a semicolon, or {ConstraintsAndWitness}
       if (this.currentToken == Token.Semicolon) {
         this.GetNextToken();
       } else {
@@ -1691,7 +1691,7 @@ namespace Microsoft.SpecSharp{
       parentType.Contract.ModelfieldContracts.Add(mfC);
       if (!mfC.IsOverride)
         parentType.Members.Add(mfC.Modelfield);
-      //this.SkipSemiColon(followers); a modelfield is not terminated by a ;           
+      //this.SkipSemiColon(followers); a modelfield is not terminated by a ;
     }
 
     private void ParseConst(TypeNode parentType, AttributeList attributes, TokenList modifierTokens, SourceContextList modifierContexts, SourceContext sctx, TokenSet followers){
@@ -1749,7 +1749,7 @@ namespace Microsoft.SpecSharp{
       this.SkipSemiColon(followers);
       this.SkipTo(followers);
     }
-    private Field ParseField(TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private Field ParseField(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, object sctx, TypeNode type, Identifier name, TokenSet followers){
       Field f = new Field(parentType, attributes, FieldFlags.Public, name, type, null);
       f.TypeExpression = type;
@@ -1788,20 +1788,20 @@ namespace Microsoft.SpecSharp{
         switch(modifierTokens[i]){
           case Token.New:
             if (f.HidesBaseClassMember)
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "new");             
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "new");
             f.HidesBaseClassMember = true;
             break;
           case Token.Public:
             FieldFlags access = result & FieldFlags.FieldAccessMask;
-            if (access == FieldFlags.Public) 
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");             
+            if (access == FieldFlags.Public)
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");
             else if (access != 0)
               this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             result |= FieldFlags.Public;
             break;
           case Token.Protected:
             access = result & FieldFlags.FieldAccessMask;
-            if (access == FieldFlags.Family || access == FieldFlags.FamORAssem) 
+            if (access == FieldFlags.Family || access == FieldFlags.FamORAssem)
               this.HandleError(modifierContexts[i], Error.DuplicateModifier, "protected");
             else if (access == FieldFlags.Assembly){
               result &= ~FieldFlags.Assembly;
@@ -1809,49 +1809,49 @@ namespace Microsoft.SpecSharp{
               break;
             }else if (access != 0)
               this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
-            result |= FieldFlags.Family; 
+            result |= FieldFlags.Family;
             break;
-          case Token.Internal: 
+          case Token.Internal:
             access = result & FieldFlags.FieldAccessMask;
-            if (access == FieldFlags.Assembly || access == FieldFlags.FamORAssem) 
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "internal");             
+            if (access == FieldFlags.Assembly || access == FieldFlags.FamORAssem)
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "internal");
             else if (access == FieldFlags.Family){
               result &= ~FieldFlags.Family;
               result |= FieldFlags.FamORAssem;
               break;
             }else if (access != 0)
               this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
-            result |= FieldFlags.Assembly; 
+            result |= FieldFlags.Assembly;
             break;
-          case Token.Private: 
+          case Token.Private:
             access = result & FieldFlags.FieldAccessMask;
-            if (access == FieldFlags.Private) 
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "private");             
+            if (access == FieldFlags.Private)
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "private");
             else if (access != 0)
               this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
-            result |= FieldFlags.Private; 
+            result |= FieldFlags.Private;
             break;
           case Token.Abstract:
             if (modifierContexts[i].Document != null)
               this.HandleError(modifierContexts[i], Error.InvalidModifier, "abstract");
             break;
-          case Token.Sealed: 
+          case Token.Sealed:
             this.HandleError(modifierContexts[i], Error.InvalidModifier, "sealed");
             break;
           case Token.Static:
             if ((result & FieldFlags.Static) != 0)
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "static");             
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "static");
             result |= FieldFlags.Static;
             break;
           case Token.Readonly:
             if ((result & FieldFlags.InitOnly) != 0)
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "readonly");             
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "readonly");
             result |= FieldFlags.InitOnly;
             break;
           case Token.Volatile:
             if (f.IsVolatile)
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "volatile");             
-            f.IsVolatile = true; 
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "volatile");
+            f.IsVolatile = true;
             break;
           case Token.Virtual:
             this.HandleError(modifierContexts[i], Error.InvalidModifier, "virtual");
@@ -1883,11 +1883,11 @@ namespace Microsoft.SpecSharp{
     private TypeNode ParseDelegateDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TypeFlags flags, SourceContext sctx, TokenSet followers){
       return this.ParseDelegateDeclaration(ns, parentType, attributes, null, null, flags, sctx, followers);
     }
-    private TypeNode ParseDelegateDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private TypeNode ParseDelegateDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, SourceContext sctx, TokenSet followers){
       return this.ParseDelegateDeclaration(ns, parentType, attributes, modifierTokens, modifierContexts, TypeFlags.None, sctx, followers);
     }
-    private TypeNode ParseDelegateDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private TypeNode ParseDelegateDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, TypeFlags flags, SourceContext sctx, TokenSet followers){
       DelegateNode d = new DelegateNode();
       d.Attributes = attributes;
@@ -1957,11 +1957,11 @@ namespace Microsoft.SpecSharp{
     private void ParseEnumDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TypeFlags flags, SourceContext sctx, TokenSet followers){
       this.ParseEnumDeclaration(ns, parentType, attributes, null, null, flags, sctx, followers);
     }
-    private void ParseEnumDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseEnumDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, SourceContext sctx, TokenSet followers){
       this.ParseEnumDeclaration(ns, parentType, attributes, modifierTokens, modifierContexts, TypeFlags.None, sctx, followers);
     }
-    private void ParseEnumDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseEnumDeclaration(Namespace ns, TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, TypeFlags flags, SourceContext sctx, TokenSet followers){
       EnumNode e = new EnumNode();
       e.Attributes = attributes;
@@ -2144,7 +2144,7 @@ namespace Microsoft.SpecSharp{
         case Token.String: return new TypeExpression(new Literal(TypeCode.String), 0, this.scanner.CurrentSourceContext);
         case Token.Void: return new TypeExpression(new Literal(TypeCode.Empty), 0, this.scanner.CurrentSourceContext);
         default: return null;
-      }      
+      }
     }
     private InterfaceList ParseInterfaceList(TokenSet followers, bool expectLeftBrace){
       InterfaceList ilist = new InterfaceList();
@@ -2264,7 +2264,7 @@ namespace Microsoft.SpecSharp{
           break;
       }
       return ilist;
-    }   
+    }
     private Expression ParseQualifiedIdentifier(MemberBinding mb, TokenSet followers){
       mb.SourceContext = this.scanner.CurrentSourceContext;
       this.GetNextToken();
@@ -2344,10 +2344,10 @@ namespace Microsoft.SpecSharp{
       this.GetNextToken();
       Identifier qid = this.scanner.GetIdentifier();
       qid.Prefix = prefix;
-      qid.SourceContext.StartPos = prefix.SourceContext.StartPos;      
+      qid.SourceContext.StartPos = prefix.SourceContext.StartPos;
       return qid;
     }
-    private void ParseConstructor(TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseConstructor(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, object sctx, SourceContext idCtx, TokenSet followers){
       InstanceInitializer c = new InstanceInitializer(parentType, attributes, null, null, this.TypeExpressionFor(Token.Void));
       this.currentCtor = c;
@@ -2431,7 +2431,7 @@ namespace Microsoft.SpecSharp{
         body.SourceContext.EndPos = b.SourceContext.EndPos;
         if ((c.Flags & MethodFlags.PInvokeImpl) != 0 && b.Statements != null && b.Statements.Count > 0)
           body = null;
-        else if (this.omitBodies) 
+        else if (this.omitBodies)
           b.Statements = null;
       }else if ((c.Flags & MethodFlags.PInvokeImpl) != 0)
         body = null;
@@ -2439,7 +2439,7 @@ namespace Microsoft.SpecSharp{
       this.inInstanceConstructor = BaseOrThisCallKind.Disallowed;
       this.currentCtor = null;
     }
-    private void ParseStaticConstructor(TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseStaticConstructor(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, MethodFlags flags, object sctx, SourceContext idCtx, TokenSet followers){
       if (parentType is Interface){
         this.HandleError(idCtx, Error.InterfacesCannotContainConstructors);
@@ -2458,7 +2458,7 @@ namespace Microsoft.SpecSharp{
           this.HandleError(modifierContexts[i], Error.StaticConstructorWithAccessModifiers);
         }
       }
-      StaticInitializer c = new StaticInitializer(parentType, attributes, 
+      StaticInitializer c = new StaticInitializer(parentType, attributes,
         new Block(new StatementList(2), this.insideCheckedBlock, this.insideUncheckedBlock, this.inUnsafeCode), this.TypeExpressionFor(Token.Void));
       c.Name = new Identifier(".cctor", idCtx);
       parentType.Members.Add(c);
@@ -2690,13 +2690,13 @@ namespace Microsoft.SpecSharp{
       for (int i = 0, n = modifierTokens.Length; i < n; i++){
         switch(modifierTokens[i]){
           case Token.Public:
-            if ((result & MethodFlags.MethodAccessMask) == MethodFlags.Public) 
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");             
+            if ((result & MethodFlags.MethodAccessMask) == MethodFlags.Public)
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");
             result |= MethodFlags.Public;
             break;
           case Token.Static:
             if ((result & MethodFlags.Static) != 0)
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "static");             
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "static");
             result |= MethodFlags.Static;
             break;
           case Token.Extern:
@@ -2737,7 +2737,7 @@ namespace Microsoft.SpecSharp{
       meth.CallingConvention = CallingConventionFlags.HasThis;
       Debug.Assert(this.currentToken == Token.BitwiseNot);
       this.GetNextToken();
-      if (!(parentType is Class)) 
+      if (!(parentType is Class))
         this.HandleError(Error.OnlyClassesCanContainDestructors);
       else
         parentType.Members.Add(meth);
@@ -2795,7 +2795,7 @@ namespace Microsoft.SpecSharp{
         this.HandleError(modifierContexts[firstNonExtern], Error.InvalidModifier, modifierContexts[firstNonExtern].SourceText);
       return result;
     }
-    private void ParseEvent(TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseEvent(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, object sctx, TokenSet followers){
       Debug.Assert(this.currentToken == Token.Event);
       this.GetNextToken();
@@ -2880,7 +2880,7 @@ namespace Microsoft.SpecSharp{
               m.HidesBaseClassMember = e.HidesBaseClassMember;
               m.OverridesBaseClassMember = e.OverridesBaseClassMember;
               m.Name.SourceContext = scntx;
-              if ((mflags & MethodFlags.Static) == 0) 
+              if ((mflags & MethodFlags.Static) == 0)
                 m.CallingConvention = CallingConventionFlags.HasThis;
               m.Flags = mflags|MethodFlags.HideBySig|MethodFlags.SpecialName;
               if (interfaceType != null){
@@ -2912,12 +2912,12 @@ namespace Microsoft.SpecSharp{
               m.HidesBaseClassMember = e.HidesBaseClassMember;
               m.OverridesBaseClassMember = e.OverridesBaseClassMember;
               m.Name.SourceContext = scntx;
-              if ((mflags & MethodFlags.Static) == 0) 
+              if ((mflags & MethodFlags.Static) == 0)
                 m.CallingConvention = CallingConventionFlags.HasThis;
               m.Flags = mflags|MethodFlags.HideBySig|MethodFlags.SpecialName;
               if (interfaceType != null){
                 m.Flags = MethodFlags.Private|MethodFlags.HideBySig|MethodFlags.NewSlot|MethodFlags.Final|MethodFlags.Virtual|MethodFlags.SpecialName;
-                m.ImplementedTypeExpressions = m.ImplementedTypes = new TypeNodeList(interfaceType);                
+                m.ImplementedTypeExpressions = m.ImplementedTypes = new TypeNodeList(interfaceType);
               }
               if (this.currentToken != Token.LeftBrace){
                 this.SkipTo(followersOrRightBrace|Token.Add, Error.AddRemoveMustHaveBody);
@@ -2933,10 +2933,10 @@ namespace Microsoft.SpecSharp{
             case Token.New:
             case Token.Public:
             case Token.Protected:
-            case Token.Internal: 
-            case Token.Private: 
-            case Token.Abstract: 
-            case Token.Sealed: 
+            case Token.Internal:
+            case Token.Private:
+            case Token.Abstract:
+            case Token.Sealed:
             case Token.Static:
             case Token.Readonly:
             case Token.Volatile:
@@ -3006,14 +3006,14 @@ namespace Microsoft.SpecSharp{
             e.HandlerFlags = mflags;
             e.HandlerType = e.HandlerTypeExpression = t;
             goto nextDeclarator;
-          default: 
+          default:
             this.Skip(Token.Semicolon);
             break;
         }
       }
     }
-    private void ParseMethod(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,       
-      SourceContextList modifierContexts, object sctx, TypeNode type, TypeNode interfaceType, Identifier name, TokenSet followers){            
+    private void ParseMethod(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
+      SourceContextList modifierContexts, object sctx, TypeNode type, TypeNode interfaceType, Identifier name, TokenSet followers){
       Method m = new Method(parentType, attributes, name, null, type, null);
       m.SourceContext = (SourceContext)sctx;
       m.ReturnTypeExpression = type;
@@ -3044,7 +3044,7 @@ namespace Microsoft.SpecSharp{
       }
       m.Documentation = this.LastDocComment;
       if (this.currentToken == Token.LessThan)
-        this.ParseTypeParameters(m, followers|Token.LeftParenthesis|Token.LeftBrace);     
+        this.ParseTypeParameters(m, followers|Token.LeftParenthesis|Token.LeftBrace);
       m.Parameters = this.ParseParameters(Token.RightParenthesis, followers|Token.LeftBrace|Token.Semicolon|Token.Requires|Token.Modifies|Token.Ensures|Token.Where|Token.Throws);
       while (this.currentToken == Token.Where)
         this.ParseTypeParameterConstraint(m, followers|Token.LeftBrace|Token.Semicolon|Token.Requires|Token.Modifies|Token.Ensures|Token.Where|Token.Throws);
@@ -3072,7 +3072,7 @@ namespace Microsoft.SpecSharp{
         this.SkipSemiColon(followers);
       }
     }
-    
+
     static private bool InEnsuresContext = false;
     private void ParseMethodContract(Method m, TokenSet followers, ref bool swallowedSemicolonAlready){
       bool savedParsingStatement = this.parsingStatement;
@@ -3130,7 +3130,7 @@ namespace Microsoft.SpecSharp{
                 else {
                   e = new UnaryExpression(e, NodeType.RefAddress, sctx);
                 }
-                mc.Modifies.Add(e);                
+                mc.Modifies.Add(e);
               }
               if (this.currentToken == Token.Comma)
                 goto list;
@@ -3232,7 +3232,7 @@ namespace Microsoft.SpecSharp{
             n = exc;
             break;
           }
-          
+
         }
         if (n != null) {
           n.SourceContext= ctx;
@@ -3290,8 +3290,8 @@ namespace Microsoft.SpecSharp{
           case Token.Public:
             if (access != 0){
               result &= ~MethodFlags.MethodAccessMask;
-              if (access == MethodFlags.Public) 
-                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");             
+              if (access == MethodFlags.Public)
+                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "public");
               else
                 this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             }
@@ -3300,7 +3300,7 @@ namespace Microsoft.SpecSharp{
           case Token.Protected:
             if (access != 0){
               result &= ~MethodFlags.MethodAccessMask;
-              if (access == MethodFlags.Family || access == MethodFlags.FamORAssem) 
+              if (access == MethodFlags.Family || access == MethodFlags.FamORAssem)
                 this.HandleError(modifierContexts[i], Error.DuplicateModifier, "protected");
               else if (access == MethodFlags.Assembly){
                 result |= MethodFlags.FamORAssem;
@@ -3308,41 +3308,41 @@ namespace Microsoft.SpecSharp{
               }else
                 this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             }
-            result |= MethodFlags.Family; 
+            result |= MethodFlags.Family;
             break;
-          case Token.Internal: 
+          case Token.Internal:
             if (access != 0){
               result &= ~MethodFlags.MethodAccessMask;
-              if (access == MethodFlags.Assembly || access == MethodFlags.FamORAssem) 
-                this.HandleError(Error.DuplicateModifier, "internal");             
+              if (access == MethodFlags.Assembly || access == MethodFlags.FamORAssem)
+                this.HandleError(Error.DuplicateModifier, "internal");
               else if (access == MethodFlags.Family){
                 result |= MethodFlags.FamORAssem;
                 break;
               }else
                 this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             }
-            result |= MethodFlags.Assembly; 
+            result |= MethodFlags.Assembly;
             break;
-          case Token.Private: 
+          case Token.Private:
             if (access != 0){
               result &= ~MethodFlags.MethodAccessMask;
-              if (access == MethodFlags.Private) 
-                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "private");             
+              if (access == MethodFlags.Private)
+                this.HandleError(modifierContexts[i], Error.DuplicateModifier, "private");
               else
                 this.HandleError(modifierContexts[i], Error.ConflictingProtectionModifier);
             }
             if ((result & MethodFlags.Virtual) != 0){
               string offendingMember = type.FullName;
-              if (member != null) 
+              if (member != null)
                 offendingMember = offendingMember + "." + member.Name;
               else
                 offendingMember = offendingMember + "." + type.Name;
               this.HandleError(modifierContexts[i], Error.VirtualPrivate, offendingMember);
               break;
             }
-            result |= MethodFlags.Private; 
+            result |= MethodFlags.Private;
             break;
-          case Token.Sealed: 
+          case Token.Sealed:
             if ((result & MethodFlags.Final) != 0){
               this.HandleError(modifierContexts[i], Error.DuplicateModifier, "sealed");
               break;
@@ -3380,7 +3380,7 @@ namespace Microsoft.SpecSharp{
                   break;
                 case Token.Override:
                   string offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3405,7 +3405,7 @@ namespace Microsoft.SpecSharp{
                   break;
                 case Token.Virtual:
                   string offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3416,7 +3416,7 @@ namespace Microsoft.SpecSharp{
                   break;
                 case Token.Private:
                   offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3443,7 +3443,7 @@ namespace Microsoft.SpecSharp{
                   break;
                 case Token.Abstract:
                   string offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3454,7 +3454,7 @@ namespace Microsoft.SpecSharp{
                   break;
                 case Token.Override:
                   offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3462,7 +3462,7 @@ namespace Microsoft.SpecSharp{
                   break;
                 case Token.Private:
                   offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3470,7 +3470,7 @@ namespace Microsoft.SpecSharp{
                   break;
               }
             }
-            result |= MethodFlags.Virtual|MethodFlags.NewSlot|MethodFlags.CheckAccessOnOverride;            
+            result |= MethodFlags.Virtual|MethodFlags.NewSlot|MethodFlags.CheckAccessOnOverride;
             break;
           case Token.Override:
             for (int j = 0; j < i; j++){
@@ -3481,7 +3481,7 @@ namespace Microsoft.SpecSharp{
                 case Token.New:
                 case Token.Virtual:
                   string offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3492,7 +3492,7 @@ namespace Microsoft.SpecSharp{
                   break;
                 case Token.Private:
                   offendingMember = type.FullName;
-                  if (member != null) 
+                  if (member != null)
                     offendingMember = offendingMember + "." + member.Name;
                   else
                     offendingMember = offendingMember + "." + type.Name;
@@ -3507,7 +3507,7 @@ namespace Microsoft.SpecSharp{
             break;
           case Token.Extern:
             if ((result & MethodFlags.PInvokeImpl) != 0)
-              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "extern");             
+              this.HandleError(modifierContexts[i], Error.DuplicateModifier, "extern");
             result |= MethodFlags.PInvokeImpl;
             break;
           case Token.Unsafe:
@@ -3530,7 +3530,7 @@ namespace Microsoft.SpecSharp{
               case Token.Abstract:
               case Token.Virtual:
                 string offendingMember = type.FullName;
-                if (member != null) 
+                if (member != null)
                   offendingMember = offendingMember + "." + member.Name;
                 else
                   offendingMember = offendingMember + "." + type.Name;
@@ -3558,8 +3558,8 @@ namespace Microsoft.SpecSharp{
         if (this.currentToken != Token.LeftParenthesis){
           this.SkipTo(followers|Parser.UnaryStart, Error.SyntaxError, "(");
         }
-        if (this.currentToken == Token.LeftParenthesis) 
-          this.GetNextToken();        
+        if (this.currentToken == Token.LeftParenthesis)
+          this.GetNextToken();
       }else{
         if (this.currentToken != Token.LeftBracket)
           this.SkipTo(followers|Parser.UnaryStart, Error.SyntaxError, "[");
@@ -3620,7 +3620,7 @@ namespace Microsoft.SpecSharp{
       p.Flags = ParameterFlags.None;
       bool byRef = false;
       switch(this.currentToken){
-        case Token.Out: 
+        case Token.Out:
           //TODO: error if !allowRefParameters && typesAreOptional
           p.Flags = ParameterFlags.Out;
           goto case Token.Ref;
@@ -3694,13 +3694,13 @@ namespace Microsoft.SpecSharp{
         int endPos = this.scanner.endPos;
         int rank = this.ParseRankSpecifier(true, followers|Token.LeftBracket);
         if (rank > 0)
-          p.Type = p.TypeExpression = this.ParseArrayType(rank, p.Type, followers); 
+          p.Type = p.TypeExpression = this.ParseArrayType(rank, p.Type, followers);
         else{
           this.currentToken = Token.LeftBracket;
           this.scanner.endPos = endPos;
           this.GetNextToken();
-          while (!this.scanner.TokenIsFirstAfterLineBreak && 
-            this.currentToken != Token.RightBracket && this.currentToken != Token.Comma && this.currentToken != Token.RightParenthesis) 
+          while (!this.scanner.TokenIsFirstAfterLineBreak &&
+            this.currentToken != Token.RightBracket && this.currentToken != Token.Comma && this.currentToken != Token.RightParenthesis)
             this.GetNextToken();
           if (this.currentToken == Token.RightBracket) this.GetNextToken();
         }
@@ -3715,7 +3715,7 @@ namespace Microsoft.SpecSharp{
       this.SkipTo(followers);
       return p;
     }
-    private void ParseProperty(TypeNode parentType, AttributeList attributes, TokenList modifierTokens, 
+    private void ParseProperty(TypeNode parentType, AttributeList attributes, TokenList modifierTokens,
       SourceContextList modifierContexts, object sctx, TypeNode type, TypeNode interfaceType, Identifier name, TokenSet followers){
       SourceContext ctx = (SourceContext)sctx;
       ctx.EndPos = this.scanner.endPos;
@@ -3779,7 +3779,7 @@ namespace Microsoft.SpecSharp{
             m.SourceContext = sc;
             m.ReturnTypeExpression = type;
             m.Name.SourceContext = scntx;
-            if ((accessorFlags & MethodFlags.Static) == 0) 
+            if ((accessorFlags & MethodFlags.Static) == 0)
               m.CallingConvention = CallingConventionFlags.HasThis;
             parentType.Members.Add(m);
             m.Flags = accessorFlags|MethodFlags.HideBySig;
@@ -3814,7 +3814,7 @@ namespace Microsoft.SpecSharp{
             Method m = new Method(parentType, accessorAttrs, new Identifier("set_"+name.ToString()), parList, this.TypeExpressionFor(Token.Void), null);
             m.SourceContext = sc;
             m.Name.SourceContext = scntx;
-            if ((accessorFlags & MethodFlags.Static) == 0) 
+            if ((accessorFlags & MethodFlags.Static) == 0)
               m.CallingConvention = CallingConventionFlags.HasThis;
             parentType.Members.Add(m);
             m.Flags = accessorFlags|MethodFlags.HideBySig;
@@ -3838,8 +3838,8 @@ namespace Microsoft.SpecSharp{
             accessorFlags = mflags;
             break;}
           case Token.Protected:
-          case Token.Internal: 
-          case Token.Private: 
+          case Token.Internal:
+          case Token.Private:
             if (parentType is Interface || interfaceType != null || accessorModifiersAlreadySpecified)
               goto case Token.New;
             accessorFlags = this.ParseAccessorModifiers(mflags);
@@ -3847,8 +3847,8 @@ namespace Microsoft.SpecSharp{
             break;
           case Token.Public:
           case Token.New:
-          case Token.Abstract: 
-          case Token.Sealed: 
+          case Token.Abstract:
+          case Token.Sealed:
           case Token.Static:
           case Token.Readonly:
           case Token.Volatile:
@@ -3888,7 +3888,7 @@ namespace Microsoft.SpecSharp{
       MethodFlags result = (MethodFlags)0;
       SourceContext sctx = this.scanner.CurrentSourceContext;
       switch(this.currentToken){
-        case Token.Internal: 
+        case Token.Internal:
           result = MethodFlags.Assembly;
           this.GetNextToken();
           if (this.currentToken == Token.Protected){
@@ -3968,7 +3968,7 @@ namespace Microsoft.SpecSharp{
       ctx.EndPos = this.scanner.CurrentSourceContext.EndPos;
       Debug.Assert(this.currentToken == Token.LeftBrace);
       block.SourceContext = this.scanner.CurrentSourceContext;
-      this.GetNextToken(); 
+      this.GetNextToken();
       block.Statements = this.ParseStatements(followers|Token.RightBrace);
       block.SourceContext.EndPos = this.scanner.CurrentSourceContext.EndPos;
       this.insideBlock = savedInsideBlock;
@@ -4081,7 +4081,7 @@ namespace Microsoft.SpecSharp{
         case Token.Return: return this.ParseReturn(followers);
         case Token.Throw: return this.ParseThrow(followers);
         case Token.Yield: return this.ParseYield(followers, preferExpressionToDeclaration);
-        case Token.Try: 
+        case Token.Try:
         case Token.Catch:
         case Token.Finally:
           return this.ParseTry(followers);
@@ -4110,7 +4110,7 @@ namespace Microsoft.SpecSharp{
         default:
           return this.ParseExpressionStatementOrDeclaration(false, followers, preferExpressionToDeclaration, true);
       }
-    }       
+    }
     private Assertion ParseAssertion(TokenSet followers){
       Debug.Assert(this.currentToken == Token.Assert);
       Assertion result = new Assertion();
@@ -4139,9 +4139,9 @@ namespace Microsoft.SpecSharp{
 
       for(int i = 0, n = modifierTokens.Length; i < n; i++){
         switch(modifierTokens[i]){
-          case Token.Static: break; 
+          case Token.Static: break;
           default:
-           // Token.New, Token.Public, Token.Protected, Token.Internal, Token.Private, Token.Abstract, 
+           // Token.New, Token.Public, Token.Protected, Token.Internal, Token.Private, Token.Abstract,
            // Token.Sealed, Token.Readonly, Token.Volatile, Token.Virtual, Token.Override, Token.Extern,
            //Token.Unsafe
             this.HandleError(modifierContexts[i], Error.InvalidModifier, modifierContexts[i].SourceText);
@@ -4255,7 +4255,7 @@ namespace Microsoft.SpecSharp{
         switch(this.currentToken){
           case Token.Case:
             this.GetNextToken();
-            if (this.currentToken == Token.Colon) 
+            if (this.currentToken == Token.Colon)
               this.HandleError(Error.ConstantExpected);
             else
               scase.Label = this.ParseExpression(followersOrCaseOrColonOrDefaultOrRightBrace);
@@ -4264,7 +4264,7 @@ namespace Microsoft.SpecSharp{
             this.GetNextToken();
             scase.Label = null;
             break;
-          default: 
+          default:
             if (Parser.StatementStart[this.currentToken]){
               this.HandleError(Error.StmtNotInCase);
               this.ParseStatement(followersOrCaseOrColonOrDefaultOrRightBrace);
@@ -4440,7 +4440,7 @@ namespace Microsoft.SpecSharp{
       this.GetNextToken();
       SourceContext sctx = this.scanner.CurrentSourceContext;
       this.Skip(Token.LeftParenthesis);
-      forEach.TargetVariableType = forEach.TargetVariableTypeExpression = 
+      forEach.TargetVariableType = forEach.TargetVariableTypeExpression =
         this.ParseTypeExpression(null, followers|Parser.IdentifierOrNonReservedKeyword|Token.In|Token.RightParenthesis);
       forEach.TargetVariable = this.scanner.GetIdentifier();
       if (this.currentToken == Token.In)
@@ -4494,7 +4494,7 @@ namespace Microsoft.SpecSharp{
       Statement result = null;
       switch(this.currentToken){
         case Token.Case:
-          this.GetNextToken();          
+          this.GetNextToken();
           result = new GotoCase(this.ParseExpression(followers|Token.Semicolon));
           break;
         case Token.Default:
@@ -4686,8 +4686,8 @@ namespace Microsoft.SpecSharp{
     private Statement ParseFixedPointerDeclarators(TokenSet followers){
       SourceContext sctx = this.scanner.CurrentSourceContext;
       this.Skip(Token.LeftParenthesis);
-      TypeNode bt = this.ParseTypeExpression(null, followers|Token.Identifier|Token.Assign|Token.Comma, false); 
-      Statement declarator = this.ParseLocalDeclarations(bt, sctx, false, true, false, false, followers|Token.RightParenthesis);     
+      TypeNode bt = this.ParseTypeExpression(null, followers|Token.Identifier|Token.Assign|Token.Comma, false);
+      Statement declarator = this.ParseLocalDeclarations(bt, sctx, false, true, false, false, followers|Token.RightParenthesis);
       this.ParseBracket(sctx, Token.RightParenthesis, followers, Error.ExpectedRightParenthesis);
       return declarator;
     }
@@ -4776,8 +4776,8 @@ namespace Microsoft.SpecSharp{
       TypeNode t = this.ParseTypeOrFunctionTypeExpression(followers|Parser.IdentifierOrNonReservedKeyword, true, false);
       if (t is PointerTypeExpression && !this.inUnsafeCode)
         this.HandleError(t.SourceContext, Error.UnsafeNeeded);
-      if (t == null || (!Parser.IdentifierOrNonReservedKeyword[this.currentToken] && 
-          (this.sink == null || this.currentToken == Token.LeftParenthesis || 
+      if (t == null || (!Parser.IdentifierOrNonReservedKeyword[this.currentToken] &&
+          (this.sink == null || this.currentToken == Token.LeftParenthesis ||
           (this.currentToken == Token.EndOfFile && (t.TemplateArguments == null || t.TemplateArguments.Count == 0))))){
         //Tried to parse a type expression and failed, or clearly not dealing with a declaration.
         //Restore prior state and reparse as expression
@@ -4795,7 +4795,7 @@ namespace Microsoft.SpecSharp{
         if (!acceptComma || this.currentToken != Token.Comma){
           if (!preferExpressionToDeclaration){
             if (!(e == null || e is AssignmentExpression || e is QueryExpression ||
-              e is MethodCall || e is PostfixExpression || e is PrefixExpression || 
+              e is MethodCall || e is PostfixExpression || e is PrefixExpression ||
               e is Construct || followers[Token.RightParenthesis] ||
               (e is Base && this.currentCtor != null && this.inInstanceConstructor == BaseOrThisCallKind.ColonThisOrBaseSeen)
               )
@@ -4828,7 +4828,7 @@ namespace Microsoft.SpecSharp{
               if (this.currentToken == Token.Comma){
                 this.HandleError(Error.ExpectedSemicolon);
                 this.GetNextToken();
-              }else 
+              }else
                 this.SkipSemiColon(followers);
             }
           }
@@ -4872,13 +4872,13 @@ namespace Microsoft.SpecSharp{
           int rank = this.ParseRankSpecifier(true, followers|Token.RightBracket|Parser.IdentifierOrNonReservedKeyword|Token.Assign|Token.Semicolon|Token.Comma);
           if (rank > 0)
             t = result.Type = result.TypeExpression =
-              this.ParseArrayType(rank, t, followers|Token.RightBracket|Parser.IdentifierOrNonReservedKeyword|Token.Assign|Token.Semicolon|Token.Comma); 
+              this.ParseArrayType(rank, t, followers|Token.RightBracket|Parser.IdentifierOrNonReservedKeyword|Token.Assign|Token.Semicolon|Token.Comma);
           else{
             this.currentToken = Token.LeftBracket;
             this.scanner.endPos = endPos;
             this.GetNextToken();
-            while (!this.scanner.TokenIsFirstAfterLineBreak && 
-              this.currentToken != Token.RightBracket && this.currentToken != Token.Assign && this.currentToken != Token.Semicolon) 
+            while (!this.scanner.TokenIsFirstAfterLineBreak &&
+              this.currentToken != Token.RightBracket && this.currentToken != Token.Assign && this.currentToken != Token.Semicolon)
               this.GetNextToken();
             if (this.currentToken == Token.RightBracket) this.GetNextToken();
           }
@@ -4991,7 +4991,7 @@ namespace Microsoft.SpecSharp{
           case Token.LeftBracket:
             returnNullIfError = false;
             rank = this.ParseRankSpecifier(false, followersOrTypeOperator);
-            if (rank > 0) type = this.ParseArrayType(rank, type, followersOrTypeOperator); 
+            if (rank > 0) type = this.ParseArrayType(rank, type, followersOrTypeOperator);
             break;
           case Token.Multiply:{
             TypeNode t = new PointerTypeExpression(type);
@@ -5180,7 +5180,7 @@ namespace Microsoft.SpecSharp{
       if (Typeof && this.currentToken == Token.GreaterThan){
         endCol = this.scanner.endPos;
         this.GetNextToken();
-        if (this.sink != null) this.sink.EndTemplateParameters(this.scanner.CurrentSourceContext); 
+        if (this.sink != null) this.sink.EndTemplateParameters(this.scanner.CurrentSourceContext);
         return null;
       }
       SourceContext commaContext = this.scanner.CurrentSourceContext;
@@ -5213,7 +5213,7 @@ namespace Microsoft.SpecSharp{
       }
       if (this.sink != null) this.sink.EndTemplateParameters(this.scanner.CurrentSourceContext);
       endCol = this.scanner.endPos;
-      if (returnNullIfError && this.currentToken != Token.GreaterThan && this.currentToken != Token.RightShift && this.currentToken != Token.EndOfFile) 
+      if (returnNullIfError && this.currentToken != Token.GreaterThan && this.currentToken != Token.RightShift && this.currentToken != Token.EndOfFile)
         return null;
       if (this.currentToken == Token.RightShift)
         this.currentToken = Token.GreaterThan;
@@ -5241,7 +5241,7 @@ namespace Microsoft.SpecSharp{
       this.Skip(Token.LeftParenthesis);
       expose.Instance = this.ParseExpression(followers | Token.RightParenthesis | Parser.StatementStart);
       this.ParseBracket(sctx, Token.RightParenthesis, followers|Parser.StatementStart, Error.ExpectedRightParenthesis);
-      
+
       Block b = this.ParseStatementAsBlock(followers);
       expose.Body = b;
       if (b != null){
@@ -5300,10 +5300,10 @@ namespace Microsoft.SpecSharp{
       if (followers[this.currentToken] && !Parser.InfixOperators[this.currentToken]) return operand1;
       if (this.currentToken == Token.Conditional)
         return this.ParseConditional(operand1, followers);
-      else if (this.currentToken == Token.Private)
-        return operand1;
-      else
+      else if (Parser.InfixOperators[this.currentToken])
         return this.ParseAssignmentExpression(operand1, followers);
+      else
+        return operand1;
     }
     private Expression ParseParenthesizedExpression(TokenSet followers){
       return this.ParseParenthesizedExpression(followers, false);
@@ -5320,7 +5320,7 @@ namespace Microsoft.SpecSharp{
         this.GetNextToken();
         Expression result2 = this.ParseExpression(followers|Token.RightParenthesis);
         if (result2 == null) return null;
-        result1 = new BinaryExpression(result1, 
+        result1 = new BinaryExpression(result1,
           new BinaryExpression(result2, new Literal(1, null, result2.SourceContext), NodeType.Sub), NodeType.Range);
       }
       int bracketPos = this.scanner.endPos;
@@ -5528,7 +5528,7 @@ namespace Microsoft.SpecSharp{
             break;
           default:
             //Reduce operand2 op2 operand3. There either is no further binary operator, or it does not take priority over op2.
-            expression = new BinaryExpression(operand2, operand3, Parser.ConvertToBinaryNodeType(operator2)); 
+            expression = new BinaryExpression(operand2, operand3, Parser.ConvertToBinaryNodeType(operator2));
             if (operand2 != null && operand3 != null){
               expression.SourceContext = operand2.SourceContext;
               expression.SourceContext.EndPos = operand3.SourceContext.EndPos;
@@ -5584,7 +5584,7 @@ namespace Microsoft.SpecSharp{
             goto default; //Let the caller deal with the current token
         default:
           //reduce operand1 op1 operand2 and return to caller
-          expression = new BinaryExpression(operand1, operand2, Parser.ConvertToBinaryNodeType(operator1)); 
+          expression = new BinaryExpression(operand1, operand2, Parser.ConvertToBinaryNodeType(operator1));
           if (operand1 != null && operand2 != null){
             expression.SourceContext = operand1.SourceContext;
             expression.SourceContext.EndPos = operand2.SourceContext.EndPos;
@@ -5676,8 +5676,7 @@ namespace Microsoft.SpecSharp{
           q.QuantifierType = Parser.ConvertToQuantifierType(quantType);
           this.Skip(Token.LeftBrace);
           Comprehension c = this.ParseComprehension(followers, sctx);
-          if (c == null){
-            this.GetNextToken();
+          if (c == null) {
             return null;
           }
           q.Comprehension = c;
@@ -5717,7 +5716,7 @@ namespace Microsoft.SpecSharp{
           return result;
         }
       }
-      //Tried to parse a parenthesized type expression followed by a unary expression, but failed. 
+      //Tried to parse a parenthesized type expression followed by a unary expression, but failed.
       //Reset the scanner to the state at the start of this routine and parse as a parenthesized expression
       bool isLambda = this.currentToken == Token.Lambda;
       this.scanner.endPos = sctx.StartPos;
@@ -5800,7 +5799,7 @@ namespace Microsoft.SpecSharp{
             par.SourceContext = expression.SourceContext;
             return this.ParseLambdaExpression(par.SourceContext, new ParameterList(par), followers);
           }
-          break;          
+          break;
         case Token.Null:
           expression = new Literal(null, null, sctx);
           this.GetNextToken();
@@ -5893,7 +5892,7 @@ namespace Microsoft.SpecSharp{
         case Token.Default:{
           //if (this.currentToken == Token.Sizeof && !this.inUnsafeCode)
             //this.HandleError(Error.SizeofUnsafe);
-          UnaryExpression uex = new UnaryExpression(null, 
+          UnaryExpression uex = new UnaryExpression(null,
             this.currentToken == Token.Typeof ? NodeType.Typeof : this.currentToken == Token.Sizeof ? NodeType.Sizeof : NodeType.DefaultValue);
           uex.SourceContext = sctx;
           this.GetNextToken();
@@ -5999,7 +5998,7 @@ namespace Microsoft.SpecSharp{
         this.HandleError(expression.SourceContext, Error.BaseIllegal);
         expression = null;
       }
-      
+
       expression = this.ParseIndexerCallOrSelector(expression, followers|Token.AddOne|Token.SubtractOne);
       for(;;){
         switch(this.currentToken){
@@ -6360,19 +6359,19 @@ namespace Microsoft.SpecSharp{
         this.Skip(Token.LeftBrace);
       this.SkipTo(followers);
       return consArr;
-    }    
+    }
     private Comprehension ParseComprehension(TokenSet followers){
       SourceContext sctx = this.scanner.CurrentSourceContext;
       Debug.Assert(this.currentToken == Token.LeftBrace);
       this.GetNextToken();
       return this.ParseComprehension(followers, sctx);
-    }      
+    }
     private Comprehension ParseComprehension(TokenSet followers, SourceContext sctx){
       bool isDisplay = true;
       ExpressionList bindingAndFilterList = new ExpressionList();
       ExpressionList elementList = new ExpressionList();
       Expression e = null;
-      
+
       if (this.currentToken != Token.RightBrace){
         e = this.ParseIteratorOrExpression(followers|Token.RightBrace|Token.Semicolon|Token.Comma);
         if (e == null){
@@ -6383,7 +6382,7 @@ namespace Microsoft.SpecSharp{
         }
         isDisplay = !(e is ComprehensionBinding);
         while (this.currentToken == Token.Comma){
-          this.GetNextToken(); 
+          this.GetNextToken();
           e = this.ParseIteratorOrExpression(followers|Token.RightBrace|Token.Semicolon|Token.Comma);
           if (e == null){
             this.HandleError(sctx, Error.SyntaxError,"iterator or expression");
@@ -6418,7 +6417,7 @@ namespace Microsoft.SpecSharp{
         elementList = bindingAndFilterList;
         bindingAndFilterList = null;
       }
-        
+
       Comprehension comp = new Comprehension();
       if (bindingAndFilterList != null && bindingAndFilterList.Count > 0)
         comp.BindingsAndFilters = bindingAndFilterList;
@@ -6432,20 +6431,20 @@ namespace Microsoft.SpecSharp{
       return comp;
     }
 
-    private Expression ParseIteratorOrExpression( TokenSet followers ) {      
+    private Expression ParseIteratorOrExpression( TokenSet followers ) {
       SourceContext sctx = this.scanner.CurrentSourceContext;
       ScannerState ss = this.scanner.state;
-      // shortcut for ( <expression>)  
+      // shortcut for ( <expression>)
       if( this.currentToken == Token.LeftParenthesis ) {
         // then it can't be a binding, it must be a filter.
         Expression e = ParseExpression(followers );
         e.SourceContext = sctx;
-        e.SourceContext.EndPos = this.scanner.CurrentSourceContext.StartPos; 
+        e.SourceContext.EndPos = this.scanner.CurrentSourceContext.StartPos;
         return e;
-      }      
+      }
       // try fully formed syntax:  <type> <name> in <expression>
       ComprehensionBinding q = new ComprehensionBinding();
-      q.TargetVariableType = q.TargetVariableTypeExpression = this.ParseTypeExpression(null, 
+      q.TargetVariableType = q.TargetVariableTypeExpression = this.ParseTypeExpression(null,
         followers | Parser.IdentifierOrNonReservedKeyword |Token.In|Token.RightBrace|Token.Semicolon|Token.Comma, true );
       if (q.TargetVariableType != null && Parser.IdentifierOrNonReservedKeyword[this.currentToken] ) {
         q.TargetVariable = this.scanner.GetIdentifier();
@@ -6456,10 +6455,10 @@ namespace Microsoft.SpecSharp{
           this.Skip(Token.In);
           q.SourceEnumerable = this.ParseExpression(followers);
           q.SourceContext = sctx;
-          q.SourceContext.EndPos = this.scanner.CurrentSourceContext.StartPos; 
+          q.SourceContext.EndPos = this.scanner.CurrentSourceContext.StartPos;
           return q;
-        } 
-      
+        }
+
 
       }
       // back up and try as untyped iterator:  <name> in <expression>
@@ -6480,7 +6479,7 @@ namespace Microsoft.SpecSharp{
         } else if (this.currentToken == Token.As) {
           this.Skip(Token.As);
           q.AsTargetVariableType = q.AsTargetVariableTypeExpression = this.ParseTypeExpression(null,
-            followers|Token.In|Token.RightBrace|Token.Semicolon|Token.Comma, false); 
+            followers|Token.In|Token.RightBrace|Token.Semicolon|Token.Comma, false);
           this.Skip(Token.In);
           q.SourceEnumerable = this.ParseExpression(followers);
           return q;
@@ -6645,7 +6644,7 @@ namespace Microsoft.SpecSharp{
             mcall2.SourceContext.EndPos = this.scanner.endPos;
             expression = mcall2;
             break;
-          case Token.Dot:            
+          case Token.Dot:
             expression = this.ParseQualifiedIdentifier(expression, followersOrContinuers);
             break;
           case Token.RealLiteral:
@@ -6780,7 +6779,7 @@ namespace Microsoft.SpecSharp{
           return this.ParseExpression(followers);
       }
     }
-    private XmlElement GetXmlElement(LiteralElement lit){ 
+    private XmlElement GetXmlElement(LiteralElement lit){
       try {
         XmlElement result = null;
         result = this.module.Documentation.CreateElement(lit.Name.Name);
@@ -6885,7 +6884,7 @@ namespace Microsoft.SpecSharp{
               result.Contents.Add(xelem);
               result.ContentsType.Add((int)Token.StartOfTag);
               break;
-            default: 
+            default:
               goto done;
           }
         }
@@ -6972,12 +6971,12 @@ namespace Microsoft.SpecSharp{
         else
           this.scanner.state = ScannerState.XML;
         Identifier openingId = result.Name;
-        bool matchesStartId = closingId.UniqueIdKey == openingId.UniqueIdKey && 
+        bool matchesStartId = closingId.UniqueIdKey == openingId.UniqueIdKey &&
           !(closingId.Prefix != null && (openingId.Prefix == null || closingId.Prefix.UniqueIdKey != openingId.Prefix.UniqueIdKey));
         if (matchesStartId)
           this.Skip(Token.EndOfTag);
         else{
-          bool matchesParentId = closingId.UniqueIdKey == parentTagName.UniqueIdKey && 
+          bool matchesParentId = closingId.UniqueIdKey == parentTagName.UniqueIdKey &&
             !(closingId.Prefix != null && (parentTagName.Prefix == null || closingId.Prefix.UniqueIdKey != parentTagName.Prefix.UniqueIdKey));
           if (matchesParentId){
             parentMustExpectClosingTag = false;
@@ -6995,7 +6994,7 @@ namespace Microsoft.SpecSharp{
       }
       return result;
     }
- 
+
     private void ParseLiteralElementOpeningTag(LiteralElement element, out bool expectClosingTag, ref SourceContext context){
       SourceContext ctx = this.scanner.CurrentSourceContext;
       Identifier tag = element.Name = this.ParsePrefixedIdentifier();
@@ -7441,7 +7440,7 @@ namespace Microsoft.SpecSharp{
     }
     private bool ExplicitInterfaceImplementationIsAllowable(TypeNode parentType, Identifier id){
       if (parentType is Class || parentType is Struct) return true;
-      this.HandleError(id.SourceContext, Error.ExplicitInterfaceImplementationInNonClassOrStruct, 
+      this.HandleError(id.SourceContext, Error.ExplicitInterfaceImplementationInNonClassOrStruct,
         id.ToString()+"."+this.scanner.GetTokenSource());
       return false;
     }
@@ -7475,7 +7474,7 @@ namespace Microsoft.SpecSharp{
     private static readonly TokenSet Predefined; // Token is a predefined type
     private static readonly TokenSet UnaryOperator; //  Token belongs to unary operator
     private static readonly TokenSet NullableTypeNonFollower;
-    
+
     static Parser(){
       AddOneOrSubtractOne = new TokenSet();
       AddOneOrSubtractOne |= Token.AddOne;
@@ -7499,7 +7498,7 @@ namespace Microsoft.SpecSharp{
       AddOrRemoveOrModifier |= Token.Extern;
       AddOrRemoveOrModifier |= Token.Unsafe;
 
-      AssignmentOperators = new TokenSet();      
+      AssignmentOperators = new TokenSet();
       AssignmentOperators |= Token.AddAssign;
       AssignmentOperators |= Token.Assign;
       AssignmentOperators |= Token.BitwiseAndAssign;
@@ -7569,7 +7568,7 @@ namespace Microsoft.SpecSharp{
       GetOrLeftBracketOrSetOrModifier |= Token.Override;
       GetOrLeftBracketOrSetOrModifier |= Token.Extern;
       GetOrLeftBracketOrSetOrModifier |= Token.Unsafe;
-      
+
       IdentifierOrNonReservedKeyword = new TokenSet();
       IdentifierOrNonReservedKeyword |= Token.Identifier;
       IdentifierOrNonReservedKeyword |= Token.Acquire;
@@ -7605,9 +7604,9 @@ namespace Microsoft.SpecSharp{
       IdentifierOrNonReservedKeyword |= Token.Witness;
       IdentifierOrNonReservedKeyword |= Token.Write;
       IdentifierOrNonReservedKeyword |= Token.Yield;
-      IdentifierOrNonReservedKeyword |= Token.Where;      
+      IdentifierOrNonReservedKeyword |= Token.Where;
 
-      InfixOperators = new TokenSet();      
+      InfixOperators = new TokenSet();
       InfixOperators |= Token.AddAssign;
       InfixOperators |= Token.As;
       InfixOperators |= Token.Assign;
@@ -7632,13 +7631,13 @@ namespace Microsoft.SpecSharp{
       InfixOperators |= Token.LessThanOrEqual;
       InfixOperators |= Token.LogicalAnd;
       InfixOperators |= Token.LogicalOr;
-      InfixOperators |= Token.Maplet; 
+      InfixOperators |= Token.Maplet;
       InfixOperators |= Token.Multiply;
       InfixOperators |= Token.MultiplyAssign;
       InfixOperators |= Token.NotEqual;
       InfixOperators |= Token.NullCoalescingOp;
       InfixOperators |= Token.Plus;
-      InfixOperators |= Token.Range; 
+      InfixOperators |= Token.Range;
       InfixOperators |= Token.Remainder;
       InfixOperators |= Token.RemainderAssign;
       InfixOperators |= Token.RightShift;
