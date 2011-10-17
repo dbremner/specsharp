@@ -18,7 +18,7 @@ namespace System.Compiler{
 
   /// <summary>
   /// A refinement of blocks that the code flattener produces (single entry, single exit at end)
-  /// 
+  ///
   /// The block also serves to cache various information once we build the CFG.
   /// </summary>
   public class CfgBlock : Cci.Block {
@@ -33,7 +33,7 @@ namespace System.Compiler{
 
     /// <summary>
     /// Returns an index of 0..n of this block within the CFG it is part of.
-    /// 
+    ///
     /// Allows using arrays as tables indexed by blocks.
     /// </summary>
     public int Index { get { return this.index; } }
@@ -103,7 +103,7 @@ namespace System.Compiler{
       }
     }
 
-		
+
     public System.Collections.IEnumerable NormalSuccessors {
       get {
         Cci.CfgBlock[] blocks = this.cfg.NormalSucc(this);
@@ -111,7 +111,7 @@ namespace System.Compiler{
       }
     }
 
-		
+
     public System.Collections.IEnumerable NormalPredecessors {
       get {
         Cci.CfgBlock[] blocks = this.cfg.NormalPred(this);
@@ -119,7 +119,7 @@ namespace System.Compiler{
       }
     }
 
-		
+
     public CfgBlock TrueContinuation {
       get {
         ControlFlowGraph.IfContinuation cont = this.cfg.GetContinuation(this) as ControlFlowGraph.IfContinuation;
@@ -128,7 +128,7 @@ namespace System.Compiler{
       }
     }
 
-		
+
     public CfgBlock FalseContinuation {
       get {
         ControlFlowGraph.IfContinuation cont = this.cfg.GetContinuation(this) as ControlFlowGraph.IfContinuation;
@@ -137,7 +137,7 @@ namespace System.Compiler{
       }
     }
 
-		
+
     public IIndexable/*<CfgBlock>*/ SwitchTargets {
       get {
         ControlFlowGraph.SwitchContinuation cont = this.cfg.GetContinuation(this) as ControlFlowGraph.SwitchContinuation;
@@ -146,7 +146,7 @@ namespace System.Compiler{
       }
     }
 
-		
+
     public CfgBlock DefaultBranch {
       get {
         ControlFlowGraph.SwitchContinuation cont = this.cfg.GetContinuation(this) as ControlFlowGraph.SwitchContinuation;
@@ -154,7 +154,7 @@ namespace System.Compiler{
         return cont.Default;
       }
     }
-		
+
 
     public CfgBlock UniqueSuccessor {
       get {
@@ -172,7 +172,7 @@ namespace System.Compiler{
     /// <summary>
     /// Returns the stack depth at the beginning of the block
     /// </summary>
-    public int StackDepth { 
+    public int StackDepth {
       get {
         return this.stackDepth;
       }
@@ -185,7 +185,7 @@ namespace System.Compiler{
       while (current != null) {
         if (current.SourceContext.Document != null) return current;
         StatementList sl = current.Statements;
-        for (int i=0; i < (sl!=null?sl.Count:0); i++) {
+        for (int i = 0; sl != null && i < sl.Count; i++) {
           if (sl[i].SourceContext.Document != null) return sl[i];
         }
         current = current.UniqueSuccessor;
@@ -203,8 +203,7 @@ namespace System.Compiler{
     public Cci.Node EndSourceContext() {
       CfgBlock current = this;
       StatementList sl = current.Statements;
-      int length = sl!=null?sl.Count:0;
-      for (int i=length-1; i >= 0; i--) {
+      for (int i = (sl != null ? sl.Count - 1 : -1); i >= 0; i--) {
         if (sl[i].SourceContext.Document != null) return sl[i];
       }
       return current;
@@ -229,7 +228,7 @@ namespace System.Compiler{
         return this.Statements.Count;
       }
     }
-		
+
     #endregion
 
     [Obsolete("A CfgBlock is already a Block. Cast no longer needed", true)]
@@ -313,23 +312,23 @@ namespace System.Compiler{
 	}
 
 
-	
-	
+
+
 	/// <summary>
 	/// 	/// Control Flow Graph (CFG) for a method.  The CFG is an extra layer on top of
 	/// the CCI representation; all the CFG related information (flow edges) is maintained into
 	/// the CFG object.  Both the normal and the exceptional flows are modeled by the CFG.
-	/// 
+	///
 	/// <p>THE UNDERLYING CCI REPRESENTATION IS MUTATED *A LOT* BY THE "FINALLY" BLOCK DUPLICATION
 	/// AND THE STACK REMOVAL TRANSFORMATION.  YOU SHOULD MANUALLY CLONE IT BEFORE CONSTRUCTING
 	/// THE CFG IF YOU NEED IT; E.G, IF YOU NEED TO WRITE THE CODE BACK TO DISK.  CFG IS USED FOR
 	/// PROGRAM ANALYSIS ONLY, NOT FOR CODE GENERATION.</p>
-	/// 
+	///
 	/// <p>A Control Flow Graph is basically an oriented graph whose nodes are the
 	/// basic blocks from the method body; the edges reflect the normal and the exceptional flow
 	/// of control (the exceptional flow is the flow that occurs when an exception is raised).
 	/// In addition to the basic blocks of the original method, three more blocks are added:</p>
-	/// 
+	///
 	/// <ul>
 	/// <li>a special <c>CFG.NormalExitBlock</c> that is a successor for all the basic block
 	/// terminated in a return instruction; it is a merge point for all the
@@ -342,13 +341,13 @@ namespace System.Compiler{
 	/// for the normal exit and its only exceptional flow predecessor is the special block
 	/// for the exceptional exit. </li>
 	/// </ul>
-	/// 
+	///
 	/// <p>
 	/// If you are given a block and want to know if it's the [normal/excp] exit of its
 	/// method, all you have to do is use the appropriate "is" test
 	/// (e.g. "block is CFG.NormalExitBlock"). If you have the CFG, and want to know its
 	/// [normal/excp] exit, you just have to query the appropriate method.</p>
-	/// 
+	///
 	/// <p>
 	/// NOTE:
 	/// If an analysis is interested in the result for the normal flow, then it can retrieve
@@ -356,7 +355,7 @@ namespace System.Compiler{
 	/// is interested in the result for the exceptional flow, then it can retrieve the result
 	/// of the dataflow equations for the exceptional exit point.  Finally, if the distinction between
 	/// normal/exceptional flow is not important, the "unified" exit point can be used instead.</p>
-	/// 
+	///
 	/// </summary>
   sealed public class ControlFlowGraph : IGraphNavigator {
     /*
@@ -398,7 +397,7 @@ namespace System.Compiler{
     public Method Method { get { return this.method; } }
     private Method originalMethod;
     public Method OriginalMethod { get { return this.originalMethod; } }
-		
+
 
 
 
@@ -429,7 +428,7 @@ namespace System.Compiler{
     /// </summary>
     public class UnavailableCodeException: Exception {
       public UnavailableCodeException(string str) : base(str) {}
-      public UnavailableCodeException(Method method) : 
+      public UnavailableCodeException(Method method) :
         this(CodePrinter.MethodSignature(method)) {}
     }
 
@@ -441,7 +440,7 @@ namespace System.Compiler{
     /// </summary>
     public class UnsupportedCodeException: Exception {
       public UnsupportedCodeException(string str) : base(str) {}
-      public UnsupportedCodeException(Method method, string str) : 
+      public UnsupportedCodeException(Method method, string str) :
         this(CodePrinter.MethodSignature(method) + " : " + str) {}
     }
 
@@ -451,7 +450,7 @@ namespace System.Compiler{
     /// </summary>
     public class NoCodeException: Exception {
       public NoCodeException(string str) : base(str) {}
-      public NoCodeException(Method method) : 
+      public NoCodeException(Method method) :
         this(CodePrinter.MethodSignature(method)) {}
     }
 
@@ -472,7 +471,7 @@ namespace System.Compiler{
     /// <param name="eliminateEvaluationStack">If <c>true</c>, <c>StackRemovalTransf.Process</c> will be called
     /// to remove the stack manipulating operations. See more commends in the class
     /// <c>StackRemovalTransf</c>. RECOMMENDED!</param>
-    public ControlFlowGraph(Method method, bool duplicateFinallyBlocks, bool eliminateEvaluationStack, bool expandAllocations) 
+    public ControlFlowGraph(Method method, bool duplicateFinallyBlocks, bool eliminateEvaluationStack, bool expandAllocations)
       : this(method, duplicateFinallyBlocks, eliminateEvaluationStack, expandAllocations, true)
     {
     }
@@ -490,7 +489,7 @@ namespace System.Compiler{
     /// <param name="eliminateEvaluationStack">If <c>true</c>, <c>StackRemovalTransf.Process</c> will be called
     /// to remove the stack manipulating operations. See more commends in the class
     /// <c>StackRemovalTransf</c>. RECOMMENDED!</param>
-    /// <param name="constantFoldBranches">When <c>true</c>, use constant folding 
+    /// <param name="constantFoldBranches">When <c>true</c>, use constant folding
     /// to prune infeasible branches.</param>
     public ControlFlowGraph (Method method, bool duplicateFinallyBlocks, bool eliminateEvaluationStack, bool expandAllocations, bool constantFoldBranches) {
       StatementList blocks = method.Body.Statements;
@@ -513,13 +512,13 @@ namespace System.Compiler{
 
       /*
       Block lastblock = (Block)blocks[blocks.Length-1];
-      if (lastblock.Statements.Length==0) 
+      if (lastblock.Statements.Length==0)
       {
         // dummy block, remove it.
         StatementList oldblocks = blocks;
 
         blocks = new StatementList(oldblocks.Length-1);
-        for (int i=0;i<oldblocks.Length-1; i++) 
+        for (int i=0;i<oldblocks.Length-1; i++)
         {
           blocks.Add(oldblocks[i]);
         }
@@ -707,7 +706,7 @@ namespace System.Compiler{
 
     // Code for duplicating the finally blocks and obtaining a real CFG.
     private class FinallyBlockDuplicator {
-			
+
       private readonly ControlFlowGraph cfg;
       private readonly Method method;
       private readonly IList/*<Block>*/ new_blocks;
@@ -724,10 +723,10 @@ namespace System.Compiler{
 
 
       public FinallyBlockDuplicator (
-        ControlFlowGraph cfg, 
-        Method method, 
+        ControlFlowGraph cfg,
+        Method method,
         IList/*<Block>*/ new_blocks,
-        Hashtable/*<Block,Block>*/ block2next, 
+        Hashtable/*<Block,Block>*/ block2next,
         NormalFlowBlockNavigator nfbnav,
         IList/*<ExceptionHandler>*/ all_ehs
         ) {
@@ -749,7 +748,7 @@ namespace System.Compiler{
         // init the exception handler -> last block map
         this.lastHandledBlock = new Hashtable();
         foreach (ExceptionHandler eh in this.allExceptionHandlers) {
-          if (eh.HandlerType != NodeType.Finally && eh.HandlerType != NodeType.FaultHandler) { continue; } 
+          if (eh.HandlerType != NodeType.Finally && eh.HandlerType != NodeType.FaultHandler) { continue; }
           this.lastHandledBlock[eh] = LastBlockInsideHandler(eh);
         }
 
@@ -801,7 +800,7 @@ namespace System.Compiler{
           originalBlocks.Add((Block) blocks[i]);
         }
 
-        IList/*<Block>*/ blocksInOrder = 
+        IList/*<Block>*/ blocksInOrder =
           GraphUtil.TopologicallySortGraph(DataStructUtil.NodeSetFactory, originalBlocks, new MapBasedNavigator(blockSuccessor));
 
         // blocksInOrder starts with the blocks b such that blockSuccessor[b] is empty; i.e., they
@@ -819,7 +818,7 @@ namespace System.Compiler{
 
 
 
-	
+
       // The "leave" instruction block.Statements[i] is replaced with a branch instruction
       // to a ChainBlocks of duplicated finally blocks (which are now normal blocks) that finally
       // arrives in the original branch target.
@@ -854,13 +853,13 @@ namespace System.Compiler{
         Console.WriteLine();
         Console.WriteLine("-------------------------------------------------------------");
         Console.WriteLine();
-        SimpleDisplay(Console.Out, this.method); 
+        SimpleDisplay(Console.Out, this.method);
         Console.WriteLine("NEW:");
         foreach (Block b in new_blocks)
         {
           SimpleDisplay(Console.Out, b, null);
         }
-#endif        
+#endif
       }
 
 
@@ -870,7 +869,7 @@ namespace System.Compiler{
 
 
 
-      // computes the list of finally handlers that are traversed by the leave instruction 
+      // computes the list of finally handlers that are traversed by the leave instruction
       // block.Statements[i].  The order is consistent with the branch direction.
       private IEnumerable/*<ExceptionHandler>*/ GetFinallyHandlersForLeave (Block block, int i) {
         IList/*<ExceptionHandler>*/ list_finally = new ArrayList();
@@ -906,7 +905,7 @@ namespace System.Compiler{
         // Debug.Assert(finallies4source == finallies4target);
 
         return list_finally;
-      }			
+      }
 
 
       /// <summary>
@@ -916,7 +915,7 @@ namespace System.Compiler{
       /// clears the evaluation stack before jumping. However, to correctly
       /// do recursive copies (i.e. try/finally inside a finally), we need
       /// to remember that these leaves are not actual leaves. To mark them,
-      /// we derive a new class from Branch and use an 'is' test to look for 
+      /// we derive a new class from Branch and use an 'is' test to look for
       /// this class.
       /// </summary>
       class SpecialBranch : Branch {
@@ -941,14 +940,14 @@ namespace System.Compiler{
           modBlock.Statements.Add(new Branch(null, target));
         }
       }
-		
+
 
       // Duplication visitor used by DuplicateHandlerBody; declaring it
       // here makes sure only one such object is constructed.
       private readonly DupVisitor dupVisitor;
 
       private void DuplicateFinallyBody (
-        ExceptionHandler eh, 
+        ExceptionHandler eh,
         Block leave_block,
         out Block startBlock,
         out Block lastBlock
@@ -1000,7 +999,7 @@ namespace System.Compiler{
             }
           }
         }
-				
+
         // 2nd fixup pass to adjust containing_handler map
         // this cannot be done in previous loop, since the previous loop
         // builds the clones of the handlers.
@@ -1024,7 +1023,7 @@ namespace System.Compiler{
 
 
           // the orig_blocks will become part of a new exception handler, so
-          // we also need to redirect their containing_handler to the eh (currently a finally) 
+          // we also need to redirect their containing_handler to the eh (currently a finally)
           // that will be turned into an exception handler
           // We do this by looking up the containing handler of the finally first block, then
           // changing every block in the finally whose containing handler is the same to the new handler.
@@ -1041,9 +1040,9 @@ namespace System.Compiler{
 
       // I wish C# had native support for tupples ...
       /*
-      private class BlockPair 
+      private class BlockPair
       {
-        public BlockPair(Block first, Block last) 
+        public BlockPair(Block first, Block last)
         {
           this.first = first;
           this.last  = last;
@@ -1108,8 +1107,8 @@ namespace System.Compiler{
 
 
       private void FixExceptionalSuccessorForClone (
-        Block orig_block, 
-        Block clone_block, 
+        Block orig_block,
+        Block clone_block,
         Hashtable/*<Block,Block>*/ orig2copy
         ) {
         Block e_handler = (Block) this.cfg.b2exception_handler[orig_block];
@@ -1124,8 +1123,8 @@ namespace System.Compiler{
       //
       private void AddHandlerIfClonedBlockStartsHandler (
         ExceptionHandler current_eh,
-        Block originalBlock, 
-        Block blockCopy, 
+        Block originalBlock,
+        Block blockCopy,
         Hashtable/*<Block,Block>*/ orig2copy
         ) {
         ExceptionHandler eh = (ExceptionHandler) this.cfg.handlerThatStartsAtBlock[originalBlock];
@@ -1161,13 +1160,13 @@ namespace System.Compiler{
           this.lastHandledBlock[clonedHandler] = FindCopyOfBlock((Block) this.lastHandledBlock[eh], orig2copy);
         }
 
-        // Sine we're introducing a new handler, we need to update the e2_next 
+        // Sine we're introducing a new handler, we need to update the e2_next
         // relation, since that determines how handlers are chained together.
 
         // Look up the handler invoked after the one being cloned.
         Block nextHandler = (Block) this.cfg.e2_next[eh.HandlerStartBlock];
         if (orig2copy.ContainsKey(nextHandler)) {
-          // If that handler is also being cloned, chain to the 
+          // If that handler is also being cloned, chain to the
           // clone rather than the original.
           nextHandler = (Block) orig2copy[nextHandler];
         }
@@ -1222,7 +1221,7 @@ namespace System.Compiler{
         }
 
       }
-		
+
       // visitor for duplicating code blocks. It seems that CciHelper's DuplicatingVisitor is
       // good enough; we just have to fix some minor things
       //
@@ -1237,7 +1236,7 @@ namespace System.Compiler{
         public override Expression VisitExpression(Expression expression) {
           if (expression == null) return null;
           switch(expression.NodeType) {
-            case NodeType.Dup: 
+            case NodeType.Dup:
             case NodeType.Arglist:
               break;
             case NodeType.Pop:
@@ -1283,7 +1282,7 @@ namespace System.Compiler{
         public override Expression VisitLocal(Local local) {
           return local;
         }
-			
+
         public override Expression VisitParameter(Parameter parameter) {
           return parameter;
         }
@@ -1332,7 +1331,7 @@ namespace System.Compiler{
           return ((SwitchInstruction)switchInstruction.Clone());
         }
       }
-		
+
 
 
       // After they have been duplicated for each "leave" instruction, the "finally"
@@ -1357,7 +1356,7 @@ namespace System.Compiler{
             StatementList stats = firstBlock.Statements;
             StatementList newBlockStatements = new StatementList();
 
-            AssignmentStatement exceptionAssignment = 
+            AssignmentStatement exceptionAssignment =
               new AssignmentStatement(exceptionVariable, new Expression(NodeType.Pop));
             if (stats.Count > 0) {
               exceptionAssignment.SourceContext = stats[0].SourceContext;
@@ -1408,7 +1407,7 @@ namespace System.Compiler{
       // Finds the last block of the ExceptionHandler eh of Method method.
       private Block LastBlockInsideHandler (ExceptionHandler eh) {
         if ( ! this.b2index.ContainsKey(eh.BlockAfterHandlerEnd)) {
-          // Apparently, some methods (e.g. System.Management.MTAHelper.WorkerThread 
+          // Apparently, some methods (e.g. System.Management.MTAHelper.WorkerThread
           // in System.Management.dll) have a handler end block that names
           // a label (instruction number) beyond the last instruction
           // (presumably to refer to the end of the method). Naturally, this block
@@ -1417,7 +1416,7 @@ namespace System.Compiler{
           method.Body.Statements.Add(eh.BlockAfterHandlerEnd);
           this.b2index[eh.BlockAfterHandlerEnd] = method.Body.Statements.Count - 1;
 
-          Debug.Assert(eh.BlockAfterHandlerEnd.Statements.Count == 0); 
+          Debug.Assert(eh.BlockAfterHandlerEnd.Statements.Count == 0);
           // Can't allow completely empty block.
           eh.BlockAfterHandlerEnd.Statements.Add(new Return());
         }
@@ -1432,9 +1431,9 @@ namespace System.Compiler{
 
     /// <summary>
     /// Add explicit Catch statements at beginning of each catch handler.
-    /// If a Catch handler has a next handler that differs from the ExceptionHandler enclosing the handler block, then we split 
+    /// If a Catch handler has a next handler that differs from the ExceptionHandler enclosing the handler block, then we split
     /// the Catch statement into a separate block.
-    /// 
+    ///
     /// Special case for Finally handlers that have been turned into catch handlers by the finally-elimination:
     /// - Move the special instruction FINALLYVARPREFIX&lt;n&gt; = pop() to the header.
     /// </summary>
@@ -1452,7 +1451,7 @@ namespace System.Compiler{
             // put Catch into separate block.
             Statement catchStatement = new Catch(null, null, eh.FilterType);
             catchStatement.SourceContext = handlerblock.SourceContext;
-            link_handler_header_statement_to_block(new_blocks, catchStatement, 
+            link_handler_header_statement_to_block(new_blocks, catchStatement,
               handlerblock, nexthandler, exnhandler);
             break;
           }
@@ -1468,14 +1467,14 @@ namespace System.Compiler{
             // put Filter into separate block.
             Statement filterStatement = new Filter();
             filterStatement.SourceContext = handlerblock.SourceContext;
-            link_handler_header_statement_to_block(new_blocks, filterStatement, 
+            link_handler_header_statement_to_block(new_blocks, filterStatement,
               handlerblock, nexthandler, exnhandler);
 
             // Commented out, since we treat filter's differently now.
 
             // insert a Catch all instruction at the beginning of the handler block
             // prepend_statement_to_block(
-            //	new Catch(null, null, System.Compiler.SystemTypes.Exception), 
+            //	new Catch(null, null, System.Compiler.SystemTypes.Exception),
             //	eh.HandlerStartBlock);
             break;
           }
@@ -1488,10 +1487,10 @@ namespace System.Compiler{
 
 
     private void link_handler_header_statement_to_block (
-      IList new_blocks, 
-      Statement c, 
-      Block catchblock, 
-      Block nexthandler, 
+      IList new_blocks,
+      Statement c,
+      Block catchblock,
+      Block nexthandler,
       Block exnhandler
       ) {
       // we need to use block for the Catch block, and create a fresh block for the current instructions in the block.
@@ -1572,8 +1571,8 @@ namespace System.Compiler{
 
     // build the array all_blocks: the original blocks + the block clones (if any) + special blocks
     private void BuildAllBlockCollection (
-      Method method, 
-      IList/*<CfgBlock>*/ new_blocks, 
+      Method method,
+      IList/*<CfgBlock>*/ new_blocks,
       ISet/*<CfgBlock>*/ filterblocks,
       NormalFlowBlockNavigator nfnav
       ) {
@@ -1651,8 +1650,8 @@ namespace System.Compiler{
 
 
     private void BuildNormalFlow (
-      CfgBlock[] blocks, 
-      NormalFlowBlockNavigator nfbnav, 
+      CfgBlock[] blocks,
+      NormalFlowBlockNavigator nfbnav,
       CfgBlock real_entry
       ) {
       IMutableRelation/*<Block,Block>*/ n_succ = new BlockRelation();
@@ -1679,7 +1678,7 @@ namespace System.Compiler{
     /// </summary>
     private void BuildContinuationMap (CfgBlock[] blocks) {
       Hashtable conts = new Hashtable();
-			
+
       conts[this.entry_point] = new StraightContinuation( (CfgBlock) this.b2next[this.entry_point]);
       conts[this.normal_exit_point] = new StraightContinuation(this.exit_point);
       conts[this.excp_exit_point] = new UnwindContinuation();
@@ -1697,7 +1696,7 @@ namespace System.Compiler{
           continue;
         }
         switch(stat.NodeType) {
-          case NodeType.Return: 
+          case NodeType.Return:
             conts[block] = new ReturnContinuation();
             break;
 
@@ -1709,7 +1708,7 @@ namespace System.Compiler{
           case NodeType.Branch:
             Branch branch = (Branch) stat;
             // consider the edge for jump taken
-            if (branch.Condition == null) { 
+            if (branch.Condition == null) {
               // uncond. jump
               conts[block] = new StraightContinuation((CfgBlock)branch.Target);
             }
@@ -1847,7 +1846,7 @@ namespace System.Compiler{
 
     /// <summary>
     /// Computes the ExceptionHandler for each block and the chaining of exception handlers.
-    /// Note: 
+    /// Note:
     ///   Filter handlers are currently treated as starting at the filter expression
     ///   and the endfilter is like a fall through into the actual handler.
     /// </summary>
@@ -1874,7 +1873,7 @@ namespace System.Compiler{
         if (eh.HandlerType == NodeType.Filter) {
           /*
            * WE NEED TO HANDLE Filter exceptions to do Visual Basic
-           * 
+           *
           throw new UnsupportedCodeException(method, "Filter exception handler");
           */
           // we pretend the filter block is a catch block
@@ -2033,7 +2032,7 @@ namespace System.Compiler{
       }
       b2e_pred = Relation.Compact(e_pred, typeof(CfgBlock));
     }
-		
+
 
     /// <summary>
     /// "Marker" interface: only the three artificial blocks introduced by the CFG implement it.
@@ -2155,7 +2154,7 @@ namespace System.Compiler{
 
     /// <summary>
     /// Returns the closest enclosing handler of a particular block
-    /// where control goes if an exception is raised inside <c>block</c>.  
+    /// where control goes if an exception is raised inside <c>block</c>.
     /// </summary>
     public CfgBlock ExceptionHandler(Block block) {
       return (CfgBlock)b2exception_handler[block];
@@ -2248,7 +2247,7 @@ namespace System.Compiler{
     /// argument.  In the enumeration, the innermost leave instructions come first.</p>
     ///
     /// Returns <c>null</c> if block is not a clone.
-    /// 
+    ///
     /// NOTE: as we don't have source context info for branching instructions, we manipulate
     /// the blocks of the leave's instead of the leave instructions themselves.
     /// </summary>
@@ -2281,7 +2280,7 @@ namespace System.Compiler{
       check_finally_debug_support();
       if (this.copy2orig == null) return null;
       return ControlFlowGraph.orig_block(block, this.copy2orig);
-    }		
+    }
     // map cloned block -> original finally block
     private Hashtable/*<CfgBlock,CfgBlock>*/ copy2orig;
 
@@ -2470,9 +2469,9 @@ namespace System.Compiler{
 
 
     public void Display(
-      TextWriter tw, 
-      DGetBlockInfo get_pre_block_info, 
-      DGetBlockInfo get_post_block_info, 
+      TextWriter tw,
+      DGetBlockInfo get_pre_block_info,
+      DGetBlockInfo get_post_block_info,
       DGetStatInfo get_stat_info
       ) {
       Display(tw, this.Blocks(), get_pre_block_info, get_post_block_info, get_stat_info);
@@ -2488,10 +2487,10 @@ namespace System.Compiler{
     /// </summary>
     /// <param name="tw">Where to print.</param>
     public void Display(
-      TextWriter tw, 
+      TextWriter tw,
       CfgBlock[] blocks,
-      DGetBlockInfo get_pre_block_info, 
-      DGetBlockInfo get_post_block_info, 
+      DGetBlockInfo get_pre_block_info,
+      DGetBlockInfo get_post_block_info,
       DGetStatInfo get_stat_info
       ) {
       Hashtable b2id = new Hashtable();
@@ -2609,8 +2608,8 @@ namespace System.Compiler{
       }
     }
 
-    public Compare PreOrderCompare { 
-      get { 
+    public Compare PreOrderCompare {
+      get {
         return new Compare(CompareBlockPriority);
       }
     }
