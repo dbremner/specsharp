@@ -185,6 +185,10 @@
                  SubType="Code"
                  RelPath="MethodRepository.ssc"
                  />
+        <File BuildAction="Compile"
+                 SubType="Code"
+                 RelPath="SscBoogieOptions.ssc"
+                 />
       </Include>
     </Files>
   </XEN>
