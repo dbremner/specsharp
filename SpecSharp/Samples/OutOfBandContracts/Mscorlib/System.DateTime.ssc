@@ -10,6 +10,7 @@
  *                out-of-band contracts.
 \*/
 using System;
+using Microsoft.Contracts;
 
 namespace System
 {
@@ -102,22 +103,31 @@ namespace System
 
         public String[] GetDateTimeFormats ();
 
+        [Pure]
         public static bool operator >= (DateTime t1, DateTime t2);
 
+        [Pure]
         public static bool operator > (DateTime t1, DateTime t2);
 
+        [Pure]
         public static bool operator <= (DateTime t1, DateTime t2);
 
+        [Pure]
         public static bool operator < (DateTime t1, DateTime t2);
 
+        [Pure]
         public static bool operator != (DateTime d1, DateTime d2);
 
+        [Pure]
         public static bool operator == (DateTime d1, DateTime d2);
 
+        [Pure]
         public static TimeSpan operator - (DateTime d1, DateTime d2);
 
+        [Pure]
         public static DateTime operator - (DateTime d, TimeSpan t);
 
+        [Pure]
         public static DateTime operator + (DateTime d, TimeSpan t);
 
         public DateTime ToUniversalTime ();
