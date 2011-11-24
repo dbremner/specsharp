@@ -160,6 +160,10 @@ Error: Could not establish consistency of pure method contract. Method BadProp.g
 
 Spec# program verifier finished with 40 verified, 6 errors
 
+-------------------- Stack_issue10111 --------------------
+
+Spec# program verifier finished with 23 verified, 0 errors
+
 -------------------- Modifies --------------------
 Modifies.ssc(18,5): Error: assignment to location may violate the modifies clause
 Modifies.ssc(38,5): Error: Assertion might not hold: a[1] == 1

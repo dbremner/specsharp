@@ -128,6 +128,7 @@ namespace Microsoft.Boogie
       NondetType = PreludeType("NondetType", standardRC);
       ActivityType = PreludeType("ActivityType", standardRC);
       HeapType = PreludeType("HeapType", standardRC);
+      Null = Ident("null", PreludeType("ref", standardRC));
 
       FieldTypeDecl = (!)standardRC.LookUpType("Field");
       ElementsTypeDecl = (!)standardRC.LookUpType("Elements");
@@ -1355,7 +1356,7 @@ namespace Microsoft.Boogie
 
     public readonly BuiltinFields! Fields;
 
-    public readonly Bpl.Expr! Null = Ident("null", new Bpl.UnresolvedTypeIdentifier(NoToken, "ref"));
+    public readonly Bpl.Expr! Null;
 
 
     public static Bpl.IdentifierExpr! Ident (string! id, Type! type) { return IdentWithClean(SanitizeIdentifier(id), type); }
@@ -2361,10 +2362,12 @@ namespace Microsoft.Boogie
           //and let the block of witness + i update block goto the witness + (i+1) update block if the post does not hold
           Bpl.Expr currentWitness = witnessExpr;
           for (int j = 1; j <= nrOfDups; j++) {
-            if (isUpperbound)
-              currentWitness = Bpl.Expr.Sub(witnessExpr, new Bpl.LiteralExpr(NoToken, BigNum.FromInt(j)));
-            else
-              currentWitness = Bpl.Expr.Add(witnessExpr, new Bpl.LiteralExpr(NoToken, BigNum.FromInt(j)));
+            if (this.Convert(consistencyCheckerMethod.ReturnType).IsInt) {
+              if (isUpperbound)
+                currentWitness = Bpl.Expr.Sub(witnessExpr, new Bpl.LiteralExpr(NoToken, BigNum.FromInt(j)));
+              else
+                currentWitness = Bpl.Expr.Add(witnessExpr, new Bpl.LiteralExpr(NoToken, BigNum.FromInt(j)));
+            }
             Bpl.Cmd resBecomesWitnessIJ = this.GetWitnessAssignment(resultVar, currentWitness, thisVar, mfC);
             Bpl.Block updateIJBlock =  new Block(NoToken, "updateWitness" + i.ToString() + "_" + j.ToString(), new CmdSeq(assumeNotPost, resBecomesWitnessIJ), new Bpl.GotoCmd(NoToken, new BlockSeq()));
             checkerImpl.Blocks.Add(updateIJBlock);

@@ -41,7 +41,8 @@ for %%f in (PureMethodOverriding) do (
 
 for %%f in (PureStaticMethods PureReceiverMightBeCommitted
             ResultNotNewlyAllocated Branching QuantifierVisibilityInvariant
-            DeferringConstructor ArrayInit CommittedOblivious ModelfieldTest CheckingConsistency) do (
+            DeferringConstructor ArrayInit CommittedOblivious ModelfieldTest CheckingConsistency
+            Stack_issue10111) do (
   echo.
   echo -------------------- %%f --------------------
   "%SSCEXE%" /target:library /debug %%f.ssc
