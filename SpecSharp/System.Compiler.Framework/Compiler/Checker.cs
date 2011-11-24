@@ -7181,6 +7181,35 @@ namespace System.Compiler {
         AddOrSub(result.Lowerbounds, 1, NodeType.Sub);
         result.Neqs = wucs.Exact;
         #endregion
+      } else if ((nt == NodeType.Call || nt == NodeType.Callvirt) && modelfield == null) {
+        #region Treat result.Equals(E), E.Equals(result), Equals(result, E), and Equals(E, result).
+        Expression inferredWitness = null;
+        MethodCall mc = (MethodCall)e;
+        MemberBinding mb = mc.Callee as MemberBinding;
+        if (mb != null && mb.BoundMember.Name.ToString() == "Equals") {
+          ExpressionList ops = mc.Operands.Clone();
+          if (nt == NodeType.Callvirt && mb.TargetObject != null) {
+            ops.Add(mb.TargetObject);
+          }
+          bool foundReturnValue = false;
+          foreach (Expression o in ops) {
+            if (o is ReturnValue) {
+              foundReturnValue = true;
+            } else {
+              inferredWitness = o;
+            }
+          }
+          if (!foundReturnValue) {
+            inferredWitness = null;
+          }
+        }
+
+        if (inferredWitness != null) {
+          // Found a potential witness.
+          WitnessUnderConstruction wuc = new WitnessUnderConstruction(inferredWitness, null, 0);
+          result.Exact.Add(wuc);
+        }
+        #endregion
       }
       return result;
     }
@@ -7192,17 +7221,23 @@ namespace System.Compiler {
       if (witnessType.IsPrimitiveNumeric || witnessType == SystemTypes.Char) {
         result.Add(new Literal(0, witnessType, new SourceContext()));
         result.Add(new Literal(1, witnessType, new SourceContext()));
-      } else if (witnessType is Struct) //for user-defined structs, return new S() as default (null doesn't work).
+      } else if (witnessType is Struct) { //for user-defined structs, return new S() as default (null doesn't work).
         //Note that primitive numeric types are also structs, so the order of the if and else brach matters.
         result.Add(new Local(StandardIds.NewObj, witnessType, new SourceContext()));
-      else
-        result.Add(new Literal(null, witnessType, new SourceContext()));
+      } else {
+        OptionalModifier possibleNonNullType = (witnessType as OptionalModifier);
+        TypeNode t = (possibleNonNullType != null ? possibleNonNullType.ModifiedType : null);
 
-      //special-case String! and object! (for which we know a consistent constructor)
-      OptionalModifier possibleNonNullType = (witnessType as OptionalModifier);
-      TypeNode t = (possibleNonNullType != null ? possibleNonNullType.ModifiedType : null);
-      if (witnessType == SystemTypes.String || witnessType == SystemTypes.Object || t == SystemTypes.String || t == SystemTypes.Object)
-        result.Add(new Literal("Let's Boogie!", witnessType));
+        // special-case String! and object! (for which we know a consistent constructor)
+        if (witnessType == SystemTypes.String || witnessType == SystemTypes.Object ||
+            t == SystemTypes.String || t == SystemTypes.Object) {
+          result.Add(new Literal("Let's Boogie!", witnessType));
+        }
+
+        if (t == null) {
+          result.Add(new Literal(null, witnessType, new SourceContext()));
+        }
+      }
 
       return result;
     }
