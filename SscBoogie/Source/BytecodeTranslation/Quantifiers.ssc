@@ -1425,7 +1425,7 @@ namespace Microsoft.Boogie
         newBindingsAndFilters.Add(newB);
   
         Cci.Indexer indexer = new Cci.Indexer(sourceEnumerable, new Cci.ExpressionList(newB.TargetVariable));
-        indexer.Type = Cci.SystemTypes.Int32;
+        indexer.Type = ((Cci.ArrayType)arrayType).ElementType;
         
         substitutionTable[f.UniqueKey] = indexer;
       }
