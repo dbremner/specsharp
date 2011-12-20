@@ -1,15 +1,15 @@
-# Aste started: 2011-12-08 07:00:03
+# Aste started: 2011-12-20 07:00:09
 # Host id: Boogiebox
 # Configuration: boogie.cfg
 # Task: aste.tasks.boogie.FullBuild
-# [2011-12-08 07:03:26] SpecSharp revision: e87419b61658
-# [2011-12-08 07:03:26] SscBoogie revision: e87419b61658
-# [2011-12-08 07:05:12] Boogie revision: ac123e890b88
-[2011-12-08 07:06:34] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Project "Checkin Tests" /Build
+# [2011-12-20 07:03:00] SpecSharp revision: 5bcd877b913d
+# [2011-12-20 07:03:00] SscBoogie revision: 5bcd877b913d
+# [2011-12-20 07:04:59] Boogie revision: 38ac55bcb34d
+[2011-12-20 07:06:22] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Project "Checkin Tests" /Build
 
     1>corflags : warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
     warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
-[2011-12-08 07:08:02] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Rebuild Checked
+[2011-12-20 07:08:02] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com Boogie.sln /Rebuild Checked
 
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(823,16): warning CS0659: 'Microsoft.Boogie.BasicType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     D:\Temp\aste\Boogie\Source\Core\AbsyType.cs(2802,16): warning CS0659: 'Microsoft.Boogie.CtorType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
@@ -26,6 +26,7 @@
     D:\Temp\aste\Boogie\Source\VCGeneration\VC.cs(1694,11): warning CS0162: Unreachable code detected
     D:\Temp\aste\Boogie\Source\VCGeneration\VC.cs(1854,11): warning CS0162: Unreachable code detected
     D:\Temp\aste\Boogie\Source\VCGeneration\StratifiedVC.cs(1093,17): warning CC1032: Method 'VC.StratifiedVCGen+NormalChecker.CheckVC' overrides 'VC.StratifiedVCGen+StratifiedCheckerInterface.CheckVC', thus cannot add Requires.
+    EXEC : warning CC1032: Method 'Microsoft.Boogie.Houdini.InlineRequiresVisitor.VisitCmdSeq(Microsoft.Boogie.CmdSeq)' overrides 'Microsoft.Boogie.StandardVisitor.VisitCmdSeq(Microsoft.Boogie.CmdSeq)', thus cannot add Requires.
     warning CS0659: 'Microsoft.Boogie.BasicType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     warning CS0659: 'Microsoft.Boogie.CtorType' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     warning CS0162: Unreachable code detected
@@ -41,9 +42,11 @@
     warning CS0162: Unreachable code detected
     warning CS0162: Unreachable code detected
     warning CC1032: Method 'VC.StratifiedVCGen+NormalChecker.CheckVC' overrides 'VC.StratifiedVCGen+StratifiedCheckerInterface.CheckVC', thus cannot add Requires.
-[2011-12-08 08:07:17] 0 out of 32 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
-# [2011-12-08 08:08:24] Released nightly of Boogie
-[2011-12-08 08:09:37] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SscBoogie.sln /Rebuild Debug
+    warning CC1032: Method 'Microsoft.Boogie.Houdini.InlineRequiresVisitor.VisitCmdSeq(Microsoft.Boogie.CmdSeq)' overrides 'Microsoft.Boogie.StandardVisitor.VisitCmdSeq(Microsoft.Boogie.CmdSeq)', thus cannot add Requires.
+[2011-12-20 08:07:24] 1 out of 32 test(s) in D:\Temp\aste\Boogie\Test\alltests.txt failed
+['houdini']
+# [2011-12-20 08:08:08] Released nightly of Boogie
+[2011-12-20 08:09:29] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SscBoogie.sln /Rebuild Debug
 
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(420,27): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\CilTranslator.ssc(422,25): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
@@ -229,8 +232,8 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\OwnershipModel.ssc(118,14): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\OwnershipModel.ssc(17,44): warning CS2613: Conversion to 'Microsoft.Boogie.IToken!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(31,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(39,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(41,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(39,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(69,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(67,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(84,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
@@ -240,15 +243,15 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(110,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(115,14): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(130,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(189,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(187,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(189,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(266,11): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(292,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(330,14): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(338,14): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(348,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(360,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(362,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(360,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(379,14): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(395,14): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(402,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
@@ -257,8 +260,8 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(438,14): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\StandardOwnershipModel.ssc(447,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExperimentalOwnershipModel.ssc(47,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExperimentalOwnershipModel.ssc(83,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExperimentalOwnershipModel.ssc(81,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExperimentalOwnershipModel.ssc(83,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExperimentalOwnershipModel.ssc(94,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExperimentalOwnershipModel.ssc(107,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExperimentalOwnershipModel.ssc(113,14): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
@@ -294,19 +297,19 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(156,31): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Expr>')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(183,44): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(190,44): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(253,38): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(286,46): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(286,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(253,38): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(327,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(387,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(373,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(359,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(373,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(338,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(327,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(406,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(443,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(494,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(467,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(494,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(501,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(443,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(435,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(515,19): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(517,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
@@ -316,13 +319,13 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(556,48): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(559,48): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(562,48): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(633,48): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(704,48): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(747,54): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(774,56): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(747,54): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(667,48): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(671,36): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(673,36): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(633,48): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(869,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(903,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(932,19): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
@@ -348,8 +351,8 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1373,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1416,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1421,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1411,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1405,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1411,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1462,46): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1462,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1474,55): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
@@ -367,30 +370,30 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1586,91): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypedIdent')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1586,91): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1587,56): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1595,65): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1595,85): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1598,65): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1598,85): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1598,99): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1595,65): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1595,85): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1633,48): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1652,46): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1652,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1672,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1673,46): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1721,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1723,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1736,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1739,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1743,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1699,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1702,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1706,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1712,72): warning CS2613: Conversion to 'string!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1736,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1739,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1743,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1721,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1723,50): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1778,46): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1778,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1817,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1833,50): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1833,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1817,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1806,50): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1806,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslator.ssc(1859,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
@@ -427,37 +430,32 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(613,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(637,65): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(637,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(770,16): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(750,16): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1006,37): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1009,40): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(770,16): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1012,48): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1024,49): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1048,38): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1049,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1049,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1050,34): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1051,64): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1064,59): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1076,56): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1037,38): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1038,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1038,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1039,34): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1040,55): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1079,57): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1100,55): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1103,64): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1109,50): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1106,45): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1130,38): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1131,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1131,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1132,31): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1133,41): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1137,39): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1146,47): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1140,47): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1149,44): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1152,58): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1155,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1182,45): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1218,35): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1227,43): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1233,37): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1230,47): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1233,37): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1227,43): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1224,42): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1221,44): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1215,35): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
@@ -466,17 +464,22 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1203,50): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1200,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1197,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1182,45): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1173,59): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1158,55): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1140,47): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1106,45): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1146,47): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1137,39): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1109,50): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1088,53): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1037,38): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1038,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1038,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1039,34): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1040,55): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1012,48): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1076,56): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1064,59): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1048,38): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1049,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1049,20): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1050,34): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1051,64): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1009,40): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1006,37): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1243,18): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1282,14): warning CS2613: Conversion to 'Microsoft.Boogie.IdentifierExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(1289,40): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypedIdent')
@@ -519,57 +522,57 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2395,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2371,80): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2262,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2549,22): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2602,53): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2578,22): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2549,22): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(2776,16): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Sink.ssc(23,42): warning CS2613: Conversion to 'Microsoft.Boogie.IToken!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(123,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(121,50): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(128,51): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(130,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(136,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(138,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(145,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(143,54): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(136,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(165,18): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(168,18): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(174,54): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(172,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(181,53): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(179,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(185,18): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(174,54): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(202,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(198,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(194,54): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(192,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(188,18): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(165,18): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(159,55): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(185,18): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(179,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(181,53): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(161,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(159,55): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(150,55): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(152,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(145,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(143,54): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(121,50): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(123,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(111,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(102,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(93,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(84,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(75,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(215,52): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(221,22): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(223,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(227,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(225,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(281,65): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(238,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(435,20): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(450,22): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(442,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(432,20): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(606,28): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(227,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(225,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(223,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(221,22): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(598,39): warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(599,39): warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(606,28): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(432,20): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(435,20): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(442,20): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(450,22): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(783,22): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(822,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(853,18): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(822,20): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(1011,58): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ExpressionTranslator.ssc(22,44): warning CS2613: Conversion to 'Microsoft.Boogie.IToken!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(50,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
@@ -578,32 +581,32 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(128,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(133,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(171,16): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(194,72): warning CS2613: Conversion to 'string!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(194,132): warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(197,33): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(197,45): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypedIdent')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(197,45): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(207,134): warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(194,72): warning CS2613: Conversion to 'string!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(194,132): warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(270,33): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(270,33): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(289,19): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(295,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(362,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(368,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(375,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(382,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(375,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(410,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(414,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(421,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(429,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(414,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(473,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(477,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(484,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(495,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(477,36): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(535,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(556,36): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(589,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(619,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(589,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(684,9): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(706,14): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(715,29): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
@@ -620,44 +623,44 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(841,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(849,7): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(990,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1002,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1040,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1066,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1081,66): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1090,62): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1103,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1123,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1137,39): warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1155,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1164,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1173,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1184,44): warning CS2613: Conversion to 'string!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1195,42): warning CS2613: Conversion to 'string!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1211,49): warning CS2613: Conversion to 'string!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1263,49): warning CS2613: Conversion to 'string!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1238,54): warning CS2613: Conversion to 'string!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1277,47): warning CS2613: Conversion to 'string!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1297,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1302,49): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1305,49): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1325,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1331,49): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1347,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1360,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1378,49): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1378,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1404,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1431,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1421,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1277,47): warning CS2613: Conversion to 'string!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1249,52): warning CS2613: Conversion to 'string!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1238,54): warning CS2613: Conversion to 'string!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1227,47): warning CS2613: Conversion to 'string!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1137,39): warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1155,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1123,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1021,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1002,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1445,52): warning CS2613: Conversion to 'string!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1446,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1421,21): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1404,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1360,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1347,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1263,49): warning CS2613: Conversion to 'string!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1249,52): warning CS2613: Conversion to 'string!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1227,47): warning CS2613: Conversion to 'string!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1021,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(904,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(943,65): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(908,55): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(911,55): warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(943,65): warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1481,18): warning CS2613: Conversion to 'Microsoft.Boogie.CmdSeq!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1491,11): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1495,11): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
@@ -680,11 +683,11 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1677,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\InstructionTranslatorHelpers.ssc(1682,16): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(76,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(202,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.InstructionTranslator')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(224,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(272,48): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(274,55): warning CS2614: Receiver might be null (of type 'string')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(300,33): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Block>')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(202,13): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.InstructionTranslator')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(224,17): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(392,33): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(452,50): warning CS2613: Conversion to 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\Translator.ssc(452,13): warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
@@ -728,9 +731,9 @@
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\TrivialOwnershipModel.ssc(141,14): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\TrivialOwnershipModel.ssc(149,14): warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(63,19): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
-    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(193,33): warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(151,33): warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(165,45): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(193,33): warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\BytecodeTranslation\ParameterConditions.ssc(219,11): warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     D:\Temp\aste\SpecSharp\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(32,15): warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     D:\Temp\aste\SpecSharp\SscBoogie\Source\DriverHelper\ErrorReporting.ssc(117,19): warning CS2614: Receiver might be null (of type 'string')
@@ -1004,8 +1007,8 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
@@ -1025,13 +1028,13 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
@@ -1088,17 +1091,17 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
@@ -1140,6 +1143,14 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
@@ -1152,15 +1163,6 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.Type')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
@@ -1184,6 +1186,7 @@
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeSeq')
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
@@ -1228,34 +1231,34 @@
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.IToken!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
@@ -1263,19 +1266,19 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
@@ -1287,11 +1290,11 @@
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypedIdent')
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
-    warning CS2613: Conversion to 'string!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.TypedIdent!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CtorType')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.TypeCtorDecl')
@@ -1331,42 +1334,42 @@
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
-    warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2613: Conversion to 'string!' fails if the value is null
-    warning CS2613: Conversion to 'string!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2613: Conversion to 'string!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2613: Conversion to 'string!' fails if the value is null
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
+    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Type!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.NAryExpr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.CmdSeq!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
@@ -1389,11 +1392,11 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.InstructionTranslator')
+    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'string')
     warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Block>')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.InstructionTranslator')
-    warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CmdSeq')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2613: Conversion to 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
@@ -1438,8 +1441,8 @@
     warning CS2613: Conversion to 'Microsoft.Boogie.LiteralExpr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
-    warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
+    warning CS2613: Conversion to 'Microsoft.Boogie.VariableSeq!' fails if the value is null
     warning CS2613: Conversion to 'Microsoft.Boogie.Expr!' fails if the value is null
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2614: Receiver might be null (of type 'string')
@@ -1463,5 +1466,5 @@
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2614: Receiver might be null (of type 'Microsoft.Boogie.CommandLineOptions')
     warning CS2614: Receiver might be null (of type 'System.Collections.Generic.List<Microsoft.Boogie.Declaration>')
-[2011-12-08 09:05:30] 0 out of 25 test(s) in D:\Temp\aste\SpecSharp\SscBoogie\Test\alltests.txt failed
-# [2011-12-08 09:07:28] Released nightly of SscBoogie
+[2011-12-20 09:04:56] 0 out of 25 test(s) in D:\Temp\aste\SpecSharp\SscBoogie\Test\alltests.txt failed
+# [2011-12-20 09:06:55] Released nightly of SscBoogie
