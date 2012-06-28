@@ -1,11 +1,72 @@
-# Aste started: 2011-10-14 09:40:47
+# Aste started: 2012-06-28 09:49:53
 # Host id: Boogiebox
 # Configuration: boogie.cfg
 # Task: aste.tasks.boogie.FullBuild
-# [2011-10-14 09:44:09] SpecSharp revision: 8b69913f08bd
-# [2011-10-14 09:44:09] SscBoogie revision: 8b69913f08bd
-# [2011-10-14 09:45:43] Boogie revision: e5854ea725fc
-[2011-10-14 09:47:07] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Project "Checkin Tests" /Build
+# [2012-06-28 09:50:28] SpecSharp revision: d16e9dec06d9
+# [2012-06-28 09:50:28] SscBoogie revision: d16e9dec06d9
+# [2012-06-28 09:50:53] Boogie revision: 757dba8fd496
+[2012-06-28 09:51:30] [Error] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Rebuild Debug
 
-    1>corflags : warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
-    warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.Runtime.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.Runtime.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.Runtime.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'Mscorlib.Contracts.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Contracts.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\Microsoft.SpecSharp\Runtime\RedBlackTree.ssc(141,4): error CS0246: The type or namespace name 'Pure' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Microsoft.SpecSharp\Runtime\RedBlackTree.ssc(141,10): error CS0246: The type or namespace name 'Reads' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Microsoft.SpecSharp\Runtime\RedBlackTree.ssc(150,11): error CS0246: The type or namespace name 'GlobalAccess' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Microsoft.SpecSharp\Runtime\RedBlackTree.ssc(150,33): error CS0246: The type or namespace name 'Escapes' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Microsoft.SpecSharp\Runtime\Reductions.ssc(25,2): error CS0246: The type or namespace name 'Anonymous' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Microsoft.SpecSharp\Runtime\Class1.ssc(59,4): error CS0246: The type or namespace name 'NotDelayed' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.Runtime.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(32,12): error CS0246: The type or namespace name 'IdentifierList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(39,57): error CS0246: The type or namespace name 'SourceContext' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(43,12): error CS0246: The type or namespace name 'AssemblyFlags' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(88,20): error CS0246: The type or namespace name 'ParameterList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(97,12): error CS0246: The type or namespace name 'Event' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(100,12): error CS0246: The type or namespace name 'InterfaceList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(110,68): error CS0246: The type or namespace name 'FieldFlags' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(110,118): error CS0246: The type or namespace name 'Literal' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(148,12): error CS0246: The type or namespace name 'MarshallingInformation' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(150,12): error CS0246: The type or namespace name 'ReferenceFieldSemantics' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(151,12): error CS0246: The type or namespace name 'PESection' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(201,24): error CS0246: The type or namespace name 'MethodContract' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(210,15): error CS0246: The type or namespace name 'ExceptionHandlerList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(216,12): error CS0246: The type or namespace name 'MethodList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(217,15): error CS0246: The type or namespace name 'InstructionList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(219,15): error CS0246: The type or namespace name 'TrivialHashtable' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(228,12): error CS0246: The type or namespace name 'MethodScope' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(232,12): error CS0246: The type or namespace name 'SecurityAttributeList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(244,12): error CS0246: The type or namespace name 'CallingConventionFlags' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(251,12): error CS0246: The type or namespace name 'MethodFlags' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(257,12): error CS0246: The type or namespace name 'MethodImplFlags' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(304,12): error CS0246: The type or namespace name 'PInvokeFlags' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(326,12): error CS0246: The type or namespace name 'This' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(337,20): error CS0246: The type or namespace name 'Local' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(371,12): error CS0246: The type or namespace name 'AssemblyReferenceList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(389,12): error CS0246: The type or namespace name 'NodeType' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(401,15): error CS0246: The type or namespace name 'Statement' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(456,19): error CS0246: The type or namespace name 'Class' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(490,19): error CS0246: The type or namespace name 'EnumNode' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(510,19): error CS0246: The type or namespace name 'Struct' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(538,19): error CS0246: The type or namespace name 'Interface' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(766,24): error CS0246: The type or namespace name 'MemberList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(836,24): error CS0246: The type or namespace name 'TrivialHashtableUsingWeakReferences' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(897,12): error CS0246: The type or namespace name 'TypeFlags' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(1089,20): error CS0246: The type or namespace name 'InstanceInitializer' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(1136,20): error CS0246: The type or namespace name 'Property' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler\System.Compiler.ssc(1256,16): error CS0246: The type or namespace name 'InvariantList' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.Runtime.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.Framework.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\unknown file(1,1): error CS2005: File 'System.Compiler.Runtime.dll' does not exist
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler.Framework\System.Compiler.Framework.ssc(35,42): error CS0246: The type or namespace name 'StandardVisitor' could not be found (are you missing a using directive or an assembly reference?)
+    D:\temp\aste\SpecSharp\SpecSharp\Samples\OutOfBandContracts\System.Compiler.Framework\System.Compiler.Framework.ssc(36,12): error CS0246: The type or namespace name 'ErrorHandler' could not be found (are you missing a using directive or an assembly reference?)
+    1 error
+    1 error
+    9 error
+    39 error
+    1 error
+    5 error
+    6 failed
