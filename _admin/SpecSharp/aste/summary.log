@@ -1,14 +1,11 @@
-# Aste started: 2012-06-29 07:00:08
+# Aste started: 2012-07-01 07:00:02
 # Host id: Boogiebox
 # Configuration: boogie.cfg
 # Task: aste.tasks.boogie.FullBuild
-# [2012-06-29 07:02:05] SpecSharp revision: 72bbb1808b12
-# [2012-06-29 07:02:05] SscBoogie revision: 72bbb1808b12
-# [2012-06-29 07:03:39] Boogie revision: 2915c62bb24d
-[2012-06-29 07:05:14] [Error] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Project "Checkin Tests" /Build
+# [2012-07-01 07:01:03] SpecSharp revision: 5a36a96934ef
+# [2012-07-01 07:01:03] SscBoogie revision: 5a36a96934ef
+# [2012-07-01 07:02:11] Boogie revision: a31c96069547
+[2012-07-01 07:03:15] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Project "Checkin Tests" /Build
 
     1>corflags : warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
-    1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets(113,5): error MSB3073: The command "runtests.bat
-    1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets(113,5): error MSB3073: :VCEnd" exited with code 1.
     warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
-    1 failed
