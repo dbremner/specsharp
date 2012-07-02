@@ -1,14 +1,16 @@
-# Aste started: 2012-07-02 07:00:02
+# Aste started: 2012-07-02 10:18:52
 # Host id: Boogiebox
 # Configuration: boogie.cfg
 # Task: aste.tasks.boogie.FullBuild
-# [2012-07-02 07:01:09] SpecSharp revision: 89d929c810ed
-# [2012-07-02 07:01:09] SscBoogie revision: 89d929c810ed
-# [2012-07-02 07:01:59] Boogie revision: 415bb6e7254e
-[2012-07-02 07:03:39] [Error] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Project "Checkin Tests" /Build
+# [2012-07-02 10:19:28] SpecSharp revision: ca35832e464a
+# [2012-07-02 10:19:28] SscBoogie revision: ca35832e464a
+# [2012-07-02 10:19:57] Boogie revision: 415bb6e7254e
+[2012-07-02 10:20:01] [Error] Error message:
+  Register.cmd Clean c:\Windows\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe
+  failed with return code 100
 
-    1>corflags : warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
-    1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets(113,5): error MSB3073: The command "runtests.bat
-    1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets(113,5): error MSB3073: :VCEnd" exited with code 1.
-    warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
-    1 failed
+
+  returncode=100
+  cmd=Register.cmd Clean
+      c:\Windows\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe
+
