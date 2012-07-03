@@ -188,7 +188,7 @@ public class Test{
       this.compilation = updatedCompilation;
     }
     //Give asynchronous symbol table update events time to complete
-    Thread.Sleep(20);
+    Thread.Sleep(100);
     //Get actual output and compare with expected output
     string actualOutput = this.output.ToString();
     if (expectedOutput != actualOutput){
