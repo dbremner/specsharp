@@ -14,7 +14,7 @@
          StandardLibraryLocation=""
          TargetPlatform="v2"
          TargetPlatformLocation=""
-         ShadowedAssembly="%SystemRoot%\Microsoft.NET\Framework\v2.0.50727\system.dll"
+         ShadowedAssembly="%SystemRoot%\Microsoft.NET\Framework\v2.0.50727\System.dll"
          NoStandardLibraries="True"
         >
         <Config Name="Debug"
@@ -53,10 +53,6 @@
            />
       </Settings>
       <References>
-        <Reference Name="System"
-             AssemblyName="System"
-             Private="false"
-             />
         <Reference Name="System.Compiler.Runtime"
              AssemblyName="System.Compiler.Runtime"
              Private="true"
@@ -66,6 +62,11 @@
              AssemblyName="mscorlib"
              Private="false"
              HintPath="../../../../../../Windows/Microsoft.NET/Framework/v2.0.50727/mscorlib.dll"
+             />
+        <Reference Name="System"
+             AssemblyName="System"
+             Private="false"
+             HintPath="../../../../../../Windows/Microsoft.NET/Framework/v2.0.50727/System.dll"
              />
       </References>
     </Build>
