@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{ED267107-23BE-48C9-9CCD-C84CFFD04218}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SpecSharp", "SpecSharp", "{D9479818-8943-4FCA-B825-8B6C473B33C5}"
@@ -26,7 +26,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Checkin Tests", "Microsoft.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Package", "Microsoft.VisualStudio.Package\Microsoft.VisualStudio.Package.csproj", "{74FFF4C7-17CB-40C1-A6FE-3E419237DF61}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LastKnownGood", "Microsoft.SpecSharp\LastKnownGood10\LastKnownGood.vcxproj", "{C394A537-4F59-4568-9F5E-54B5E3DA1B28}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LastKnownGood", "Microsoft.SpecSharp\LastKnownGood11\LastKnownGood.vcxproj", "{C394A537-4F59-4568-9F5E-54B5E3DA1B28}"
 EndProject
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "Microsoft.SpecSharp.Runtime", "Microsoft.SpecSharp\Runtime\Microsoft.SpecSharp.Runtime.sscproj", "{76439EA5-A08D-4B58-BF7B-BE6D68668885}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -41,6 +41,9 @@ Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "Mscorlib.Contracts", "Sampl
 	EndProjectSection
 EndProject
 Project("{07C4E3D1-6B67-4060-8A92-940DB82041ED}") = "System.Contracts", "Samples\OutOfBandContracts\System\System.Contracts.sscproj", "{FBCA6915-0E32-4A74-AB9E-AFC976E89375}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5BEE6906-9652-47B4-B617-368E9598B449} = {5BEE6906-9652-47B4-B617-368E9598B449}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.CodeTools.ITaskManager", "Microsoft.VisualStudio.CodeTools\ITaskManager\Microsoft.VisualStudio.CodeTools.ITaskManager.csproj", "{770EFFDC-F67A-4838-A3EC-52C7363DAE00}"
 EndProject

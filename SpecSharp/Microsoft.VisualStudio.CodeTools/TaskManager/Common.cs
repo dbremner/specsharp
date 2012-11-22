@@ -58,7 +58,9 @@ using System.Diagnostics;
           return vsRoot;
         }
       }
-#if DEV10
+#if DEV11
+      return @"Software\Microsoft\VisualStudio\11.0"; // Guess on failure
+#elif DEV10
       return @"Software\Microsoft\VisualStudio\10.0"; // Guess on failure
 #else
       return @"Software\Microsoft\VisualStudio\9.0"; // Guess on failure
