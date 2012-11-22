@@ -24,6 +24,10 @@ if "%2"=="" set REGASM=regasm
 call :register Microsoft.VisualStudio.Package.dll
 call :register Microsoft.SpecSharp.dll
 call :register ContractsPropertyPane.dll
+
+devenv /setup
+if %ERRORLEVEL% NEQ 0 set ERRLVL=%ERRORLEVEL%
+
 goto :quit
 
 :register
