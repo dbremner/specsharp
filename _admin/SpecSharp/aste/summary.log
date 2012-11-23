@@ -1,11 +1,7 @@
-# Aste started: 2012-07-03 10:25:13
+# Aste started: 2012-11-23 07:00:05
 # Host id: Boogiebox
 # Configuration: boogie.cfg
 # Task: aste.tasks.boogie.FullBuild
-# [2012-07-03 10:26:23] SpecSharp revision: 97e1237fff06
-# [2012-07-03 10:26:23] SscBoogie revision: 97e1237fff06
-# [2012-07-03 10:27:13] Boogie revision: 145cd1116a95
-[2012-07-03 10:28:26] C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com SpecSharp.sln /Project "Checkin Tests" /Build
-
-    1>corflags : warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
-    warning CF011: The specified file is strong name signed.  Using /Force will invalidate the signature of this image and will require the assembly to be resigned.
+# [2012-11-23 07:01:57] SpecSharp revision: 837b161b3297
+# [2012-11-23 07:01:57] SscBoogie revision: 837b161b3297
+# [2012-11-23 07:02:45] Boogie revision: f27f6d697f86
