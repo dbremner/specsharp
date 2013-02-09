@@ -31,7 +31,8 @@ public class RedBlackTree<T> : IEnumerable<T> {
   RedBlackTree<T> left,right;
 
   /*internal*/ 
-  public RedBlackTree(Color c, int k, LinkedList<T>! e, RedBlackTree<T> l, RedBlackTree<T> r){
+  public RedBlackTree(Color c, int k, LinkedList<T> e, RedBlackTree<T> l, RedBlackTree<T> r){
+    e = (!)e;  // this is really a precondition, but we don't want peverify to make a fuss about it
     color = c; key =k; elems = e; left =l; right = r; base();
   }
 
@@ -183,7 +184,7 @@ public class RedBlackTree<T> : IEnumerable<T> {
     /*internal*/ 
     public LinkedList<T> l;
     /*internal*/ 
-    public LazyRedBlackTreeEnumerator(RedBlackTree<T>! t) { this.t = t; base(); }
+    public LazyRedBlackTreeEnumerator(RedBlackTree<T> t) { t = (!)t;/*this is really a precondition, but we don't want peverify to make a fuss about it*/ this.t = t; base(); }
     public override NestedEnumState NestedMoveNext(){
       for(;;) {
         switch (pc) {
