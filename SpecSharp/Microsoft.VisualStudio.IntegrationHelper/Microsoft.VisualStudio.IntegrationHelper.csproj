@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -110,6 +110,8 @@
     <Reference Include="System.XML" />
     <ProjectReference Include="..\Microsoft.VisualStudio.Package\Microsoft.VisualStudio.Package.csproj">
       <Project>{74FFF4C7-17CB-40C1-A6FE-3E419237DF61}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <SpecificVersion>true</SpecificVersion>
       <Name>Microsoft.VisualStudio.Package</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Compiler.Framework\System.Compiler.Framework.csproj">

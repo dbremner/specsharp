@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -194,6 +194,7 @@
     </Reference>
     <ProjectReference Include="..\Microsoft.VisualStudio.CodeTools\ITaskManager\Microsoft.VisualStudio.CodeTools.ITaskManager.csproj">
       <Project>{770EFFDC-F67A-4838-A3EC-52C7363DAE00}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
       <Name>Microsoft.VisualStudio.CodeTools.ITaskManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Compiler.Framework\System.Compiler.Framework.csproj">
@@ -203,6 +204,7 @@
     </ProjectReference>
     <ProjectReference Include="..\System.Compiler.Runtime\System.Compiler.Runtime.csproj">
       <Project>{5BEE6906-9652-47B4-B617-368E9598B449}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
       <Name>System.Compiler.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Compiler\System.Compiler.csproj">
@@ -212,6 +214,7 @@
     </ProjectReference>
     <ProjectReference Include="Runtime\Microsoft.SpecSharp.Runtime.sscproj">
       <Project>{76439EA5-A08D-4B58-BF7B-BE6D68668885}</Project>
+      <Package>{07C4E3D1-6B67-4060-8A92-940DB82041ED}</Package>
       <Name>Microsoft.SpecSharp.Runtime</Name>
     </ProjectReference>
   </ItemGroup>

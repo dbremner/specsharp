@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -136,6 +136,8 @@
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.SpecSharp.csproj">
       <Project>{0B747571-5739-4A09-B368-2FF47C01A698}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <SpecificVersion>true</SpecificVersion>
       <Name>Microsoft.SpecSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Runtime\Microsoft.SpecSharp.Runtime.sscproj">
